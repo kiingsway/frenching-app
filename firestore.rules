@@ -1,0 +1,31 @@
+rules_version = '2';
+
+// Regras do projeto sway-apps (valem para TODOS os apps do projeto).
+// Publicar com: firebase deploy --only firestore:rules --project sway-apps
+// Atenção: publicar substitui as regras do projeto inteiro; mantenha aqui as regras
+// dos outros apps também.
+
+// sway-apps: configurações e progresso por usuário.
+// Estrutura: users/{uid}/apps/{appId}/...
+// Cada usuário logado só lê e grava dentro do próprio users/{uid}.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Frenching: sugestões de troca de voz dos áudios
+    // (users/{uid}/apps/frenching/audioSuggestions/{audioKey}).
+    // Quem sugeriu já lê e grava pela regra acima; o administrador
+    // (sway9king@gmail.com) lê e atualiza as de todos, para aplicá-las.
+    match /{path=**}/audioSuggestions/{suggestionId} {
+      allow read, update: if request.auth != null
+        && request.auth.uid == 'xYK4ucxImscP4kdul7sRlk4l0UC2';
+    }
+
+    // Qualquer outro caminho é bloqueado.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

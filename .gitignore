@@ -1,0 +1,32 @@
+# Dependências
+node_modules/
+
+# Builds (gerados por npm run build / build:web)
+out/
+dist/
+dist-web/
+dev-dist/
+release/
+*.tsbuildinfo
+
+# Segredos locais: cliente OAuth do Google para o login no app desktop (veja .env.example)
+.env
+.env.*
+!.env.example
+
+# Progresso do npm run audio (arquivo temporário)
+scripts/.audio-status.json*
+
+# Ferramentas locais
+.claude/
+.firebase/
+.vercel/
+.vscode/
+.idea/
+
+# Logs e lixo do sistema
+*.log
+npm-debug.log*
+Thumbs.db
+desktop.ini
+.DS_Store

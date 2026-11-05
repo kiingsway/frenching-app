@@ -1,0 +1,10 @@
+# Texto com quebra de linha LF no repositório (o Git converte no Windows conforme a configuração)
+* text=auto eol=lf
+
+# Arquivos binários: nunca converter nem tentar mostrar diferenças
+*.mp3 binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary

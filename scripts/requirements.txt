@@ -1,0 +1,2 @@
+# Só para gerar os áudios (npm run audio). O app e o site não precisam de Python.
+edge-tts
