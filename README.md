@@ -13,6 +13,8 @@ Roda como **app desktop** (Electron, Windows) e como **site/PWA** (Vercel), a pa
   - `Frenching-Setup-<versão>.exe`: instalador (recomendado), com atalhos no menu Iniciar e na área de trabalho;
   - `Frenching-<versão>-portable.exe`: versão portátil, abre sem instalar.
 
+  O app instalado **se atualiza sozinho**: ao abrir (e a cada 6 horas) ele procura versões novas nos Releases, baixa em segundo plano e avisa "A versão X está pronta"; clique em **Reiniciar e atualizar** ou deixe para quando fechar o app. A versão portátil não se atualiza: baixe a nova nos Releases.
+
   Os arquivos não têm assinatura digital: na primeira vez o Windows pode mostrar o aviso do SmartScreen (**Mais informações → Executar assim mesmo**).
 
 O app para Windows e o site são o mesmo Frenching. Com a conta Google, o progresso aparece nos dois.
@@ -29,7 +31,7 @@ O app para Windows e o site são o mesmo Frenching. Com a conta Google, o progre
 
 ## Tecnologias
 
-Electron · electron-vite · Vite · React · TypeScript · MUI · Motion · Firebase (Auth + Firestore) · vite-plugin-pwa (Workbox) · electron-builder (instalador do Windows) · edge-tts (geração dos áudios, só no desenvolvimento).
+Electron · electron-vite · Vite · React · TypeScript · MUI · Motion · Firebase (Auth + Firestore) · vite-plugin-pwa (Workbox) · electron-builder + electron-updater (instalador e atualização automática do Windows) · edge-tts (geração dos áudios, só no desenvolvimento).
 
 ## Começando
 
@@ -108,9 +110,16 @@ Quando o site é atualizado, quem está com ele aberto (ou instalado) vê o avis
 
 Cada versão do app para Windows fica em **[Releases](https://github.com/kiingsway/frenching-app/releases)**. Para publicar uma versão nova:
 
-1. Suba a versão em `package.json` (ex.: `1.0.0` → `1.1.0`).
-2. Rode `npm run dist:win` (precisa do `.env`, para o login com Google funcionar no app). Em `release/` saem `Frenching-Setup-<versão>.exe` e `Frenching-<versão>-portable.exe`.
-3. No GitHub, **Releases → Draft a new release**, crie a tag `v<versão>` na branch `main`, escreva as novidades e anexe os dois `.exe`. Opcionalmente, anexe também um `.zip` do `dist-web/` para quem quiser hospedar o site em outro lugar.
+1. Suba a versão em `package.json` (ex.: `1.0.0` → `1.1.0`). A atualização automática só acontece se a versão nova for **maior** que a instalada.
+2. Rode `npm run dist:win` (precisa do `.env`, para o login com Google funcionar no app). Em `release/` saem:
+   - `Frenching-Setup-<versão>.exe`: instalador;
+   - `Frenching-Setup-<versão>.exe.blockmap`: deixa a atualização baixar só o que mudou;
+   - `latest.yml`: diz ao app instalado qual é a versão mais recente;
+   - `Frenching-<versão>-portable.exe`: versão portátil.
+3. No GitHub, **Releases → Draft a new release**, crie a tag `v<versão>` na branch `main`, escreva as novidades e anexe **os quatro arquivos**. Sem o `latest.yml` (e o `.blockmap`), os apps instalados não ficam sabendo da versão nova. Opcionalmente, anexe também um `.zip` do `dist-web/` para quem quiser hospedar o site em outro lugar.
+4. Publique a release (não deixe como rascunho nem como pré-lançamento: o app só enxerga releases publicadas).
+
+A atualização automática fica em `src/main/updater.ts` (electron-updater). Para testar sem publicar, gere uma versão maior em outra pasta (`npx electron-builder --win nsis --publish never -c.extraMetadata.version=X -c.directories.output=release-test`), sirva essa pasta por HTTP e abra o app de `release/win-unpacked/` com `FRENCHING_UPDATE_FEED=http://endereço`.
 
 O app instalado e o `npm run dev` usam a mesma pasta de dados (`%APPDATA%\frenching-electron`), então o progresso e o login são os mesmos nos dois.
 

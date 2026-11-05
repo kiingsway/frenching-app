@@ -13,6 +13,7 @@ import {
   FiMonitor,
   FiMoon,
   FiPlus,
+  FiRefreshCw,
   FiSun,
   FiVolume2
 } from 'react-icons/fi'
@@ -46,6 +47,8 @@ import { ACCENT_PRESETS, accentColors, isCustomAccent, setAccent, useAccent } fr
 import { cancelSignIn, signInWithGoogle, signOut, useAccount } from '@/lib/account'
 import { APP_NAME, APP_TAGLINE, APP_VERSION, GITHUB_URL } from '@/lib/about'
 import { useAudioSuggestions } from '@/lib/audio-suggestions'
+import { checkForDesktopUpdate, installDesktopUpdate, useDesktopUpdate } from '@/lib/desktop-update'
+import type { UpdaterStatus } from '@/lib/updater-types'
 import {
   canCancelSignIn,
   googleAuthConfigured,
@@ -547,6 +550,71 @@ function BackgroundPicker(): ReactElement {
   )
 }
 
+// Situação da atualização automática (só no app do Windows instalado)
+function updateText(status: UpdaterStatus): string | null {
+  switch (status.state) {
+    case 'unsupported':
+      return status.reason === 'portable'
+        ? 'Versão portátil: as atualizações são baixadas à mão, nos Releases do GitHub.'
+        : null
+    case 'checking':
+      return 'Procurando atualizações…'
+    case 'up-to-date':
+      return 'Você está usando a versão mais recente.'
+    case 'downloading':
+      return `Baixando a versão ${status.version}… ${status.percent}%`
+    case 'ready':
+      return `A versão ${status.version} está pronta: reinicie para atualizar (ou ela entra ao fechar o app).`
+    case 'error':
+      return status.message
+    default:
+      return null
+  }
+}
+
+function UpdateLine(): ReactElement | null {
+  const { status } = useDesktopUpdate()
+  const text = updateText(status)
+  if (!text) return null
+  return (
+    <Typography
+      variant="body2"
+      color={status.state === 'ready' ? 'primary' : 'text.secondary'}
+      sx={{ mt: 1.5 }}
+    >
+      {text}
+    </Typography>
+  )
+}
+
+function UpdateButton(): ReactElement | null {
+  const { status } = useDesktopUpdate()
+  if (status.state === 'unsupported') return null
+  if (status.state === 'ready')
+    return (
+      <Button
+        variant="contained"
+        size="small"
+        startIcon={<FiRefreshCw />}
+        onClick={installDesktopUpdate}
+      >
+        Reiniciar e atualizar
+      </Button>
+    )
+  const busy = status.state === 'checking' || status.state === 'downloading'
+  return (
+    <Button
+      variant="outlined"
+      size="small"
+      disabled={busy}
+      startIcon={busy ? <CircularProgress size={14} /> : <FiRefreshCw />}
+      onClick={checkForDesktopUpdate}
+    >
+      Procurar atualizações
+    </Button>
+  )
+}
+
 // Rótulo de cada linha do cartão Aparência
 const rowLabelSx = {
   fontWeight: 500,
@@ -776,17 +844,20 @@ export default function Settings({
               </Typography>
             </Box>
           </Box>
-          {GITHUB_URL && (
-            <Button
-              variant="outlined"
-              size="small"
-              startIcon={<FiGithub />}
-              onClick={() => openExternal(GITHUB_URL)}
-              sx={{ mt: 2 }}
-            >
-              Código no GitHub
-            </Button>
-          )}
+          <UpdateLine />
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 2 }}>
+            <UpdateButton />
+            {GITHUB_URL && (
+              <Button
+                variant="outlined"
+                size="small"
+                startIcon={<FiGithub />}
+                onClick={() => openExternal(GITHUB_URL)}
+              >
+                Código no GitHub
+              </Button>
+            )}
+          </Box>
         </SettingsCard>
 
         <SettingsCard>

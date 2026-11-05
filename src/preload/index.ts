@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron'
 import type { AudioGenStatus, VoiceId, VoiceOverrides } from '../renderer/src/lib/audio-texts'
 import type { ReviewEntry, ReviewMap } from '../renderer/src/lib/review-types'
+import type { UpdaterStatus } from '../renderer/src/lib/updater-types'
 
 export type ZoomAction = 'in' | 'out' | 'reset'
 
@@ -50,6 +51,18 @@ const api = {
     // Abre o navegador e espera o login; devolve o id_token do Google
     googleSignIn: (): Promise<{ idToken: string }> => ipcRenderer.invoke('auth:google-sign-in'),
     cancel: (): Promise<void> => ipcRenderer.invoke('auth:cancel')
+  },
+  // Atualização automática do app instalado (veja src/main/updater.ts)
+  updates: {
+    status: (): Promise<UpdaterStatus> => ipcRenderer.invoke('update:status'),
+    check: (): Promise<void> => ipcRenderer.invoke('update:check'),
+    // Fecha, instala a versão baixada e abre de novo
+    install: (): Promise<void> => ipcRenderer.invoke('update:install'),
+    onStatus(callback: (status: UpdaterStatus) => void): () => void {
+      const listener = (_: IpcRendererEvent, status: UpdaterStatus): void => callback(status)
+      ipcRenderer.on('update:status', listener)
+      return () => ipcRenderer.removeListener('update:status', listener)
+    }
   },
   // Revisão das questões de gramática (só no modo de desenvolvimento; veja src/main/review.ts)
   review: {

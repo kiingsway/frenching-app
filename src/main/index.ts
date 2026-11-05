@@ -3,6 +3,7 @@ import { join } from 'path'
 import { setupAudioTools } from './audio'
 import { setupReviewTools } from './review'
 import { setupGoogleAuth } from './google-auth'
+import { setupUpdater } from './updater'
 
 function createWindow(): void {
   const win = new BrowserWindow({
@@ -79,6 +80,7 @@ app.whenReady().then(() => {
   setupAudioTools()
   setupReviewTools()
   setupGoogleAuth()
+  setupUpdater()
   createWindow()
 
   app.on('activate', () => {

@@ -1,6 +1,10 @@
 # Empacotamento do app desktop (Windows): npm run dist:win
-# Gera em release/ o instalador (Frenching-Setup-<versão>.exe) e a versão portátil
-# (Frenching-<versão>-portable.exe), para anexar aos Releases do GitHub.
+# Gera em release/:
+#   Frenching-Setup-<versão>.exe        instalador (atualiza sozinho pelos Releases)
+#   Frenching-Setup-<versão>.exe.blockmap  usado na atualização (baixa só o que mudou)
+#   latest.yml                           a versão mais recente, lida pelo app instalado
+#   Frenching-<versão>-portable.exe      versão portátil (sem atualização automática)
+# Os quatro vão anexados à release do GitHub (veja o README).
 appId: com.kiingsway.frenching
 productName: Frenching
 copyright: Copyright © 2026 King Sway
@@ -9,12 +13,12 @@ directories:
   output: release
   buildResources: build
 
-# Só o app compilado vai no pacote: o electron-vite já embute React, MUI, Firebase etc.
-# em out/, e o processo principal só usa módulos do Node e do Electron
+# No pacote vão o app compilado e só as dependências do processo principal
+# (electron-updater, em "dependencies"). React, MUI, Firebase etc. ficam em
+# "devDependencies": o electron-vite já os embute em out/
 files:
   - out/**/*
   - package.json
-  - '!node_modules/**/*'
 
 win:
   icon: build/icon.png
@@ -33,5 +37,11 @@ nsis:
 portable:
   artifactName: Frenching-${version}-portable.${ext}
 
-# Sem publicação automática: os arquivos são anexados à mão em github.com/.../releases
-publish: null
+# Onde o app instalado procura versões novas (vai para resources/app-update.yml).
+# O build não envia nada sozinho (npm run dist:win usa --publish never): os arquivos
+# são anexados à release do GitHub
+publish:
+  provider: github
+  owner: kiingsway
+  repo: frenching-app
+  releaseType: release

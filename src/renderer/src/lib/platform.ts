@@ -110,6 +110,11 @@ export function openExternal(url: string): void {
   window.open(url, '_blank', 'noopener,noreferrer')
 }
 
+// ---------- Atualização automática (só o app do Windows instalado) ----------
+
+// Na web a versão nova chega pelo service worker (lib/app-update.ts); aqui é undefined
+export const desktopUpdates = electronApi?.updates
+
 // ---------- Ferramentas de desenvolvimento ----------
 
 // Lista de áudios (troca de voz, geração, aplicar sugestões) e revisão de questões
