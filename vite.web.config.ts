@@ -130,8 +130,10 @@ export default defineConfig({
   build: {
     outDir: resolve('dist-web'),
     emptyOutDir: true,
-    // Áudios pequenos não viram "data:" dentro do JS: a CSP só deixa tocar áudio de
-    // arquivos do próprio site, e assim o service worker consegue guardá-los
-    assetsInlineLimit: (filePath: string) => (filePath.endsWith('.mp3') ? false : undefined)
+    // Áudios e fontes pequenos não viram "data:" dentro do JS/CSS: a CSP só deixa
+    // carregar áudio e fonte de arquivos do próprio site (media-src/font-src 'self'),
+    // e assim o service worker consegue guardá-los
+    assetsInlineLimit: (filePath: string) =>
+      /\.(mp3|woff2?|ttf|otf)$/.test(filePath) ? false : undefined
   }
 })
