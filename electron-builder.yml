@@ -1,0 +1,37 @@
+# Empacotamento do app desktop (Windows): npm run dist:win
+# Gera em release/ o instalador (Frenching-Setup-<versão>.exe) e a versão portátil
+# (Frenching-<versão>-portable.exe), para anexar aos Releases do GitHub.
+appId: com.kiingsway.frenching
+productName: Frenching
+copyright: Copyright © 2026 King Sway
+
+directories:
+  output: release
+  buildResources: build
+
+# Só o app compilado vai no pacote: o electron-vite já embute React, MUI, Firebase etc.
+# em out/, e o processo principal só usa módulos do Node e do Electron
+files:
+  - out/**/*
+  - package.json
+  - '!node_modules/**/*'
+
+win:
+  icon: build/icon.png
+  target:
+    - nsis
+    - portable
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Frenching
+  artifactName: Frenching-Setup-${version}.${ext}
+
+portable:
+  artifactName: Frenching-${version}-portable.${ext}
+
+# Sem publicação automática: os arquivos são anexados à mão em github.com/.../releases
+publish: null

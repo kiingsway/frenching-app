@@ -6,6 +6,17 @@ Roda como **app desktop** (Electron, Windows) e como **site/PWA** (Vercel), a pa
 
 > Versão **1.0.0** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
 
+## Como usar
+
+- 🌐 **No navegador:** **[frenching-app.vercel.app](https://frenching-app.vercel.app)**. No Chrome ou no Edge dá para instalar como app (ícone de instalar na barra de endereço); depois da primeira visita funciona sem internet.
+- 💻 **No Windows:** baixe em **[Releases](https://github.com/kiingsway/frenching-app/releases/latest)**:
+  - `Frenching-Setup-<versão>.exe`: instalador (recomendado), com atalhos no menu Iniciar e na área de trabalho;
+  - `Frenching-<versão>-portable.exe`: versão portátil, abre sem instalar.
+
+  Os arquivos não têm assinatura digital: na primeira vez o Windows pode mostrar o aviso do SmartScreen (**Mais informações → Executar assim mesmo**).
+
+O app para Windows e o site são o mesmo Frenching. Com a conta Google, o progresso aparece nos dois.
+
 ## O que tem
 
 - **Painel**: lista de estudos com o progresso de cada seção.
@@ -18,7 +29,7 @@ Roda como **app desktop** (Electron, Windows) e como **site/PWA** (Vercel), a pa
 
 ## Tecnologias
 
-Electron · electron-vite · Vite · React · TypeScript · MUI · Motion · Firebase (Auth + Firestore) · vite-plugin-pwa (Workbox) · edge-tts (geração dos áudios, só no desenvolvimento).
+Electron · electron-vite · Vite · React · TypeScript · MUI · Motion · Firebase (Auth + Firestore) · vite-plugin-pwa (Workbox) · electron-builder (instalador do Windows) · edge-tts (geração dos áudios, só no desenvolvimento).
 
 ## Começando
 
@@ -50,6 +61,7 @@ O `.env` **não vai para o Git**. Sem ele, o app funciona normalmente, só sem o
 | `npm run dev` | App desktop em desenvolvimento (com as ferramentas de áudio) |
 | `npm run build` | Compila o app desktop em `out/` |
 | `npm run preview` | Abre o app desktop compilado (se comporta como o .exe) |
+| `npm run dist:win` | Gera o instalador e a versão portátil do Windows em `release/` (veja Releases) |
 | `npm run dev:web` | Site em desenvolvimento |
 | `npm run build:web` | Compila o site/PWA em `dist-web/` (é o que a Vercel publica) |
 | `npm run preview:web` | Serve o `dist-web/` localmente (para testar o PWA e o offline) |
@@ -84,11 +96,23 @@ firebase deploy --only firestore:rules --project sway-apps
 
 > Publicar substitui as regras de todos os apps do projeto: mantenha no arquivo as regras dos outros apps também.
 
-## Publicar o site na Vercel
+## Site na Vercel
 
-1. Envie o repositório para o GitHub.
-2. Na Vercel, **Add New → Project** e importe o repositório. As configurações vêm do `vercel.json` (`npm ci` sem baixar o Electron, `npm run build:web`, pasta `dist-web`). Não precisa de variáveis de ambiente.
-3. Depois do primeiro deploy, adicione o domínio do site (ex.: `frenching.vercel.app`) em **Firebase → Authentication → Configurações → Domínios autorizados**. Sem isso, o login com Google não funciona no site.
+Publicado em **[frenching-app.vercel.app](https://frenching-app.vercel.app)**. Cada envio para a branch `main` no GitHub gera um deploy novo.
+
+As configurações vêm do `vercel.json`: instalação com `npm ci` (sem baixar o Electron), build com `npm run build:web` e pasta `dist-web`. Não precisa de variáveis de ambiente. O domínio do site precisa estar em **Firebase → Authentication → Configurações → Domínios autorizados** para o login com Google funcionar.
+
+Quando o site é atualizado, quem está com ele aberto (ou instalado) vê o aviso **"Há uma versão nova do Frenching"** com o botão de atualizar.
+
+## Releases (versão para Windows)
+
+Cada versão do app para Windows fica em **[Releases](https://github.com/kiingsway/frenching-app/releases)**. Para publicar uma versão nova:
+
+1. Suba a versão em `package.json` (ex.: `1.0.0` → `1.1.0`).
+2. Rode `npm run dist:win` (precisa do `.env`, para o login com Google funcionar no app). Em `release/` saem `Frenching-Setup-<versão>.exe` e `Frenching-<versão>-portable.exe`.
+3. No GitHub, **Releases → Draft a new release**, crie a tag `v<versão>` na branch `main`, escreva as novidades e anexe os dois `.exe`. Opcionalmente, anexe também um `.zip` do `dist-web/` para quem quiser hospedar o site em outro lugar.
+
+O app instalado e o `npm run dev` usam a mesma pasta de dados (`%APPDATA%\frenching-electron`), então o progresso e o login são os mesmos nos dois.
 
 ## Estrutura
 
@@ -107,6 +131,7 @@ src/
   web/         service worker do PWA
 scripts/       geração de áudios e ícones
 public-web/    arquivos estáticos só do site (ícones do PWA)
+build/         recursos do instalador do Windows (ícone)
 topicos-de-estudo.md   lista de estudos (aparece no app em Configurações → Documentos)
 ```
 

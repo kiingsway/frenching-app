@@ -54,6 +54,11 @@ function createWindow(): void {
   }
 }
 
+// Pasta dos dados do app (progresso, login, cache): sempre %APPDATA%\frenching-electron.
+// O instalador chama o app de "Frenching", e sem isto o Electron usaria outra pasta:
+// o app instalado abriria sem o progresso salvo pelo npm run dev, e vice-versa.
+app.setPath('userData', join(app.getPath('appData'), 'frenching-electron'))
+
 // Só uma cópia do app por vez: duas cópias abertas disputam os dados salvos no
 // computador, e a segunda abriria "vazia" (sem progresso e sem login). Abrir de
 // novo só traz para a frente a janela que já está aberta.
