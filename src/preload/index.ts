@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron'
 import type { AudioGenStatus, VoiceId, VoiceOverrides } from '../renderer/src/lib/audio-texts'
-import type { ReviewEntry, ReviewMap } from '../renderer/src/lib/review-types'
+import type { ReviewEntry, ReviewKind, ReviewMap } from '../renderer/src/lib/review-types'
 import type { UpdaterStatus } from '../renderer/src/lib/updater-types'
 
 export type ZoomAction = 'in' | 'out' | 'reset'
@@ -64,13 +64,18 @@ const api = {
       return () => ipcRenderer.removeListener('update:status', listener)
     }
   },
-  // Revisão das questões de gramática (só no modo de desenvolvimento; veja src/main/review.ts)
+  // Revisão das questões de gramática e dos flashcards (só no modo de desenvolvimento;
+  // veja src/main/review.ts). kind escolhe o arquivo; o padrão é a gramática
   review: {
     available: (): Promise<boolean> => ipcRenderer.invoke('review:available'),
-    get: (): Promise<ReviewMap> => ipcRenderer.invoke('review:get'),
-    // entry = null apaga a revisão da questão. Retorna todas as revisões
-    set: (id: string, entry: ReviewEntry | null): Promise<ReviewMap> =>
-      ipcRenderer.invoke('review:set', id, entry)
+    get: (kind: ReviewKind = 'grammar'): Promise<ReviewMap> =>
+      ipcRenderer.invoke('review:get', kind),
+    // entry = null apaga a revisão. Retorna todas as revisões do arquivo
+    set: (
+      id: string,
+      entry: ReviewEntry | null,
+      kind: ReviewKind = 'grammar'
+    ): Promise<ReviewMap> => ipcRenderer.invoke('review:set', id, entry, kind)
   }
 }
 

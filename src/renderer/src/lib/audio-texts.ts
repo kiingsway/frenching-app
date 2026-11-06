@@ -2,6 +2,7 @@
 // script scripts/generate-audio.mts, para os dois enxergarem exatamente a mesma lista.
 // Só tem imports de tipo, para poder ser usado direto pelo Node no script.
 import type { AudioPart, TopicContent } from '../content/types'
+import type { CardDraft } from '../data/flashcards/types'
 
 export const AUDIO_PARTS: AudioPart[] = [
   'title',
@@ -52,6 +53,17 @@ export function textsFor(page: TopicContent, part: AudioPart): string[] {
         block.type === 'table' ? [...block.headers, ...block.rows.flat()] : []
       )
   }
+}
+
+// Flashcards: todo cartão tem áudio do lado em francês, a palavra/expressão e a
+// frase de exemplo
+export type FlashcardAudioPart = 'cardWord' | 'cardExample'
+
+export function flashcardTexts(card: CardDraft): [FlashcardAudioPart, string][] {
+  return [
+    ['cardWord', card.fr],
+    ['cardExample', card.example.fr]
+  ]
 }
 
 // Status da geração, gravado pelo script em scripts/.audio-status.json

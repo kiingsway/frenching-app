@@ -5,6 +5,7 @@ import { accentPref } from './accent'
 import { backgroundPref } from './background'
 import { completedStore } from './completed'
 import { APP_ID, db } from './firebase'
+import { flashcardStore, newPerDayPref } from './flashcard-progress'
 import { grammarStore } from './grammar-progress'
 import type { MapStore } from './map-store'
 import { themeModePref, topicLangPref, topicZoomPref, type Pref } from './prefs'
@@ -15,15 +16,15 @@ import { load, save } from './storage'
 // Tudo continua salvo no computador; com login, também vai para o Firestore em
 // users/{uid}/apps/frenching/data/…:
 //
-//  settings (tema, cor, idioma e zoom das páginas)
+//  settings (tema, cor, idioma e zoom das páginas, cartões novos por dia)
 //   - ao entrar, o que está na conta passa a valer neste computador;
 //   - se a conta ainda não tem nada (primeiro login), sobe o que está no computador.
 //
-//  progress (tópicos concluídos e desempenho na gramática)
+//  progress (tópicos concluídos, desempenho na gramática e estado FSRS dos flashcards)
 //   - o que está na conta e o que está no computador se JUNTAM, registro a registro
-//     (um por tópico, um por questão), e o resultado fica nos dois lados;
+//     (um por tópico, por questão, por cartão), e o resultado fica nos dois lados;
 //   - em cada registro, vale a regra do seu store (tópico: marcação mais recente;
-//     questão: mais tentativas).
+//     questão: mais tentativas; cartão: revisão mais recente).
 //
 //  Nos dois casos, cada mudança depois disso é salva na conta, mudanças feitas em
 //  outro computador chegam sozinhas, e sem internet as gravações ficam na fila do
@@ -44,13 +45,15 @@ const SETTINGS: Record<string, Pref<unknown>> = {
   accent: accentPref as Pref<unknown>,
   background: backgroundPref as Pref<unknown>,
   topicLang: topicLangPref as Pref<unknown>,
-  topicZoom: topicZoomPref as Pref<unknown>
+  topicZoom: topicZoomPref as Pref<unknown>,
+  flashcardsNewPerDay: newPerDayPref as Pref<unknown>
 }
 
 // Campo no documento de progresso → mapa local
 const PROGRESS: Record<string, MapStore<unknown>> = {
   topics: completedStore as MapStore<unknown>,
-  grammar: grammarStore as MapStore<unknown>
+  grammar: grammarStore as MapStore<unknown>,
+  flashcards: flashcardStore as MapStore<unknown>
 }
 
 // Conta dona do que está salvo neste computador (a última que sincronizou)

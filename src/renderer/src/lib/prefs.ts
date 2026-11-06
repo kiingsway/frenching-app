@@ -63,6 +63,14 @@ export const topicZoomPref = createPref<number>(
   isNumberBetween(ZOOM_MIN, ZOOM_MAX)
 )
 
+// Flashcards: limite de cartões novos por dia (Configurações → Flashcards)
+export const NEW_PER_DAY_MAX = 50
+export const newPerDayPref = createPref<number>(
+  'flashcardsNewPerDay',
+  10,
+  (v): v is number => isNumberBetween(0, NEW_PER_DAY_MAX)(v) && Number.isInteger(v)
+)
+
 // Tema claro/escuro/sistema. O MUI guarda o modo dele em "mui-mode"; esta
 // preferência é a fonte, e o ThemeModeBridge (App.tsx) repassa o valor ao MUI.
 export type ThemeMode = 'light' | 'dark' | 'system'

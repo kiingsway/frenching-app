@@ -9,6 +9,7 @@ import {
   FiFileText,
   FiFlag,
   FiGithub,
+  FiLayers,
   FiLogOut,
   FiMonitor,
   FiMoon,
@@ -31,6 +32,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import Skeleton from '@mui/material/Skeleton'
+import Slider from '@mui/material/Slider'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import List from '@mui/material/List'
@@ -67,6 +69,7 @@ import {
 } from '@/lib/background'
 import { useSyncStatus } from '@/lib/cloud-sync'
 import { themeModePref } from '@/lib/prefs'
+import { NEW_PER_DAY_MAX, newPerDayPref } from '@/lib/flashcard-progress'
 import { PROJECT_DOCS } from '@/lib/docs'
 
 type Mode = 'light' | 'dark' | 'system'
@@ -659,6 +662,39 @@ const rowLabelSx = {
   '&:not(:first-of-type)': { mt: { xs: 1.5, sm: 0 } }
 }
 
+// Limite de cartões novos por dia (preferência sincronizada com a conta).
+// O controle desliza livre e o valor só é salvo ao soltar, para não gravar a cada passo
+function NewPerDaySetting(): ReactElement {
+  const saved = newPerDayPref.use()
+  const [value, setValue] = useState(saved)
+  useEffect(() => setValue(saved), [saved])
+  return (
+    <Box sx={{ mt: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+        <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.secondary', flex: 1 }}>
+          Cartões novos por dia
+        </Typography>
+        <Typography sx={{ fontWeight: 600 }}>{value}</Typography>
+      </Box>
+      <Slider
+        value={value}
+        min={0}
+        max={NEW_PER_DAY_MAX}
+        step={1}
+        marks={[0, 10, 20, 30, 40, 50].map((v) => ({ value: v, label: String(v) }))}
+        onChange={(_, v) => setValue(v as number)}
+        onChangeCommitted={(_, v) => newPerDayPref.set(v as number)}
+        aria-label="Cartões novos por dia"
+        sx={{ mt: 0.5, mx: 1, width: 'calc(100% - 16px)' }}
+      />
+      <Typography variant="caption" color="text.secondary">
+        Cada cartão novo traz revisões nos dias seguintes. Com 10 por dia, os 50 cartões entram em
+        cinco dias, com poucos minutos de revisão diária.
+      </Typography>
+    </Box>
+  )
+}
+
 // Card que entra em sequência com os outros
 function SettingsCard({ children }: { children: ReactNode }): ReactElement {
   return (
@@ -742,12 +778,14 @@ export default function Settings({
   onOpenAudio,
   onOpenAudioSuggestions,
   onOpenGrammarReview,
+  onOpenFlashcardList,
   onOpenAccess
 }: {
   onOpenDoc: (docId: string) => void
   onOpenAudio: () => void
   onOpenAudioSuggestions: () => void
   onOpenGrammarReview: () => void
+  onOpenFlashcardList: () => void
   onOpenAccess: () => void
 }): ReactElement {
   const admin = isAdmin(useAccess())
@@ -861,6 +899,19 @@ export default function Settings({
               primary="Lista de áudios"
               secondary="Ouvir todos os áudios do app"
               onClick={onOpenAudio}
+            />
+          </List>
+        </SettingsCard>
+
+        <SettingsCard>
+          <Typography variant="subtitle1">Flashcards</Typography>
+          <NewPerDaySetting />
+          <List disablePadding component={motion.div} variants={stagger(0.1)} sx={{ mt: 2 }}>
+            <LinkButton
+              icon={FiLayers}
+              primary="Lista de flashcards"
+              secondary="Frente, verso, exemplo e áudio de todos os cartões"
+              onClick={onOpenFlashcardList}
             />
           </List>
         </SettingsCard>

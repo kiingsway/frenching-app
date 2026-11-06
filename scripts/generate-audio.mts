@@ -6,7 +6,8 @@
 //   npm run audio -- --only=a1b2c3d4,e5f6a7b8   gera de novo só esses arquivos (sem .mp3)
 //
 // Para cada página com o campo `audio`, gera um mp3 para cada parte listada
-// (veja AudioPart em content/types.ts) da versão em francês. O arquivo se chama pelo hash
+// (veja AudioPart em content/types.ts) da versão em francês, e para cada flashcard
+// (data/flashcards), a palavra e o exemplo em francês. O arquivo se chama pelo hash
 // do texto falado (speechText), então só textos novos ou alterados são gerados de novo.
 // Requer o edge-tts (pip install edge-tts) e internet; o app em si continua offline.
 // O edge-tts é chamado via scripts/tts-fr.py, que força o francês na leitura
@@ -32,11 +33,13 @@ import { audioKey, hasSpeech, speechText } from '../src/renderer/src/lib/audio-k
 import {
   AUDIO_VOICES,
   DEFAULT_VOICE,
+  flashcardTexts,
   textsFor,
   type AudioGenStatus,
   type VoiceOverrides
 } from '../src/renderer/src/lib/audio-texts.ts'
 import type { TopicContent } from '../src/renderer/src/content/types.ts'
+import type { FlashcardDeckDraft } from '../src/renderer/src/data/flashcards/types.ts'
 
 const RATE = '-24%'
 
@@ -51,6 +54,7 @@ const ONLY = new Set(
 
 const TTS_SCRIPT = resolve('scripts/tts-fr.py')
 const CONTENT_DIR = resolve('src/renderer/src/content')
+const FLASHCARDS_DIR = resolve('src/renderer/src/data/flashcards')
 const AUDIO_DIR = resolve('src/renderer/src/assets/audio')
 const STATUS_FILE = resolve('scripts/.audio-status.json')
 // Voz de cada texto que não usa a padrão (definida na lista de áudios do app)
@@ -76,7 +80,26 @@ for (const file of files) {
       if (!hasSpeech(text)) continue
       const key = audioKey(text)
       // Textos repetidos (ex.: a mesma célula em duas tabelas) usam o mesmo áudio
-      if (!entries.has(key)) entries.set(key, { label: `${page.id} (${part})`, spoken: speechText(text) })
+      if (!entries.has(key))
+        entries.set(key, { label: `${page.id} (${part})`, spoken: speechText(text) })
+    }
+  }
+}
+
+// Flashcards: um arquivo por baralho (menos index.ts e types.ts), na ordem do nome do
+// arquivo. A ordem só muda a fila de geração; os nomes dos mp3 vêm do texto
+const deckFiles = readdirSync(FLASHCARDS_DIR).filter(
+  (f) => f.endsWith('.ts') && f !== 'index.ts' && f !== 'types.ts'
+)
+for (const file of deckFiles) {
+  const deck = (await import(pathToFileURL(join(FLASHCARDS_DIR, file)).href))
+    .default as FlashcardDeckDraft
+  for (const card of deck.cards) {
+    for (const [part, text] of flashcardTexts(card)) {
+      if (!hasSpeech(text)) continue
+      const key = audioKey(text)
+      if (!entries.has(key))
+        entries.set(key, { label: `flashcards-${deck.id} (${part})`, spoken: speechText(text) })
     }
   }
 }
@@ -95,7 +118,9 @@ if (DRY_RUN) {
     const { label, spoken } = entries.get(key)!
     console.log(`Falta: ${label} "${spoken.slice(0, 60)}"`)
   }
-  console.log(`${queue.length} áudio(s) faltando; ${unused.length} áudio(s) sem uso seriam apagados.`)
+  console.log(
+    `${queue.length} áudio(s) faltando; ${unused.length} áudio(s) sem uso seriam apagados.`
+  )
   process.exit(0)
 }
 

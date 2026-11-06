@@ -24,6 +24,7 @@ O app para Windows e o site são o mesmo Frenching. Com a conta Google, o progre
 - **Painel**: lista de estudos com o progresso de cada seção.
 - **Páginas de estudo** em português e em francês (botão PT/FR), com as fontes no fim. Na versão em francês, cada trecho tem áudio: clique para ouvir; botão direito para recomeçar ou sugerir outra voz.
 - **Gramática**: 312 questões de múltipla escolha em 50 tópicos (A1 a C1), com explicação, treino rápido, prática por nível/tópico e revisão de erros.
+- **Flashcards**: 50 cartões em 3 baralhos (conectores e articuladores, falsos cognatos PT↔FR, dar opinião e argumentar), cada um com tradução, frase de exemplo e áudio em francês. Repetição espaçada com o algoritmo **FSRS** (biblioteca [ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs), roda no próprio app, retenção-alvo de 90%): notas Errei/Difícil/Bom/Fácil com o próximo intervalo em cada botão, atalhos (Espaço vira, 1–4 respondem, A toca o áudio), limite de cartões novos por dia nas Configurações e escolha de baralhos. Cada cartão tem um só estado de memória; a direção (FR→PT ou PT→FR) é sorteada a cada vez.
 - **Conta opcional (Google)**: progresso e configurações salvos na conta (Firebase), sincronizados entre computadores. Sem login, ou enquanto a conta não é aprovada para usar a nuvem, tudo fica só no computador.
 - **Funciona offline**: o app desktop é 100% offline; o site vira PWA e funciona sem internet depois da primeira visita.
 - **Aparência**: tema claro/escuro/sistema, cor principal e cor de fundo.
@@ -84,7 +85,13 @@ npm run audio -- --force      # gera todos de novo
 npm run audio -- --only=chave1,chave2
 ```
 
+O script gera os áudios das páginas de estudo (partes listadas no campo `audio` de cada página) e de todos os flashcards (palavra e exemplo em francês).
+
 No `npm run dev`, **Configurações → Áudios → Lista de áudios** mostra todos os áudios, permite trocar a voz de um texto (salvo em `assets/audio/voices.json`) e gerar de novo. **Sugestões de troca de voz** recebe as sugestões de quem usa o app (botão direito num áudio) e aplica todas de uma vez.
+
+## Revisão de conteúdo
+
+As questões de gramática e os flashcards foram escritos com ajuda de IA, então dá para validar cada um no app. Em **Configurações → Questões de gramática** e **Configurações → Flashcards → Lista de flashcards** (também pelas abas Gramática e Flashcards), no `npm run dev`, cada item pode ser marcado como **OK** ou **Problema** (com uma nota). As marcações vão para `content-review/grammar.json` e `content-review/flashcards.json`, com uma impressão digital do conteúdo: se o item mudar depois, aparece "Mudou após a revisão". Fora do modo de desenvolvimento, a lista de flashcards serve só para consultar (com busca, filtros e áudio).
 
 ## Firebase
 
@@ -139,16 +146,17 @@ src/
   preload/     ponte segura entre o Electron e a página (window.api)
   renderer/    a interface (a mesma no app e no site)
     src/
-      pages/       telas (Painel, Gramática, Configurações, páginas de tópico…)
+      pages/       telas (Painel, Gramática, Flashcards, Configurações, páginas de tópico…)
       components/  componentes compartilhados
       content/     páginas de estudo (PT + FR + fontes)
-      data/        lista de tópicos e banco de questões de gramática
+      data/        lista de tópicos, banco de questões de gramática e baralhos de flashcards
       lib/         preferências, progresso, sincronização, Firebase, plataforma (Electron × web)
       assets/audio/  mp3 dos textos em francês
   web/         service worker do PWA
 scripts/       geração de áudios e ícones
 public-web/    arquivos estáticos só do site (ícones do PWA)
 build/         recursos do instalador do Windows (ícone)
+content-review/  revisões das questões e dos flashcards (feitas no npm run dev)
 topicos-de-estudo.md   lista de estudos (aparece no app em Configurações → Documentos)
 ```
 

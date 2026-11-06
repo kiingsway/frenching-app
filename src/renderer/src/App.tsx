@@ -34,6 +34,7 @@ import AudioManager from './pages/AudioManager'
 import AudioSuggestions from './pages/AudioSuggestions'
 import AccessRequests from './pages/AccessRequests'
 import GrammarReview from './pages/GrammarReview'
+import FlashcardList from './pages/FlashcardList'
 import SuggestionDots from './components/SuggestionDots'
 import TopicPage from './pages/TopicPage'
 
@@ -51,6 +52,7 @@ type PageId =
   | 'audio'
   | 'audio-suggestions'
   | 'grammar-review'
+  | 'flashcard-list'
   | 'access'
 
 const DRAWER_WIDTH = 240
@@ -68,7 +70,7 @@ interface NavItem {
 const NAV: NavItem[] = [
   { id: 'dashboard', label: 'Painel', icon: FiHome },
   { id: 'grammar', label: 'Gramática', icon: FiType },
-  { id: 'flashcards', label: 'Flashcards', icon: FiLayers, soon: true },
+  { id: 'flashcards', label: 'Flashcards', icon: FiLayers },
   {
     id: 'reading',
     label: 'Compreensão escrita',
@@ -101,15 +103,17 @@ function renderPage(
   goTo: (id: PageId) => void,
   docId: string | null,
   openDoc: (docId: string) => void,
-  // A lista de questões abre pela aba Gramática ou pelas Configurações e volta para onde veio
+  // As listas de questões e de flashcards abrem pela própria aba ou pelas
+  // Configurações e voltam para onde vieram
   reviewBack: PageId,
-  openReview: (from: PageId) => void
+  openReview: (from: PageId) => void,
+  openFlashcardList: (from: PageId) => void
 ): ReactElement {
   switch (id) {
     case 'dashboard':
       return <Dashboard onOpenTopic={openTopic} />
     case 'flashcards':
-      return <Flashcards />
+      return <Flashcards onOpenList={() => openFlashcardList('flashcards')} />
     case 'grammar':
       return <Grammar onOpenTopic={openTopic} onOpenReview={() => openReview('grammar')} />
     case 'settings':
@@ -119,6 +123,7 @@ function renderPage(
           onOpenAudio={() => goTo('audio')}
           onOpenAudioSuggestions={() => goTo('audio-suggestions')}
           onOpenGrammarReview={() => openReview('settings')}
+          onOpenFlashcardList={() => openFlashcardList('settings')}
           onOpenAccess={() => goTo('access')}
         />
       )
@@ -134,6 +139,13 @@ function renderPage(
       return (
         <GrammarReview
           backLabel={reviewBack === 'grammar' ? 'Gramática' : 'Configurações'}
+          onBack={() => goTo(reviewBack)}
+        />
+      )
+    case 'flashcard-list':
+      return (
+        <FlashcardList
+          backLabel={reviewBack === 'flashcards' ? 'Flashcards' : 'Configurações'}
           onBack={() => goTo(reviewBack)}
         />
       )
@@ -162,6 +174,10 @@ export default function App(): ReactElement {
     setReviewBack(from)
     goTo('grammar-review')
   }
+  const openFlashcardList = (from: PageId): void => {
+    setReviewBack(from)
+    goTo('flashcard-list')
+  }
 
   // Janela estreita (ou celular, na versão web): menu vira uma barra embaixo
   const isMobile = useMediaQuery(useTheme().breakpoints.down('md'))
@@ -170,7 +186,7 @@ export default function App(): ReactElement {
     id === page ||
     (id === 'settings' &&
       (page === 'doc' || page === 'audio' || page === 'audio-suggestions' || page === 'access')) ||
-    (id === reviewBack && page === 'grammar-review')
+    (id === reviewBack && (page === 'grammar-review' || page === 'flashcard-list'))
 
   // Item da barra de baixo: ícone em cima, nome curto embaixo
   const mobileNavItem = (item: NavItem): ReactElement => {
@@ -262,7 +278,16 @@ export default function App(): ReactElement {
         {topicId ? (
           <TopicPage topicId={topicId} onBack={() => setTopicId(null)} onOpenTopic={setTopicId} />
         ) : (
-          renderPage(page, setTopicId, goTo, docId, openDoc, reviewBack, openReview)
+          renderPage(
+            page,
+            setTopicId,
+            goTo,
+            docId,
+            openDoc,
+            reviewBack,
+            openReview,
+            openFlashcardList
+          )
         )}
       </motion.div>
     </AnimatePresence>
