@@ -10,7 +10,7 @@ import {
   type ReactElement
 } from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { FiArrowLeft, FiPause, FiPlay, FiRefreshCw, FiSearch } from 'react-icons/fi'
+import { FiArrowLeft, FiLock, FiPause, FiPlay, FiRefreshCw, FiSearch } from 'react-icons/fi'
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -27,6 +27,7 @@ import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import Typography from '@mui/material/Typography'
 import Page from '@/components/Page'
+import { isAdmin, useAccess } from '@/lib/access'
 import { getAudioUrlByKey, hasAudioFile } from '@/lib/audio'
 import { buildEntries, bundledVoiceFor, PART_LABELS, type AudioEntry } from '@/lib/audio-entries'
 import {
@@ -156,10 +157,13 @@ const AudioRow = memo(function AudioRow({
   onTogglePlay,
   onRegenerate,
   progressRef,
-  readOnly
+  readOnly,
+  canChangeVoice
 }: {
   // Produção (preview/.exe): só ouvir; trocar a voz e gerar ficam no npm run dev
   readOnly: boolean
+  // npm run dev: só a conta administradora troca a voz
+  canChangeVoice: boolean
   entry: Entry
   generatedAt: number | undefined
   voice: VoiceId
@@ -252,9 +256,13 @@ const AudioRow = memo(function AudioRow({
       ) : (
         <NativeSelect
           variant="standard"
-          disabled={running}
+          disabled={running || !canChangeVoice}
           value={voice}
-          title={waitHint ?? 'Trocar a voz gera este áudio de novo'}
+          title={
+            !canChangeVoice
+              ? 'Só a conta administradora pode trocar a voz'
+              : (waitHint ?? 'Trocar a voz gera este áudio de novo')
+          }
           onChange={(e) => void audioTools!.setVoice(entry.key, e.target.value as VoiceId)}
           sx={{ fontSize: 14 }}
         >
@@ -297,6 +305,8 @@ export default function AudioManager({ onBack }: { onBack: () => void }): ReactE
   // Produção (preview/.exe): prévia só para ouvir, com os arquivos e as vozes do build
   // (enquanto não se sabe, mostra a prévia: nunca aparecem botões que não funcionariam)
   const readOnly = available !== true
+  // Trocar a voz (no npm run dev) é só da conta administradora
+  const admin = isAdmin(useAccess())
   const bundled = useMemo(
     () => ({
       files: Object.fromEntries(entries.filter((e) => hasAudioFile(e.key)).map((e) => [e.key, 1])),
@@ -473,6 +483,12 @@ export default function AudioManager({ onBack }: { onBack: () => void }): ReactE
         )}
       </Typography>
 
+      {!readOnly && !admin && (
+        <Alert severity="info" icon={<FiLock />} sx={{ mt: 2 }}>
+          Só a conta administradora pode trocar a voz dos áudios. Entre com ela em Configurações →
+          Conta.
+        </Alert>
+      )}
 
       {!readOnly && (
         <Card sx={{ mt: 3 }}>
@@ -633,6 +649,7 @@ export default function AudioManager({ onBack }: { onBack: () => void }): ReactE
               ) : (
                 <AudioRow
                   readOnly={readOnly}
+                  canChangeVoice={admin}
                   entry={item.entry}
                   generatedAt={files[item.entry.key]}
                   voice={voices[item.entry.key] ?? DEFAULT_VOICE}
