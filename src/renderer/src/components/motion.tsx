@@ -37,7 +37,16 @@ export function AnimatedNumber({ value }: { value: number }): ReactElement {
 }
 
 // Barra de progresso que se preenche com uma mola ao aparecer e ao mudar
-export function ProgressBar({ value, height = 8 }: { value: number; height?: number }): ReactElement {
+export function ProgressBar({
+  value,
+  height = 8,
+  color = 'var(--mui-palette-primary-main)'
+}: {
+  value: number
+  height?: number
+  // Cor do preenchimento (ex.: verde quando está completo)
+  color?: string
+}): ReactElement {
   return (
     <Box
       role="progressbar"
@@ -55,10 +64,12 @@ export function ProgressBar({ value, height = 8 }: { value: number; height?: num
         initial={{ width: 0 }}
         animate={{ width: `${value}%` }}
         transition={{ type: 'spring', stiffness: 90, damping: 20, delay: 0.15 }}
+        // A cor vem de variável CSS (o motion não anima var()): troca com transição CSS
         style={{
           height: '100%',
           borderRadius: height / 2,
-          background: 'var(--mui-palette-primary-main)'
+          background: color,
+          transition: 'background 400ms'
         }}
       />
     </Box>
