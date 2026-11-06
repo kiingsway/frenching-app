@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react'
 import { collection, doc, onSnapshot, serverTimestamp, writeBatch } from 'firebase/firestore'
-import { getAccess, isAdmin } from './access'
+import { getAccess, isAdmin, subscribeAccess } from './access'
 import { APP_ID, db } from './firebase'
 
 // Tela Aprovar acessos (só a conta administradora; as regras do Firestore recusam
@@ -41,43 +41,65 @@ const toMillis = (v: unknown): number =>
     ? (v as { toMillis: () => number }).toMillis()
     : Number(v) || 0
 
-// Ouve os pedidos só enquanto alguém (tela ou cartão) está usando a lista
+// Ouve os pedidos só enquanto alguém (menu, cartão ou tela) usa a lista e a conta
+// conectada é a administradora. Acompanha o login: o menu já está na tela antes
+// de o Firebase dizer quem entrou
+let watchingAccess = false
+
+function sync(): void {
+  const want = listeners.size > 0 && isAdmin(getAccess())
+  if (want && !stop) start()
+  else if (!want && stop) {
+    stop()
+    stop = null
+    setState({ requests: null, error: null })
+  }
+}
+
+function start(): void {
+  stop = onSnapshot(
+    requestsRef(),
+    (snapshot) =>
+      setState({
+        error: null,
+        requests: snapshot.docs
+          .map((d) => {
+            const data = d.data()
+            const status: RequestStatus =
+              data.status === 'approved' || data.status === 'rejected' ? data.status : 'pending'
+            return {
+              uid: d.id,
+              email: String(data.email ?? ''),
+              name: String(data.name ?? ''),
+              photoURL: String(data.photoURL ?? ''),
+              status,
+              createdAt: toMillis(data.createdAt),
+              decidedAt: data.decidedAt ? toMillis(data.decidedAt) : undefined
+            }
+          })
+          .sort((a, b) => b.createdAt - a.createdAt)
+      }),
+    (e) => setState({ error: `Não foi possível ler os pedidos: ${e.message}` })
+  )
+}
+
 function subscribe(listener: () => void): () => void {
   listeners.add(listener)
-  if (!stop && isAdmin(getAccess())) {
-    stop = onSnapshot(
-      requestsRef(),
-      (snapshot) =>
-        setState({
-          error: null,
-          requests: snapshot.docs
-            .map((d) => {
-              const data = d.data()
-              const status: RequestStatus =
-                data.status === 'approved' || data.status === 'rejected' ? data.status : 'pending'
-              return {
-                uid: d.id,
-                email: String(data.email ?? ''),
-                name: String(data.name ?? ''),
-                photoURL: String(data.photoURL ?? ''),
-                status,
-                createdAt: toMillis(data.createdAt),
-                decidedAt: data.decidedAt ? toMillis(data.decidedAt) : undefined
-              }
-            })
-            .sort((a, b) => b.createdAt - a.createdAt)
-        }),
-      (e) => setState({ error: `Não foi possível ler os pedidos: ${e.message}` })
-    )
+  if (!watchingAccess) {
+    watchingAccess = true
+    subscribeAccess(sync)
   }
+  sync()
   return () => {
     listeners.delete(listener)
-    if (!listeners.size && stop) {
-      stop()
-      stop = null
-      state = { requests: null, error: null }
-    }
+    sync()
   }
+}
+
+// Há pedido aguardando? (bolinha vermelha para o admin)
+export function usePendingAccessCount(): number {
+  const { requests } = useAccessRequests()
+  return requests?.filter((r) => r.status === 'pending').length ?? 0
 }
 
 export function useAccessRequests(): State {

@@ -1,4 +1,4 @@
-import { useState, type ReactElement } from 'react'
+﻿import { useState, type ReactElement } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'motion/react'
 import type { IconType } from 'react-icons'
 import {
@@ -59,7 +59,7 @@ interface NavItem {
   id: PageId
   label: string
   icon: IconType
-  // Aba ainda sem conteúdo: aparece no menu, mas bloqueada, com um cadeado
+  // Aba ainda sem conteÃºdo: aparece no menu, mas bloqueada, com um cadeado
   soon?: boolean
   // Nome curto, para a barra de baixo (janela estreita)
   short?: string
@@ -67,30 +67,30 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { id: 'dashboard', label: 'Painel', icon: FiHome },
-  { id: 'grammar', label: 'Gramática', icon: FiType },
+  { id: 'grammar', label: 'GramÃ¡tica', icon: FiType },
   { id: 'flashcards', label: 'Flashcards', icon: FiLayers, soon: true },
   {
     id: 'reading',
-    label: 'Compreensão escrita',
+    label: 'CompreensÃ£o escrita',
     short: 'Comp. escrita',
     icon: FiBookOpen,
     soon: true
   },
   {
     id: 'listening',
-    label: 'Compreensão oral',
+    label: 'CompreensÃ£o oral',
     short: 'Comp. oral',
     icon: FiHeadphones,
     soon: true
   },
-  { id: 'writing', label: 'Produção escrita', short: 'Prod. escrita', icon: FiEdit3, soon: true },
-  { id: 'speaking', label: 'Produção oral', short: 'Prod. oral', icon: FiMic, soon: true },
+  { id: 'writing', label: 'ProduÃ§Ã£o escrita', short: 'Prod. escrita', icon: FiEdit3, soon: true },
+  { id: 'speaking', label: 'ProduÃ§Ã£o oral', short: 'Prod. oral', icon: FiMic, soon: true },
   { id: 'mock', label: 'Simulados', icon: FiCheckSquare, soon: true }
 ]
 
 const SETTINGS_NAV: NavItem = {
   id: 'settings',
-  label: 'Configurações',
+  label: 'ConfiguraÃ§Ãµes',
   short: 'Config.',
   icon: FiSettings
 }
@@ -101,7 +101,7 @@ function renderPage(
   goTo: (id: PageId) => void,
   docId: string | null,
   openDoc: (docId: string) => void,
-  // A lista de questões abre pela aba Gramática ou pelas Configurações e volta para onde veio
+  // A lista de questÃµes abre pela aba GramÃ¡tica ou pelas ConfiguraÃ§Ãµes e volta para onde veio
   reviewBack: PageId,
   openReview: (from: PageId) => void
 ): ReactElement {
@@ -133,7 +133,7 @@ function renderPage(
     case 'grammar-review':
       return (
         <GrammarReview
-          backLabel={reviewBack === 'grammar' ? 'Gramática' : 'Configurações'}
+          backLabel={reviewBack === 'grammar' ? 'GramÃ¡tica' : 'ConfiguraÃ§Ãµes'}
           onBack={() => goTo(reviewBack)}
         />
       )
@@ -163,7 +163,7 @@ export default function App(): ReactElement {
     goTo('grammar-review')
   }
 
-  // Janela estreita (ou celular, na versão web): menu vira uma barra embaixo
+  // Janela estreita (ou celular, na versÃ£o web): menu vira uma barra embaixo
   const isMobile = useMediaQuery(useTheme().breakpoints.down('md'))
 
   const isSelected = (id: PageId): boolean =>
@@ -172,7 +172,7 @@ export default function App(): ReactElement {
       (page === 'doc' || page === 'audio' || page === 'audio-suggestions' || page === 'access')) ||
     (id === reviewBack && page === 'grammar-review')
 
-  // Item da barra de baixo: ícone em cima, nome curto embaixo
+  // Item da barra de baixo: Ã­cone em cima, nome curto embaixo
   const mobileNavItem = (item: NavItem): ReactElement => {
     const Icon = item.icon
     const selected = isSelected(item.id)
@@ -199,7 +199,7 @@ export default function App(): ReactElement {
       >
         <Box sx={{ position: 'relative', display: 'flex' }}>
           <Icon size={20} />
-          {item.id === 'settings' && <SuggestionDots />}
+          {item.id === 'settings' && <SuggestionDots access />}
           {item.soon && <FiLock size={10} style={{ position: 'absolute', right: -9, top: -3 }} />}
         </Box>
         <Typography
@@ -229,14 +229,14 @@ export default function App(): ReactElement {
       >
         <ListItemIcon sx={{ minWidth: 36, position: 'relative' }}>
           <Icon size={18} />
-          {/* Bolinhas das sugestões de troca de voz, sobre o ícone de Configurações */}
-          {item.id === 'settings' && <SuggestionDots />}
+          {/* Bolinhas das sugestÃµes de troca de voz, sobre o Ã­cone de ConfiguraÃ§Ãµes */}
+          {item.id === 'settings' && <SuggestionDots access />}
         </ListItemIcon>
         <ListItemText
           primary={item.label}
           sx={{ '& .MuiListItemText-primary': { fontSize: 14 } }}
         />
-        {/* Cadeado discreto: a aba ainda não tem conteúdo */}
+        {/* Cadeado discreto: a aba ainda nÃ£o tem conteÃºdo */}
         {item.soon && (
           <FiLock size={13} aria-label="em breve" style={{ position: 'absolute', right: 6 }} />
         )}
@@ -245,7 +245,7 @@ export default function App(): ReactElement {
   }
 
   const content = (
-    // Troca de aba: a página atual some e a nova aparece com um fade rápido
+    // Troca de aba: a pÃ¡gina atual some e a nova aparece com um fade rÃ¡pido
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={topicId ? `topic-${topicId}` : page}
@@ -253,7 +253,7 @@ export default function App(): ReactElement {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.12 }}
-        // A página nova começa do topo (só na entrada, não durante a saída da anterior)
+        // A pÃ¡gina nova comeÃ§a do topo (sÃ³ na entrada, nÃ£o durante a saÃ­da da anterior)
         onAnimationStart={(target) => {
           if ((target as { opacity?: number }).opacity === 1)
             document.getElementById('main-content')?.scrollTo({ top: 0 })
@@ -280,7 +280,7 @@ export default function App(): ReactElement {
             {content}
           </Box>
 
-          {/* Barra de baixo: as abas rolam na horizontal; Configurações fica fixo à direita */}
+          {/* Barra de baixo: as abas rolam na horizontal; ConfiguraÃ§Ãµes fica fixo Ã  direita */}
           <Box
             component="nav"
             sx={{
@@ -293,7 +293,7 @@ export default function App(): ReactElement {
             }}
           >
             <Box
-              // A roda do mouse também rola a barra para os lados
+              // A roda do mouse tambÃ©m rola a barra para os lados
               onWheel={(e) => {
                 if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) e.currentTarget.scrollLeft += e.deltaY
               }}
@@ -307,7 +307,7 @@ export default function App(): ReactElement {
                 overflowX: 'auto',
                 scrollbarWidth: 'none',
                 '&::-webkit-scrollbar': { display: 'none' },
-                // Esmaece a borda direita: dá a dica de que há mais abas
+                // Esmaece a borda direita: dÃ¡ a dica de que hÃ¡ mais abas
                 maskImage: 'linear-gradient(to right, #000 calc(100% - 24px), transparent)'
               }}
             >
@@ -331,7 +331,7 @@ export default function App(): ReactElement {
     )
 
   return (
-    // reducedMotion="user": se o Windows pede menos animações, elas ficam desligadas
+    // reducedMotion="user": se o Windows pede menos animaÃ§Ãµes, elas ficam desligadas
     <MotionConfig reducedMotion="user">
       <Box sx={{ display: 'flex', height: '100vh' }}>
         <Drawer

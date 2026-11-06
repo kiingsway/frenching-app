@@ -46,7 +46,7 @@ import SuggestionDots from '@/components/SuggestionDots'
 import { riseIn, stagger } from '@/components/motion'
 import { ACCENT_PRESETS, accentColors, isCustomAccent, setAccent, useAccent } from '@/lib/accent'
 import { hasCloudAccess, isAdmin, useAccess } from '@/lib/access'
-import { useAccessRequests } from '@/lib/access-admin'
+import { useAccessRequests, usePendingAccessCount } from '@/lib/access-admin'
 import { cancelSignIn, signInWithGoogle, signOut, useAccount } from '@/lib/account'
 import { APP_NAME, APP_TAGLINE, APP_VERSION, GITHUB_URL } from '@/lib/about'
 import { useAudioSuggestions } from '@/lib/audio-suggestions'
@@ -673,7 +673,7 @@ function SettingsCard({ children }: { children: ReactNode }): ReactElement {
 // Administração (só a conta administradora): pedidos de acesso à nuvem
 function AdminCard({ onOpenAccess }: { onOpenAccess: () => void }): ReactElement {
   const { requests } = useAccessRequests()
-  const pending = requests?.filter((r) => r.status === 'pending').length ?? 0
+  const pending = usePendingAccessCount()
   return (
     <SettingsCard>
       <Typography variant="subtitle1">Administração</Typography>
@@ -689,6 +689,7 @@ function AdminCard({ onOpenAccess }: { onOpenAccess: () => void }): ReactElement
                 : 'Nenhum pedido aguardando'
           }
           onClick={onOpenAccess}
+          dots="access"
         />
       </List>
     </SettingsCard>
@@ -701,14 +702,14 @@ function LinkButton({
   primary,
   secondary,
   onClick,
-  showSuggestionDots = false
+  dots
 }: {
   icon: IconType
   primary: string
   secondary: string
   onClick: () => void
-  // Bolinhas vermelha/verde das sugestões de troca de voz sobre o ícone
-  showSuggestionDots?: boolean
+  // Bolinhas sobre o ícone: das sugestões de troca de voz ou dos pedidos de acesso
+  dots?: 'audio' | 'access'
 }): ReactElement {
   return (
     <motion.div
@@ -728,7 +729,7 @@ function LinkButton({
       >
         <ListItemIcon sx={{ minWidth: 36, position: 'relative' }}>
           <Icon size={18} />
-          {showSuggestionDots && <SuggestionDots />}
+          {dots && <SuggestionDots audio={dots === 'audio'} access={dots === 'access'} />}
         </ListItemIcon>
         <ListItemText primary={primary} secondary={secondary} />
       </ListItemButton>
@@ -753,15 +754,11 @@ export default function Settings({
   const suggestions = useAudioSuggestions()
   const suggestionList = suggestions.all ?? suggestions.mine
   const pendingCount = suggestionList.filter((s) => s.status === 'pending').length
-  const suggestionsSummary = suggestions.noAccess
-    ? 'Sem acesso à nuvem'
-    : !suggestions.user
-      ? 'Entre com Google para sugerir'
-      : pendingCount
-        ? `${pendingCount} pendente(s)`
-        : suggestionList.length
-          ? 'Nenhuma pendente'
-          : 'Botão direito num áudio para sugerir'
+  const suggestionsSummary = pendingCount
+    ? `${pendingCount} pendente(s)`
+    : suggestionList.length
+      ? 'Nenhuma pendente'
+      : 'Botão direito num áudio para sugerir'
   // O tema é uma preferência sincronizada; o ThemeModeBridge (App.tsx) aplica no MUI
   const current = themeModePref.use()
   const setMode = themeModePref.set
@@ -849,13 +846,16 @@ export default function Settings({
             variants={stagger(0.1, 0.05)}
             sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 1 }}
           >
-            <LinkButton
-              icon={FiFlag}
-              primary="Sugestões de troca de voz"
-              secondary={suggestionsSummary}
-              onClick={onOpenAudioSuggestions}
-              showSuggestionDots
-            />
+            {/* Só para quem pode sugerir (conta com acesso à nuvem) */}
+            {suggestions.user && (
+              <LinkButton
+                icon={FiFlag}
+                primary="Sugestões de troca de voz"
+                secondary={suggestionsSummary}
+                onClick={onOpenAudioSuggestions}
+                dots="audio"
+              />
+            )}
             <LinkButton
               icon={FiVolume2}
               primary="Lista de áudios"
