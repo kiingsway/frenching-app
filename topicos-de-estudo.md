@@ -207,6 +207,12 @@ Referências para escrever e conferir o conteúdo das páginas de estudo.
 - [TV5MONDE – Apprendre le français (vídeos por nível)](https://apprendre.tv5monde.com/fr)
 - [Kwiziq – "ne" omitido na fala informal](https://french.kwiziq.com/my-languages/French/view/3075)
 
+### Compreensão escrita
+- [Université de Sherbrooke – TCF: compreensão escrita (tipos de documento, dificuldade progressiva)](https://www.usherbrooke.ca/centredelangues/tests-et-certifications/test-de-connaissance-du-francais-tcf/description-du-tcf/comprehension-ecrite)
+- [Le français des affaires – TEF Canada: apresentação das provas (40 questões, 1 h)](https://www.lefrancaisdesaffaires.fr/en/candidate/test-evaluation-francais/tef-canada/presentation/)
+- [Le français des affaires – TEF: exemplos de provas de compreensão escrita (PDF)](https://www.lefrancaisdesaffaires.fr/wp-content/uploads/2024/10/tef-exemples-epreuves-ce.pdf)
+- [Open Exam Prep – TEF Canada Reading (tipos de documento e armadilhas; dados não oficiais)](https://open-exam-prep.com/study-guides/tef-canada/reading-comprehension/reading-overview)
+
 ### Gramática
 - [Kwiziq French – Gramática por tema e nível (A0–C1)](https://french.kwiziq.com/revision/grammar)
 - [Lawless French – Grammar (explicações por tema)](https://www.lawlessfrench.com/grammar/)

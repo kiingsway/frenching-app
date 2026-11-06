@@ -14,6 +14,8 @@ import coPalestras from './co-palestras'
 import coSotaques from './co-sotaques'
 import coFalado from './co-falado'
 import coEstrategias from './co-estrategias'
+import ceCotidiano from './ce-cotidiano'
+import ceCartas from './ce-cartas'
 import gbArtigos from './gb-artigos'
 import gbGenero from './gb-genero'
 
@@ -34,6 +36,8 @@ export const ALL_CONTENT: TopicContent[] = [
   coSotaques,
   coFalado,
   coEstrategias,
+  ceCotidiano,
+  ceCartas,
   gbArtigos,
   gbGenero
 ]
