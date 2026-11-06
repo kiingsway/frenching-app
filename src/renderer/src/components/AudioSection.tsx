@@ -4,6 +4,7 @@ import {
   useState,
   type KeyboardEvent,
   type MouseEvent,
+  type PointerEvent,
   type ReactElement,
   type ReactNode
 } from 'react'
@@ -238,10 +239,58 @@ export default function AudioSection({
   // Botão direito (ou a tecla de menu / Shift+F10, que abre junto ao trecho)
   const onContextMenu = (e: MouseEvent<HTMLElement>): void => {
     e.preventDefault()
+    // Toque longo: o menu já foi aberto pelo temporizador
+    if (longPress.current?.fired) return
+    // O navegador mandou o contextmenu antes do temporizador: abre agora e ignora o
+    // "clique" ao soltar o dedo (o próximo toque cria um registro novo)
+    if (longPress.current) {
+      cancelLongPress()
+      longPress.current.fired = true
+    }
     if (e.clientX === 0 && e.clientY === 0) {
       const rect = e.currentTarget.getBoundingClientRect()
       setMenuAt({ top: rect.bottom, left: rect.left })
     } else setMenuAt({ top: e.clientY, left: e.clientX })
+  }
+
+  // Tela de toque: pressionar e segurar abre o mesmo menu. O navegador nem sempre
+  // manda o contextmenu no toque longo (às vezes só seleciona o texto), então o app
+  // conta o tempo ele mesmo; mexer o dedo (rolar a página) cancela
+  const longPress = useRef<{ timer: number; x: number; y: number; fired: boolean } | null>(null)
+  const cancelLongPress = (): void => {
+    if (longPress.current) clearTimeout(longPress.current.timer)
+  }
+  const onPointerDown = (e: PointerEvent<HTMLElement>): void => {
+    cancelLongPress()
+    if (e.pointerType !== 'touch') {
+      longPress.current = null
+      return
+    }
+    const { clientX: x, clientY: y } = e
+    longPress.current = {
+      x,
+      y,
+      fired: false,
+      timer: window.setTimeout(() => {
+        if (!longPress.current) return
+        longPress.current.fired = true
+        window.getSelection()?.removeAllRanges()
+        navigator.vibrate?.(10)
+        setMenuAt({ top: y, left: x })
+      }, 450)
+    }
+  }
+  const onPointerMove = (e: PointerEvent<HTMLElement>): void => {
+    const lp = longPress.current
+    if (lp && !lp.fired && Math.hypot(e.clientX - lp.x, e.clientY - lp.y) > 10) cancelLongPress()
+  }
+  // Depois do toque longo, o "clique" que vem ao soltar o dedo não toca o áudio
+  const onClick = (): void => {
+    if (longPress.current?.fired) {
+      longPress.current = null
+      return
+    }
+    toggle()
   }
 
   const statusClass = [playing && 'playing', generating && 'generating'].filter(Boolean).join(' ')
@@ -253,14 +302,25 @@ export default function AudioSection({
         tabIndex={0}
         aria-label={label}
         aria-pressed={playing}
-        onClick={toggle}
+        onClick={onClick}
         onKeyDown={onKeyDown}
         onContextMenu={onContextMenu}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={cancelLongPress}
+        onPointerCancel={cancelLongPress}
         className={statusClass || undefined}
         sx={{
           position: 'relative',
           overflow: 'hidden',
           cursor: 'pointer',
+          // Tela de toque: segurar o dedo abre o menu, sem selecionar o texto
+          // nem abrir o menu do sistema (no mouse, o texto continua selecionável)
+          '@media (hover: none)': {
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+            WebkitTouchCallout: 'none'
+          },
           // Discreto: parado, parece texto normal (sem borda nem fundo).
           // No hover aparece só um fundo leve e o ícone; tocando, o preenchimento do progresso.
           borderRadius: v.framed ? 1 : 0,
