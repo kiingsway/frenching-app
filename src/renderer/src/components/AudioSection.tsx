@@ -111,6 +111,7 @@ export default function AudioSection({
     key && !dev.available
       ? {
           signedIn: !!suggestions.user,
+          noAccess: suggestions.noAccess,
           status: mySuggestion?.status ?? ('none' as const),
           toVoiceLabel: AUDIO_VOICES[mySuggestion?.toVoice ?? otherVoice].label,
           sending,

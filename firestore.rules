@@ -5,22 +5,60 @@ rules_version = '2';
 // Atenção: publicar substitui as regras do projeto inteiro; mantenha aqui as regras
 // dos outros apps também.
 
-// sway-apps: configurações e progresso por usuário.
-// Estrutura: users/{uid}/apps/{appId}/...
-// Cada usuário logado só lê e grava dentro do próprio users/{uid}.
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /users/{uid}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // Administrador do Frenching (sway9king@gmail.com): aprova acessos e aplica
+    // sugestões de áudio. Também tem acesso à nuvem sem precisar de aprovação
+    function isAdmin() {
+      return signedIn() && request.auth.uid == 'xYK4ucxImscP4kdul7sRlk4l0UC2';
+    }
+
+    // O Frenching só guarda dados na nuvem de quem foi aprovado
+    // (apps/frenching/members/{uid}). Quem não foi usa o app só no computador
+    function isFrenchingMember(uid) {
+      return isAdmin()
+        || exists(/databases/$(database)/documents/apps/frenching/members/$(uid));
+    }
+
+    // Dados de cada usuário, por app: users/{uid}/apps/{appId}/...
+    // Cada usuário só lê e grava os próprios dados; no Frenching, só se aprovado
+    match /users/{uid}/apps/{appId}/{document=**} {
+      allow read, write: if signedIn()
+        && request.auth.uid == uid
+        && (appId != 'frenching' || isFrenchingMember(uid));
     }
 
     // Frenching: sugestões de troca de voz dos áudios
     // (users/{uid}/apps/frenching/audioSuggestions/{audioKey}).
-    // Quem sugeriu já lê e grava pela regra acima; o administrador
-    // (sway9king@gmail.com) lê e atualiza as de todos, para aplicá-las.
+    // Quem sugeriu lê e grava pela regra acima; o admin lê e atualiza as de todos
     match /{path=**}/audioSuggestions/{suggestionId} {
-      allow read, update: if request.auth != null
-        && request.auth.uid == 'xYK4ucxImscP4kdul7sRlk4l0UC2';
+      allow read, update: if isAdmin();
+    }
+
+    // Frenching: quem tem acesso à nuvem. Só o admin aprova (cria) e retira (apaga);
+    // cada um pode ler só o próprio registro, para o app saber a situação
+    match /apps/frenching/members/{uid} {
+      allow get: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow list, create, update, delete: if isAdmin();
+    }
+
+    // Frenching: pedidos de acesso. Criados pelo próprio app no primeiro login, sempre
+    // como "pending" e com o e-mail da conta; só o admin muda a situação (aprovar/recusar)
+    match /apps/frenching/accessRequests/{uid} {
+      allow get: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow list, update, delete: if isAdmin();
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['uid', 'email', 'name', 'photoURL', 'status', 'createdAt'])
+        && request.resource.data.uid == uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.status == 'pending'
+        && request.resource.data.createdAt == request.time;
     }
 
     // Qualquer outro caminho é bloqueado.

@@ -62,6 +62,8 @@ export default function AudioMenu({
   // Só no app compilado: sugerir a troca de voz em vez de trocar
   suggest?: {
     signedIn: boolean
+    // Entrou, mas a conta ainda não tem acesso à nuvem
+    noAccess: boolean
     status: 'none' | 'pending' | 'applied'
     toVoiceLabel: string
     sending: boolean
@@ -216,13 +218,15 @@ export default function AudioMenu({
           component="div"
           sx={{ px: 2, pt: 0.75, pb: 0.5, fontSize: 12, color: 'text.secondary', maxWidth: 236 }}
         >
-          {!suggest.signedIn
-            ? 'Entre com Google (Configurações → Conta) para sugerir.'
-            : suggest.status === 'pending'
-              ? 'Aguardando a revisão. Acompanhe em Configurações → Áudios.'
-              : suggest.status === 'applied'
-                ? 'O áudio novo chega na próxima versão do app.'
-                : 'Use se o áudio soar em inglês ou estranho.'}
+          {suggest.noAccess
+            ? 'Sua conta ainda não tem acesso à nuvem para sugerir.'
+            : !suggest.signedIn
+              ? 'Entre com Google (Configurações → Conta) para sugerir.'
+              : suggest.status === 'pending'
+                ? 'Aguardando a revisão. Acompanhe em Configurações → Áudios.'
+                : suggest.status === 'applied'
+                  ? 'O áudio novo chega na próxima versão do app.'
+                  : 'Use se o áudio soar em inglês ou estranho.'}
         </Typography>
       )}
     </Menu>

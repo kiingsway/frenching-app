@@ -32,6 +32,7 @@ import Settings from './pages/Settings'
 import DocViewer from './pages/DocViewer'
 import AudioManager from './pages/AudioManager'
 import AudioSuggestions from './pages/AudioSuggestions'
+import AccessRequests from './pages/AccessRequests'
 import GrammarReview from './pages/GrammarReview'
 import SuggestionDots from './components/SuggestionDots'
 import TopicPage from './pages/TopicPage'
@@ -50,6 +51,7 @@ type PageId =
   | 'audio'
   | 'audio-suggestions'
   | 'grammar-review'
+  | 'access'
 
 const DRAWER_WIDTH = 240
 
@@ -117,8 +119,11 @@ function renderPage(
           onOpenAudio={() => goTo('audio')}
           onOpenAudioSuggestions={() => goTo('audio-suggestions')}
           onOpenGrammarReview={() => openReview('settings')}
+          onOpenAccess={() => goTo('access')}
         />
       )
+    case 'access':
+      return <AccessRequests onBack={() => goTo('settings')} />
     case 'audio-suggestions':
       return <AudioSuggestions onBack={() => goTo('settings')} />
     case 'doc':
@@ -163,7 +168,8 @@ export default function App(): ReactElement {
 
   const isSelected = (id: PageId): boolean =>
     id === page ||
-    (id === 'settings' && (page === 'doc' || page === 'audio' || page === 'audio-suggestions')) ||
+    (id === 'settings' &&
+      (page === 'doc' || page === 'audio' || page === 'audio-suggestions' || page === 'access')) ||
     (id === reviewBack && page === 'grammar-review')
 
   // Item da barra de baixo: ícone em cima, nome curto embaixo

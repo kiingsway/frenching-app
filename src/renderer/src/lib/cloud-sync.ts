@@ -1,10 +1,10 @@
 import { useSyncExternalStore } from 'react'
-import { onAuthStateChanged } from 'firebase/auth'
 import { doc, onSnapshot, serverTimestamp, setDoc, type FirestoreError } from 'firebase/firestore'
+import { getAccess, hasCloudAccess, subscribeAccess } from './access'
 import { accentPref } from './accent'
 import { backgroundPref } from './background'
 import { completedStore } from './completed'
-import { APP_ID, auth, db } from './firebase'
+import { APP_ID, db } from './firebase'
 import { grammarStore } from './grammar-progress'
 import type { MapStore } from './map-store'
 import { themeModePref, topicLangPref, topicZoomPref, type Pref } from './prefs'
@@ -302,19 +302,25 @@ export function clearLocalProgress(): void {
 
 let stop: (() => void) | null = null
 let currentUid: string | null = null
+// Só sincroniza quem tem acesso à nuvem (admin ou aprovado; veja lib/access.ts).
+// Sem acesso, nada é lido nem gravado na conta: tudo fica só no computador
 export function initCloudSync(): void {
-  onAuthStateChanged(auth, (user) => {
-    if (user?.uid === currentUid) return
+  const apply = (): void => {
+    const access = getAccess()
+    const uid = hasCloudAccess(access) ? (access.user?.uid ?? null) : null
+    if (uid === currentUid) return
     stop?.()
     stop = null
-    currentUid = user?.uid ?? null
-    if (user) {
-      const stopSettings = startSettingsSync(user.uid)
-      const stopProgress = startProgressSync(user.uid)
+    currentUid = uid
+    if (uid) {
+      const stopSettings = startSettingsSync(uid)
+      const stopProgress = startProgressSync(uid)
       stop = () => {
         stopSettings()
         stopProgress()
       }
     }
-  })
+  }
+  subscribeAccess(apply)
+  apply()
 }

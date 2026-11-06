@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react'
-import { onAuthStateChanged, type User } from 'firebase/auth'
+import type { User } from 'firebase/auth'
 import {
   collection,
   collectionGroup,
@@ -10,10 +10,11 @@ import {
   writeBatch,
   type Unsubscribe
 } from 'firebase/firestore'
+import { getAccess, hasCloudAccess, subscribeAccess } from './access'
 import { getAudioDev, subscribeAudioDev } from './audio-dev'
 import { getAudioEntry } from './audio-entries'
 import { AUDIO_VOICES, type VoiceId } from './audio-texts'
-import { APP_ID, auth, db } from './firebase'
+import { APP_ID, db } from './firebase'
 import { load, save } from './storage'
 import { audioTools, audioToolsAvailable } from './platform'
 
@@ -78,7 +79,10 @@ const byNewest = (a: AudioSuggestion, b: AudioSuggestion): number =>
 interface State {
   // Rodando no npm run dev (ferramentas de áudio disponíveis)
   dev: boolean
+  // Conta conectada com acesso à nuvem (sem acesso: null)
   user: User | null
+  // Entrou com Google, mas a conta ainda não tem acesso à nuvem
+  noAccess: boolean
   // Sugestões feitas pela conta conectada
   mine: AudioSuggestion[]
   // Sugestões de todos (só a conta administradora, no npm run dev); null = sem acesso
@@ -96,6 +100,7 @@ const APPLY_KEY = 'applyingSuggestions'
 let state: State = {
   dev: false,
   user: null,
+  noAccess: false,
   mine: [],
   all: null,
   seenPending: load<string[]>(SEEN_KEY, []),
@@ -128,7 +133,12 @@ export const mySuggestionFor = (key: string): AudioSuggestion | undefined =>
 
 export async function suggestVoiceChange(key: string, currentVoice: VoiceId): Promise<void> {
   const user = state.user
-  if (!user) throw new Error('Entre com Google (Configurações → Conta) para sugerir.')
+  if (!user)
+    throw new Error(
+      state.noAccess
+        ? 'Sua conta ainda não tem acesso à nuvem.'
+        : 'Entre com Google (Configurações → Conta) para sugerir.'
+    )
   const entry = getAudioEntry(key)
   const toVoice: VoiceId = currentVoice === 'denise' ? 'vivienne' : 'denise'
   await setDoc(doc(mineRef(user.uid), key), {
@@ -230,7 +240,16 @@ export function initAudioSuggestions(): void {
   let stopMine: Unsubscribe | null = null
   let stopAll: Unsubscribe | null = null
 
-  onAuthStateChanged(auth, (user) => {
+  // Só quem tem acesso à nuvem (admin ou aprovado; veja lib/access.ts) sugere e vê
+  // as próprias sugestões; sem acesso, o banco recusaria de qualquer forma
+  let currentUid: string | null = null
+  const apply = (): void => {
+    const access = getAccess()
+    const user = hasCloudAccess(access) ? access.user : null
+    const noAccess = !!access.user && !user
+    if (noAccess !== state.noAccess) setState({ noAccess })
+    if ((user?.uid ?? null) === currentUid) return
+    currentUid = user?.uid ?? null
     stopMine?.()
     stopAll?.()
     stopMine = stopAll = null
@@ -268,7 +287,9 @@ export function initAudioSuggestions(): void {
         () => setState({ all: null })
       )
     })
-  })
+  }
+  subscribeAccess(apply)
+  apply()
 
   // Terminar uma aplicação em andamento quando a geração acabar
   subscribeAudioDev(finishApplyIfDone)

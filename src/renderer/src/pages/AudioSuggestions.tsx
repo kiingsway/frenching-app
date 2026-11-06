@@ -183,8 +183,9 @@ export default function AudioSuggestions({ onBack }: { onBack: () => void }): Re
 
       {!s.user && (
         <Alert severity="info" sx={{ mt: 2 }}>
-          Entre com Google em Configurações → Conta para sugerir trocas e acompanhar as suas
-          sugestões.
+          {s.noAccess
+            ? 'Sua conta ainda não tem acesso à nuvem, então não dá para sugerir trocas por enquanto.'
+            : 'Entre com Google em Configurações → Conta para sugerir trocas e acompanhar as suas sugestões.'}
         </Alert>
       )}
       {s.error && (

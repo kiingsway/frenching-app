@@ -15,6 +15,7 @@ import {
   FiPlus,
   FiRefreshCw,
   FiSun,
+  FiUserCheck,
   FiVolume2
 } from 'react-icons/fi'
 import type { IconType } from 'react-icons'
@@ -44,6 +45,8 @@ import Page from '@/components/Page'
 import SuggestionDots from '@/components/SuggestionDots'
 import { riseIn, stagger } from '@/components/motion'
 import { ACCENT_PRESETS, accentColors, isCustomAccent, setAccent, useAccent } from '@/lib/accent'
+import { hasCloudAccess, isAdmin, useAccess } from '@/lib/access'
+import { useAccessRequests } from '@/lib/access-admin'
 import { cancelSignIn, signInWithGoogle, signOut, useAccount } from '@/lib/account'
 import { APP_NAME, APP_TAGLINE, APP_VERSION, GITHUB_URL } from '@/lib/about'
 import { useAudioSuggestions } from '@/lib/audio-suggestions'
@@ -212,9 +215,27 @@ function AccentPicker(): ReactElement {
   )
 }
 
-// Situação da sincronização com a conta, logo abaixo do usuário
+// Situação da sincronização com a conta, logo abaixo do usuário. Sem acesso à nuvem
+// (conta ainda não aprovada), mostra só isso, num tom neutro
 function SyncStatusLine(): ReactElement {
   const { state, error } = useSyncStatus()
+  const access = useAccess()
+  if (!hasCloudAccess(access)) {
+    const text =
+      access.status === 'pending'
+        ? 'Aguardando aprovação para usar a nuvem. Por enquanto, tudo fica salvo só neste computador.'
+        : access.status === 'rejected'
+          ? 'Esta conta não tem acesso à nuvem. Tudo fica salvo só neste computador.'
+          : access.status === 'error'
+            ? 'Não foi possível verificar o acesso à nuvem. Tudo continua salvo neste computador.'
+            : 'Verificando o acesso à nuvem…'
+    return (
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1.5, color: 'text.secondary' }}>
+        {access.status === 'checking' ? <CircularProgress size={12} /> : <FiCloudOff />}
+        <Typography variant="caption">{text}</Typography>
+      </Box>
+    )
+  }
   if (state === 'error')
     return (
       <Alert severity="error" sx={{ mt: 2 }}>
@@ -263,6 +284,9 @@ function AccountSection(): ReactElement {
   // Acabou de sair (para animar a troca e mostrar a confirmação por alguns segundos)
   const [justLoggedOut, setJustLoggedOut] = useState(false)
   const { state: syncState } = useSyncStatus()
+  const access = useAccess()
+  // Para a mensagem depois de sair (a conta já saiu quando ela aparece)
+  const [leftWithCloud, setLeftWithCloud] = useState(true)
 
   useEffect(() => {
     if (!justLoggedOut) return
@@ -335,15 +359,24 @@ function AccountSection(): ReactElement {
       >
         <DialogTitle id="logout-title">Sair da conta?</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Você vai sair de {user.email ?? 'sua conta Google'}. Seu progresso (tópicos concluídos e
-            gramática) sai deste computador, mas continua salvo na sua conta e volta quando você
-            entrar de novo. O tema e a cor continuam como estão.
-          </DialogContentText>
-          <DialogContentText sx={{ mt: 1.5 }}>
-            O que você fizer sem login a partir daí vai para a próxima conta que entrar.
-          </DialogContentText>
-          {(syncState === 'offline' || syncState === 'saving') && (
+          {hasCloudAccess(access) ? (
+            <>
+              <DialogContentText>
+                Você vai sair de {user.email ?? 'sua conta Google'}. Seu progresso (tópicos
+                concluídos e gramática) sai deste computador, mas continua salvo na sua conta e
+                volta quando você entrar de novo. O tema e a cor continuam como estão.
+              </DialogContentText>
+              <DialogContentText sx={{ mt: 1.5 }}>
+                O que você fizer sem login a partir daí vai para a próxima conta que entrar.
+              </DialogContentText>
+            </>
+          ) : (
+            <DialogContentText>
+              Você vai sair de {user.email ?? 'sua conta Google'}. Como esta conta não usa a nuvem,
+              nada muda: seu progresso e as configurações continuam neste computador.
+            </DialogContentText>
+          )}
+          {hasCloudAccess(access) && (syncState === 'offline' || syncState === 'saving') && (
             <Alert severity="warning" sx={{ mt: 2 }}>
               Ainda há mudanças que não chegaram à conta. Elas ficam guardadas e sobem na próxima
               vez que você entrar com esta conta neste computador.
@@ -360,6 +393,7 @@ function AccountSection(): ReactElement {
             startIcon={<FiLogOut />}
             onClick={() => {
               setConfirmLogout(false)
+              setLeftWithCloud(hasCloudAccess(access))
               setJustLoggedOut(true)
               void signOut()
             }}
@@ -394,7 +428,9 @@ function AccountSection(): ReactElement {
             >
               <FiCheck />
               <Typography variant="body2">
-                Você saiu da conta. Seu progresso continua salvo nela.
+                {leftWithCloud
+                  ? 'Você saiu da conta. Seu progresso continua salvo nela.'
+                  : 'Você saiu da conta.'}
               </Typography>
             </Box>
           </motion.div>
@@ -634,6 +670,31 @@ function SettingsCard({ children }: { children: ReactNode }): ReactElement {
   )
 }
 
+// Administração (só a conta administradora): pedidos de acesso à nuvem
+function AdminCard({ onOpenAccess }: { onOpenAccess: () => void }): ReactElement {
+  const { requests } = useAccessRequests()
+  const pending = requests?.filter((r) => r.status === 'pending').length ?? 0
+  return (
+    <SettingsCard>
+      <Typography variant="subtitle1">Administração</Typography>
+      <List disablePadding component={motion.div} variants={stagger(0.1)} sx={{ mt: 2 }}>
+        <LinkButton
+          icon={FiUserCheck}
+          primary="Aprovar acessos"
+          secondary={
+            requests === null
+              ? 'Quem pode salvar na nuvem'
+              : pending
+                ? `${pending} pedido(s) aguardando`
+                : 'Nenhum pedido aguardando'
+          }
+          onClick={onOpenAccess}
+        />
+      </List>
+    </SettingsCard>
+  )
+}
+
 // Botão de lista com borda que desliza um pouco para a direita no hover
 function LinkButton({
   icon: Icon,
@@ -679,23 +740,28 @@ export default function Settings({
   onOpenDoc,
   onOpenAudio,
   onOpenAudioSuggestions,
-  onOpenGrammarReview
+  onOpenGrammarReview,
+  onOpenAccess
 }: {
   onOpenDoc: (docId: string) => void
   onOpenAudio: () => void
   onOpenAudioSuggestions: () => void
   onOpenGrammarReview: () => void
+  onOpenAccess: () => void
 }): ReactElement {
+  const admin = isAdmin(useAccess())
   const suggestions = useAudioSuggestions()
   const suggestionList = suggestions.all ?? suggestions.mine
   const pendingCount = suggestionList.filter((s) => s.status === 'pending').length
-  const suggestionsSummary = !suggestions.user
-    ? 'Entre com Google para sugerir'
-    : pendingCount
-      ? `${pendingCount} pendente(s)`
-      : suggestionList.length
-        ? 'Nenhuma pendente'
-        : 'Botão direito num áudio para sugerir'
+  const suggestionsSummary = suggestions.noAccess
+    ? 'Sem acesso à nuvem'
+    : !suggestions.user
+      ? 'Entre com Google para sugerir'
+      : pendingCount
+        ? `${pendingCount} pendente(s)`
+        : suggestionList.length
+          ? 'Nenhuma pendente'
+          : 'Botão direito num áudio para sugerir'
   // O tema é uma preferência sincronizada; o ThemeModeBridge (App.tsx) aplica no MUI
   const current = themeModePref.use()
   const setMode = themeModePref.set
@@ -716,6 +782,9 @@ export default function Settings({
           </Typography>
           <AccountSection />
         </SettingsCard>
+
+        {/* Só a conta administradora: quem pode usar a nuvem */}
+        {admin && <AdminCard onOpenAccess={onOpenAccess} />}
 
         {/* Aparência: uma linha por opção, rótulo à esquerda e escolha à direita */}
         <SettingsCard>

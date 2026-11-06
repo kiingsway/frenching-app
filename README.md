@@ -24,7 +24,7 @@ O app para Windows e o site são o mesmo Frenching. Com a conta Google, o progre
 - **Painel**: lista de estudos com o progresso de cada seção.
 - **Páginas de estudo** em português e em francês (botão PT/FR), com as fontes no fim. Na versão em francês, cada trecho tem áudio: clique para ouvir; botão direito para recomeçar ou sugerir outra voz.
 - **Gramática**: 312 questões de múltipla escolha em 50 tópicos (A1 a C1), com explicação, treino rápido, prática por nível/tópico e revisão de erros.
-- **Conta opcional (Google)**: progresso e configurações salvos na conta (Firebase), sincronizados entre computadores. Sem login, tudo fica só no computador.
+- **Conta opcional (Google)**: progresso e configurações salvos na conta (Firebase), sincronizados entre computadores. Sem login, ou enquanto a conta não é aprovada para usar a nuvem, tudo fica só no computador.
 - **Funciona offline**: o app desktop é 100% offline; o site vira PWA e funciona sem internet depois da primeira visita.
 - **Aparência**: tema claro/escuro/sistema, cor principal e cor de fundo.
 - **Layout estreito**: em janelas pequenas e no celular, o menu vira uma barra embaixo.
@@ -97,6 +97,14 @@ firebase deploy --only firestore:rules --project sway-apps
 ```
 
 > Publicar substitui as regras de todos os apps do projeto: mantenha no arquivo as regras dos outros apps também.
+
+### Acesso à nuvem (aprovação)
+
+Qualquer pessoa pode entrar com Google, mas só contas aprovadas têm dados na nuvem, e quem garante isso são as regras do Firestore, não só o app:
+
+- No primeiro login, o app cria um pedido em `apps/frenching/accessRequests/{uid}` (sempre `pending`, com o e-mail da conta).
+- A conta administradora (uid fixo em `firestore.rules` e em `lib/access.ts`) vê **Configurações → Administração → Aprovar acessos** e aprova (cria `apps/frenching/members/{uid}`) ou recusa/remove o acesso.
+- Sem registro em `members`, o banco recusa ler e gravar em `users/{uid}/apps/frenching/…`; o app mostra em Conta que tudo fica só no computador. A pessoa não recebe aviso: ao ser aprovada, a sincronização liga sozinha e junta o progresso do computador com a conta.
 
 ## Site na Vercel
 

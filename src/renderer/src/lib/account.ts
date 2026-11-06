@@ -1,9 +1,6 @@
 import { useSyncExternalStore } from 'react'
-import {
-  onAuthStateChanged,
-  signOut as firebaseSignOut,
-  type User
-} from 'firebase/auth'
+import { onAuthStateChanged, signOut as firebaseSignOut, type User } from 'firebase/auth'
+import { hasCloudAccess } from './access'
 import { clearLocalProgress } from './cloud-sync'
 import { auth } from './firebase'
 import { cancelGoogleSignIn, googleSignIn } from './platform'
@@ -51,7 +48,10 @@ export const cancelSignIn = (): Promise<void> => cancelGoogleSignIn()
 // ao entrar de novo). Assim, o que for feito sem login a partir daqui não é de
 // ninguém e vai para a próxima conta que entrar, seja qual for.
 // As configurações (tema, cor, idioma, zoom) continuam aplicadas.
+// Conta sem acesso à nuvem (aguardando aprovação ou recusada): o progresso nunca foi
+// para a conta, então fica no computador ao sair.
 export async function signOut(): Promise<void> {
+  const hadCloud = hasCloudAccess()
   await firebaseSignOut(auth)
-  clearLocalProgress()
+  if (hadCloud) clearLocalProgress()
 }

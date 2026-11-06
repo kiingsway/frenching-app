@@ -7,6 +7,7 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import App from './App'
 import UpdateToast from './components/UpdateToast'
+import { initAccess } from './lib/access'
 import { useAccent } from './lib/accent'
 import { backgroundPref } from './lib/background'
 import { initAudioSuggestions } from './lib/audio-suggestions'
@@ -40,7 +41,9 @@ function Root(): ReactElement {
   )
 }
 
-// Com login, as configurações passam a ser salvas também na conta
+// Com login: descobre se a conta tem acesso à nuvem (pede acesso no primeiro login)
+initAccess()
+// Com acesso à nuvem, as configurações e o progresso passam a ser salvos na conta
 initCloudSync()
 // Sugestões de troca de voz dos áudios (também dependem do login)
 initAudioSuggestions()
