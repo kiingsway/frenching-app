@@ -195,11 +195,35 @@ function directionBetween(from: View, to: View): number {
   return Math.sign(to.order - from.order)
 }
 
+// Como a troca anima:
+//  'x'     – entre abas, telas e tópicos vizinhos: desliza para os lados (dir = lado)
+//  'open'  – abrir uma página de estudo: ela sobe de baixo, a anterior só esmaece
+//  'close' – fechar a página de estudo: ela desce, e a tela de baixo só reaparece
+interface Transition {
+  kind: 'x' | 'open' | 'close'
+  dir: number
+}
+
+const isTopic = (v: View): boolean => v.key.startsWith('topic-')
+
+function transitionBetween(from: View, to: View): Transition {
+  if (!isTopic(from) && isTopic(to)) return { kind: 'open', dir: 1 }
+  if (isTopic(from) && !isTopic(to)) return { kind: 'close', dir: -1 }
+  return { kind: 'x', dir: directionBetween(from, to) }
+}
+
 const SLIDE = 48
+const RISE = 96
 const pageVariants = {
-  enter: (dir: number) => ({ opacity: 0, x: dir * SLIDE }),
-  center: { opacity: 1, x: 0 },
-  exit: (dir: number) => ({ opacity: 0, x: -dir * SLIDE })
+  enter: (t: Transition) =>
+    t.kind === 'x'
+      ? { opacity: 0, x: t.dir * SLIDE, y: 0 }
+      : { opacity: 0, x: 0, y: t.kind === 'open' ? RISE : 0 },
+  center: { opacity: 1, x: 0, y: 0 },
+  exit: (t: Transition) =>
+    t.kind === 'x'
+      ? { opacity: 0, x: -t.dir * SLIDE, y: 0 }
+      : { opacity: 0, x: 0, y: t.kind === 'close' ? RISE : 0 }
 }
 
 export default function App(): ReactElement {
@@ -312,27 +336,29 @@ export default function App(): ReactElement {
   // entrada da nova deslizarem para o mesmo lado
   const view = viewOf(page, topicId, reviewBack)
   const lastView = useRef(view)
-  const direction = useRef(0)
+  const transition = useRef<Transition>({ kind: 'x', dir: 0 })
   if (lastView.current.key !== view.key) {
-    direction.current = directionBetween(lastView.current, view)
+    transition.current = transitionBetween(lastView.current, view)
     lastView.current = view
   }
 
   const content = (
     // Troca de tela: a atual sai deslizando para um lado e a nova entra pelo outro.
     // Avançar (aba mais abaixo no menu, abrir uma tela, próximo tópico) entra pela
-    // direita; voltar entra pela esquerda
-    <AnimatePresence mode="wait" initial={false} custom={direction.current}>
+    // direita; voltar entra pela esquerda. A página de estudo sobe ao abrir e desce
+    // ao fechar
+    <AnimatePresence mode="wait" initial={false} custom={transition.current}>
       <motion.div
         key={view.key}
-        custom={direction.current}
+        custom={transition.current}
         variants={pageVariants}
         initial="enter"
         animate="center"
         exit="exit"
         transition={{
           x: { type: 'spring', stiffness: 520, damping: 42 },
-          opacity: { duration: 0.14 }
+          y: { type: 'spring', stiffness: 420, damping: 38 },
+          opacity: { duration: 0.16 }
         }}
         // A página nova começa do topo (só na entrada, não durante a saída da anterior)
         onAnimationStart={(definition) => {
