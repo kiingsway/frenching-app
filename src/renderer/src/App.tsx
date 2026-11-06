@@ -1,4 +1,4 @@
-import { useState, type ReactElement } from 'react'
+import { useRef, useState, type ReactElement } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'motion/react'
 import type { IconType } from 'react-icons'
 import {
@@ -37,6 +37,7 @@ import GrammarReview from './pages/GrammarReview'
 import FlashcardList from './pages/FlashcardList'
 import SuggestionDots from './components/SuggestionDots'
 import TopicPage from './pages/TopicPage'
+import { SECTIONS } from './data/topics'
 
 type PageId =
   | 'dashboard'
@@ -154,6 +155,53 @@ function renderPage(
   }
 }
 
+// ---------- Direção da transição entre páginas ----------
+
+// Ordem dos tópicos no Painel (para "Anterior/Próximo" dentro das páginas de estudo)
+const TOPIC_ORDER = new Map(SECTIONS.flatMap((s) => s.topics).map((t, i) => [t.id, i]))
+
+// Telas que ficam "dentro" de outra aba (abertas por um botão, com "voltar")
+const SETTINGS_SUBPAGES: PageId[] = ['doc', 'audio', 'audio-suggestions', 'access']
+
+interface View {
+  key: string
+  // Posição da aba no menu (Configurações por último)
+  tab: number
+  // 0 = a aba em si, 1 = uma tela aberta a partir dela
+  depth: number
+  // Ordem entre telas do mesmo nível (tópicos)
+  order: number
+}
+
+function viewOf(page: PageId, topicId: string | null, reviewBack: PageId): View {
+  const owner: PageId = SETTINGS_SUBPAGES.includes(page)
+    ? 'settings'
+    : page === 'grammar-review' || page === 'flashcard-list'
+      ? reviewBack
+      : page
+  const index = NAV.findIndex((n) => n.id === owner)
+  return {
+    key: topicId ? `topic-${topicId}` : page,
+    tab: owner === 'settings' || index < 0 ? NAV.length : index,
+    depth: topicId || owner !== page ? 1 : 0,
+    order: topicId ? (TOPIC_ORDER.get(topicId) ?? 0) : 0
+  }
+}
+
+// 1 = avançar (a nova entra pela direita), -1 = voltar (entra pela esquerda), 0 = só fade
+function directionBetween(from: View, to: View): number {
+  if (from.tab !== to.tab) return Math.sign(to.tab - from.tab)
+  if (from.depth !== to.depth) return Math.sign(to.depth - from.depth)
+  return Math.sign(to.order - from.order)
+}
+
+const SLIDE = 48
+const pageVariants = {
+  enter: (dir: number) => ({ opacity: 0, x: dir * SLIDE }),
+  center: { opacity: 1, x: 0 },
+  exit: (dir: number) => ({ opacity: 0, x: -dir * SLIDE })
+}
+
 export default function App(): ReactElement {
   const [page, setPage] = useState<PageId>('dashboard')
   const [topicId, setTopicId] = useState<string | null>(null)
@@ -260,19 +308,35 @@ export default function App(): ReactElement {
     )
   }
 
+  // Direção da troca: guardada ao mudar de tela, para a saída da anterior e a
+  // entrada da nova deslizarem para o mesmo lado
+  const view = viewOf(page, topicId, reviewBack)
+  const lastView = useRef(view)
+  const direction = useRef(0)
+  if (lastView.current.key !== view.key) {
+    direction.current = directionBetween(lastView.current, view)
+    lastView.current = view
+  }
+
   const content = (
-    // Troca de aba: a página atual some e a nova aparece com um fade rápido
-    <AnimatePresence mode="wait" initial={false}>
+    // Troca de tela: a atual sai deslizando para um lado e a nova entra pelo outro.
+    // Avançar (aba mais abaixo no menu, abrir uma tela, próximo tópico) entra pela
+    // direita; voltar entra pela esquerda
+    <AnimatePresence mode="wait" initial={false} custom={direction.current}>
       <motion.div
-        key={topicId ? `topic-${topicId}` : page}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.12 }}
+        key={view.key}
+        custom={direction.current}
+        variants={pageVariants}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        transition={{
+          x: { type: 'spring', stiffness: 520, damping: 42 },
+          opacity: { duration: 0.14 }
+        }}
         // A página nova começa do topo (só na entrada, não durante a saída da anterior)
-        onAnimationStart={(target) => {
-          if ((target as { opacity?: number }).opacity === 1)
-            document.getElementById('main-content')?.scrollTo({ top: 0 })
+        onAnimationStart={(definition) => {
+          if (definition === 'center') document.getElementById('main-content')?.scrollTo({ top: 0 })
         }}
       >
         {topicId ? (
