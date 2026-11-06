@@ -9,7 +9,8 @@ import {
 } from 'react'
 import { FiLoader, FiPause, FiPlay } from 'react-icons/fi'
 import Box from '@mui/material/Box'
-import AudioMenu from '@/components/AudioMenu'
+import AudioMenu, { type SuggestOptions, type VoiceMode } from '@/components/AudioMenu'
+import { isAdmin, useAccess } from '@/lib/access'
 import { getAudioKeyByUrl, getAudioUrlByKey } from '@/lib/audio'
 import { isGenerating, useAudioDev } from '@/lib/audio-dev'
 import { bundledVoiceFor } from '@/lib/audio-entries'
@@ -100,19 +101,29 @@ export default function AudioSection({
       ? (dev.voices[key] ?? DEFAULT_VOICE)
       : bundledVoiceFor(key)
   const generating = !!key && isGenerating(dev.status, key)
-  const canChangeVoice = dev.available && !!key
-
-  // App compilado: sugestão de troca de voz (salva na conta)
+  // O que o menu oferece sobre a voz (veja VoiceMode em AudioMenu):
+  // npm run dev → trocar só a conta admin; app compilado/site → sugerir só com acesso
+  // à nuvem (admin incluso), senão apenas mostra a voz usada
+  const access = useAccess()
   const suggestions = useAudioSuggestions()
+  const voiceMode: VoiceMode | undefined = !key
+    ? undefined
+    : dev.available
+      ? isAdmin(access)
+        ? 'change'
+        : 'locked'
+      : suggestions.user
+        ? 'suggest'
+        : 'show'
+
+  // App compilado/site: sugestão de troca de voz (salva na conta)
   const [sending, setSending] = useState(false)
   const mySuggestion = key ? suggestions.mine.find((s) => s.key === key) : undefined
   const otherVoice: VoiceId = voice === 'denise' ? 'vivienne' : 'denise'
-  const suggest =
-    key && !dev.available
+  const suggest: SuggestOptions | undefined =
+    key && voiceMode === 'suggest'
       ? {
-          signedIn: !!suggestions.user,
-          noAccess: suggestions.noAccess,
-          status: mySuggestion?.status ?? ('none' as const),
+          status: mySuggestion?.status ?? 'none',
           toVoiceLabel: AUDIO_VOICES[mySuggestion?.toVoice ?? otherVoice].label,
           sending,
           onSuggest: () => {
@@ -209,7 +220,7 @@ export default function AudioSection({
 
   const changeVoice = (next: VoiceId): void => {
     setMenuAt(null)
-    if (!key || next === voice) return
+    if (!key || next === voice || voiceMode !== 'change') return
     if (audioRef.current && playing) {
       pause(audioRef.current)
       pauseCurrent = null
@@ -317,8 +328,8 @@ export default function AudioSection({
         onClose={() => setMenuAt(null)}
         onRestart={restart}
         voice={voice}
+        voiceMode={voiceMode}
         onChangeVoice={changeVoice}
-        showVoices={canChangeVoice}
         generating={generating}
         busy={!!dev.status?.running}
         suggest={suggest}
