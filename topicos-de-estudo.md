@@ -210,4 +210,7 @@ Referências para escrever e conferir o conteúdo das páginas de estudo.
 ### Gramática
 - [Kwiziq French – Gramática por tema e nível (A0–C1)](https://french.kwiziq.com/revision/grammar)
 - [Lawless French – Grammar (explicações por tema)](https://www.lawlessfrench.com/grammar/)
+- [Lawless French – Article Comparison (definido × indefinido × partitivo)](https://www.lawlessfrench.com/grammar/article-comparison/)
+- [Lawless French – Terminações masculinas](https://www.lawlessfrench.com/grammar/masculine-noun-endings/) e [femininas](https://www.lawlessfrench.com/grammar/feminine-noun-endings/)
+- [Lawless French – Plurais irregulares de substantivos e adjetivos](https://www.lawlessfrench.com/grammar/nouns-and-adjectives-irregular-plurals/)
 - [Le Conjugueur (Le Figaro) – conjugação de qualquer verbo](https://leconjugueur.lefigaro.fr/)

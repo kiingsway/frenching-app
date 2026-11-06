@@ -127,7 +127,16 @@ queue.forEach((key, i) => {
   try {
     execFileSync(
       'python',
-      [TTS_SCRIPT, '--voice', voiceFor(key), `--rate=${RATE}`, '--text', spoken, '--write-media', outFor(key)],
+      // --text=… junto: um texto que começa com hífen (ex.: "-age") não vira opção
+      [
+        TTS_SCRIPT,
+        '--voice',
+        voiceFor(key),
+        `--rate=${RATE}`,
+        `--text=${spoken}`,
+        '--write-media',
+        outFor(key)
+      ],
       { stdio: ['ignore', 'inherit', 'pipe'] }
     )
   } catch (error) {

@@ -14,6 +14,8 @@ import coPalestras from './co-palestras'
 import coSotaques from './co-sotaques'
 import coFalado from './co-falado'
 import coEstrategias from './co-estrategias'
+import gbArtigos from './gb-artigos'
+import gbGenero from './gb-genero'
 
 // Registro das páginas de tópico já escritas. Novas páginas entram aqui.
 export const ALL_CONTENT: TopicContent[] = [
@@ -31,7 +33,9 @@ export const ALL_CONTENT: TopicContent[] = [
   coPalestras,
   coSotaques,
   coFalado,
-  coEstrategias
+  coEstrategias,
+  gbArtigos,
+  gbGenero
 ]
 
 const CONTENT: Record<string, TopicContent> = Object.fromEntries(
