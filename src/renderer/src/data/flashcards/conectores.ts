@@ -12,7 +12,8 @@ const deck: FlashcardDeckDraft = {
       url: 'https://vitrinelinguistique.oqlf.gouv.qc.ca/'
     },
     { title: 'Dictionnaire Le Robert', url: 'https://dictionnaire.lerobert.com/' },
-    { title: 'Lawless French – Conjunctions', url: 'https://www.lawlessfrench.com/grammar/' }
+    { title: 'Lawless French – Conjunctions', url: 'https://www.lawlessfrench.com/grammar/' },
+    { title: 'TV5Monde – Apprendre le français', url: 'https://apprendre.tv5monde.com/' }
   ],
   cards: [
     {
@@ -165,6 +166,105 @@ const deck: FlashcardDeckDraft = {
         pt: 'É preciso reservar cedo. De fato, as vagas são limitadas.'
       },
       note: 'Confirma ou justifica o que acabou de ser dito.'
+    },
+    // A partir daqui: revisados de um baralho gerado por outra IA (07/11/2026)
+    {
+      fr: 'tout d’abord',
+      pt: 'antes de tudo, primeiramente',
+      example: {
+        fr: 'Tout d’abord, il est important de comprendre les enjeux de cette décision.',
+        pt: 'Antes de tudo, é importante entender o que está em jogo nessa decisão.'
+      },
+      note: 'Abre uma enumeração, seguida de ensuite e enfin. Também: premièrement, en premier lieu.'
+    },
+    {
+      fr: 'ensuite',
+      pt: 'em seguida, depois',
+      example: {
+        fr: 'Ensuite, nous devons examiner les différentes solutions possibles.',
+        pt: 'Em seguida, devemos analisar as diferentes soluções possíveis.'
+      }
+    },
+    {
+      fr: 'enfin',
+      pt: 'por fim, finalmente',
+      example: {
+        fr: 'Enfin, il faut tenir compte des conséquences à long terme.',
+        pt: 'Por fim, é preciso levar em conta as consequências a longo prazo.'
+      },
+      note: 'Fecha uma enumeração. Sozinho, "Enfin !" também quer dizer "até que enfim!". Finalement = no fim das contas.'
+    },
+    {
+      fr: 'de plus',
+      pt: 'além disso',
+      example: {
+        fr: 'De plus, cette mesure pourrait améliorer la qualité de vie des citoyens.',
+        pt: 'Além disso, essa medida poderia melhorar a qualidade de vida dos cidadãos.'
+      },
+      note: 'Acrescenta um argumento. Mais formal: en outre; mais forte: de surcroît.'
+    },
+    {
+      fr: 'pourtant',
+      pt: 'no entanto, mesmo assim',
+      example: {
+        fr: 'Il connaissait les risques, pourtant il a décidé de participer.',
+        pt: 'Ele conhecia os riscos; mesmo assim, decidiu participar.'
+      },
+      note: 'Marca um contraste inesperado, algo que contraria o que se esperaria. Pode vir no meio da frase: Il a pourtant décidé de participer.'
+    },
+    {
+      fr: 'toutefois',
+      pt: 'contudo, todavia',
+      example: {
+        fr: 'Cette initiative est prometteuse. Toutefois, son coût reste élevé.',
+        pt: 'Essa iniciativa é promissora. Contudo, o custo continua alto.'
+      },
+      note: 'Registro neutro a formal; sinônimo de cependant e néanmoins.'
+    },
+    {
+      fr: 'parce que',
+      pt: 'porque',
+      example: {
+        fr: 'Je préfère travailler à distance parce que je gagne du temps.',
+        pt: 'Prefiro trabalhar a distância porque ganho tempo.'
+      },
+      note: 'Seguido de verbo conjugado; responde a "pourquoi ?". Na escrita formal, car (sempre no meio da frase) é uma boa variação.'
+    },
+    {
+      fr: 'puisque',
+      pt: 'já que, visto que',
+      example: {
+        fr: 'Puisque les transports sont gratuits, nous pouvons laisser la voiture à la maison.',
+        pt: 'Já que o transporte é gratuito, podemos deixar o carro em casa.'
+      },
+      note: 'A causa é conhecida ou apresentada como evidente.'
+    },
+    {
+      fr: 'donc',
+      pt: 'portanto, então',
+      example: {
+        fr: 'Les prix augmentent, donc les familles doivent adapter leur budget.',
+        pt: 'Os preços estão subindo, portanto as famílias precisam adaptar o orçamento.'
+      },
+      note: 'Também vai depois do verbo, como em português: Les familles doivent donc adapter leur budget.'
+    },
+    {
+      fr: 'même si',
+      pt: 'mesmo que, ainda que',
+      example: {
+        fr: 'Même si les résultats sont encourageants, il reste des défis à relever.',
+        pt: 'Mesmo que os resultados sejam animadores, ainda há desafios a superar.'
+      },
+      note: 'Ao contrário de bien que, é seguido do indicatif (nunca do futur nem do conditionnel): même si c’est difficile.'
+    },
+    {
+      fr: 'en conclusion',
+      pt: 'em conclusão, para concluir',
+      example: {
+        fr: 'En conclusion, il est essentiel de trouver un équilibre entre le développement économique et la protection de l’environnement.',
+        pt: 'Em conclusão, é essencial encontrar um equilíbrio entre o desenvolvimento econômico e a proteção do meio ambiente.'
+      },
+      note: 'Abre o último parágrafo da redação. Variações: pour conclure, en définitive.'
     }
   ]
 }
