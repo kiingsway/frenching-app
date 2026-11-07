@@ -83,6 +83,7 @@ pip install -r scripts/requirements.txt
 npm run audio                 # gera só os que faltam
 npm run audio -- --force      # gera todos de novo
 npm run audio -- --only=chave1,chave2
+npm run audio -- --jobs=3      # quantos áudios ao mesmo tempo (padrão: 5)
 ```
 
 O script gera os áudios das páginas de estudo (partes listadas no campo `audio` de cada página) e de todos os flashcards (palavra e exemplo em francês).

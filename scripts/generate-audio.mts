@@ -4,20 +4,23 @@
 //   npm run audio -- --dry     só lista o que falta e o que seria apagado, sem mexer em nada
 //   npm run audio -- --force   gera de novo todos os áudios, mesmo os que já existem
 //   npm run audio -- --only=a1b2c3d4,e5f6a7b8   gera de novo só esses arquivos (sem .mp3)
+//   npm run audio -- --jobs=3  quantos áudios gerar ao mesmo tempo (padrão: 5)
 //
 // Para cada página com o campo `audio`, gera um mp3 para cada parte listada
 // (veja AudioPart em content/types.ts) da versão em francês, e para cada flashcard
 // (data/flashcards), a palavra e o exemplo em francês. O arquivo se chama pelo hash
 // do texto falado (speechText), então só textos novos ou alterados são gerados de novo.
 // Requer o edge-tts (pip install edge-tts) e internet; o app em si continua offline.
-// O edge-tts é chamado via scripts/tts-fr.py, que força o francês na leitura
-// (sem isso, a voz multilíngue lê alguns textos curtos em inglês).
+// O edge-tts roda em lote por scripts/tts-batch.py (um processo Python só, vários
+// áudios ao mesmo tempo), que força o francês na leitura (sem isso, a voz
+// multilíngue lê alguns textos curtos em inglês).
 // A voz padrão é a Vivienne; textos com outra voz ficam em assets/audio/voices.json.
 //
 // O progresso vai para scripts/.audio-status.json, que a lista de áudios do app
 // (Configurações → Áudios) acompanha ao vivo.
 
-import { execFileSync } from 'node:child_process'
+import { spawn } from 'node:child_process'
+import { createInterface } from 'node:readline'
 import {
   existsSync,
   mkdirSync,
@@ -52,7 +55,14 @@ const ONLY = new Set(
     .filter(Boolean)
 )
 
-const TTS_SCRIPT = resolve('scripts/tts-fr.py')
+// Quantos áudios pedir ao serviço ao mesmo tempo (--jobs=N; 1 = um de cada vez).
+// Mais que isso, o serviço da Microsoft pode começar a recusar
+const JOBS = Math.max(
+  1,
+  Number(process.argv.find((a) => a.startsWith('--jobs='))?.slice('--jobs='.length)) || 5
+)
+
+const BATCH_SCRIPT = resolve('scripts/tts-batch.py')
 const CONTENT_DIR = resolve('src/renderer/src/content')
 const FLASHCARDS_DIR = resolve('src/renderer/src/data/flashcards')
 const AUDIO_DIR = resolve('src/renderer/src/assets/audio')
@@ -61,6 +71,9 @@ const STATUS_FILE = resolve('scripts/.audio-status.json')
 const VOICES_FILE = join(AUDIO_DIR, 'voices.json')
 
 mkdirSync(AUDIO_DIR, { recursive: true })
+
+// Restos de uma geração interrompida (o .part só vira .mp3 quando o áudio termina)
+for (const f of readdirSync(AUDIO_DIR)) if (f.endsWith('.part')) rmSync(join(AUDIO_DIR, f))
 
 const voices: VoiceOverrides = existsSync(VOICES_FILE)
   ? JSON.parse(readFileSync(VOICES_FILE, 'utf8'))
@@ -144,34 +157,56 @@ function saveStatus(): void {
 
 saveStatus()
 
-queue.forEach((key, i) => {
-  const { label, spoken } = entries.get(key)!
-  status.current = key
-  saveStatus()
-  console.log(`[${i + 1}/${queue.length}] ${label} → ${key}.mp3`)
-  try {
-    execFileSync(
-      'python',
-      // --text=… junto: um texto que começa com hífen (ex.: "-age") não vira opção
-      [
-        TTS_SCRIPT,
-        '--voice',
-        voiceFor(key),
-        `--rate=${RATE}`,
-        `--text=${spoken}`,
-        '--write-media',
-        outFor(key)
-      ],
-      { stdio: ['ignore', 'inherit', 'pipe'] }
-    )
-  } catch (error) {
-    const stderr = (error as { stderr?: Buffer }).stderr?.toString().trim() ?? ''
-    const message = stderr.split('\n').at(-1) || String(error)
-    status.errors[key] = message
+// Um processo Python só (scripts/tts-batch.py) gera a fila inteira, até JOBS áudios
+// ao mesmo tempo, e avisa cada início e fim por uma linha JSON
+if (queue.length) {
+  const python = spawn('python', [BATCH_SCRIPT], { stdio: ['pipe', 'pipe', 'pipe'] })
+  let stderr = ''
+  python.stderr.on('data', (chunk) => (stderr += chunk))
+  python.stdin.end(
+    JSON.stringify({
+      rate: RATE,
+      jobs: JOBS,
+      items: queue.map((key) => ({
+        key,
+        text: entries.get(key)!.spoken,
+        voice: voiceFor(key),
+        out: outFor(key)
+      }))
+    })
+  )
+
+  for await (const line of createInterface({ input: python.stdout })) {
+    if (!line.trim()) continue
+    const event = JSON.parse(line) as { event: 'start' | 'done'; key: string; error?: string }
+    if (event.event === 'start') {
+      // Com vários ao mesmo tempo, "current" é o último que começou
+      status.current = event.key
+    } else {
+      status.done.push(event.key)
+      const { label } = entries.get(event.key)!
+      console.log(`[${status.done.length}/${queue.length}] ${label} → ${event.key}.mp3`)
+      if (event.error) {
+        status.errors[event.key] = event.error
+        console.error(`  erro: ${event.error}`)
+      }
+    }
+    saveStatus()
+  }
+
+  const code: number = await new Promise((done) => python.on('close', done))
+  // O Python parou antes de terminar (ex.: edge-tts não instalado): o que sobrou na
+  // fila conta como erro, com a última linha do erro dele
+  if (code !== 0 || status.done.length < queue.length) {
+    const message = stderr.trim().split('\n').at(-1) || `python saiu com código ${code}`
+    for (const key of queue)
+      if (!status.done.includes(key)) {
+        status.done.push(key)
+        status.errors[key] = message
+      }
     console.error(`  erro: ${message}`)
   }
-  status.done.push(key)
-})
+}
 
 // 4. Áudios de textos que mudaram ou saíram das páginas
 for (const f of unused) rmSync(join(AUDIO_DIR, f))
