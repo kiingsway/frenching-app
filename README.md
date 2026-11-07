@@ -4,7 +4,7 @@ App de estudos de francês para o **TEF Canada / TCF Canada**, com a meta de che
 
 Roda como **app desktop** (Electron, Windows) e como **site/PWA** (Vercel), a partir do mesmo código.
 
-> Versão **1.0.0** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
+> Versão **1.1.1** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
 
 ## Como usar
 
@@ -22,7 +22,7 @@ O app para Windows e o site são o mesmo Frenching. Com a conta Google, o progre
 ## O que tem
 
 - **Painel**: lista de estudos com o progresso de cada seção.
-- **Páginas de estudo** em português e em francês (botão PT/FR), com as fontes no fim. Na versão em francês, cada trecho tem áudio: clique para ouvir; botão direito para recomeçar ou sugerir outra voz.
+- **Páginas de estudo** em português e em francês (botão PT/FR), com as fontes no fim. Na versão em francês, cada trecho tem áudio: clique para ouvir; botão direito (no celular, pressionar e segurar) abre o menu do áudio, para recomeçar e ver a voz usada. Contas com acesso à nuvem também podem sugerir a outra voz.
 - **Gramática**: 312 questões de múltipla escolha em 50 tópicos (A1 a C1), com explicação, treino rápido, prática por nível/tópico e revisão de erros.
 - **Flashcards**: 50 cartões em 3 baralhos (conectores e articuladores, falsos cognatos PT↔FR, dar opinião e argumentar), cada um com tradução, frase de exemplo e áudio em francês. Repetição espaçada com o algoritmo **FSRS** (biblioteca [ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs), roda no próprio app, retenção-alvo de 90%): notas Errei/Difícil/Bom/Fácil com o próximo intervalo em cada botão, atalhos (Espaço vira, 1–4 respondem, A toca o áudio), limite de cartões novos por dia nas Configurações e escolha de baralhos. Cada cartão tem um só estado de memória; a direção (FR→PT ou PT→FR) é sorteada a cada vez.
 - **Conta opcional (Google)**: progresso e configurações salvos na conta (Firebase), sincronizados entre computadores. Sem login, ou enquanto a conta não é aprovada para usar a nuvem, tudo fica só no computador.
@@ -32,7 +32,7 @@ O app para Windows e o site são o mesmo Frenching. Com a conta Google, o progre
 
 ## Tecnologias
 
-Electron · electron-vite · Vite · React · TypeScript · MUI · Motion · Firebase (Auth + Firestore) · vite-plugin-pwa (Workbox) · electron-builder + electron-updater (instalador e atualização automática do Windows) · edge-tts (geração dos áudios, só no desenvolvimento).
+Electron · electron-vite · Vite · React · TypeScript · MUI · Motion · ts-fsrs (repetição espaçada) · Firebase (Auth + Firestore) · vite-plugin-pwa (Workbox) · electron-builder + electron-updater (instalador e atualização automática do Windows) · edge-tts (geração dos áudios, só no desenvolvimento).
 
 ## Começando
 
@@ -87,7 +87,7 @@ npm run audio -- --only=chave1,chave2
 
 O script gera os áudios das páginas de estudo (partes listadas no campo `audio` de cada página) e de todos os flashcards (palavra e exemplo em francês).
 
-No `npm run dev`, **Configurações → Áudios → Lista de áudios** mostra todos os áudios, permite trocar a voz de um texto (salvo em `assets/audio/voices.json`) e gerar de novo. **Sugestões de troca de voz** recebe as sugestões de quem usa o app (botão direito num áudio) e aplica todas de uma vez.
+No `npm run dev`, **Configurações → Áudios → Lista de áudios** mostra todos os áudios. Com a **conta administradora** logada, dá para trocar a voz de um texto (salvo em `assets/audio/voices.json`) e gerar de novo; sem ela, as vozes aparecem, mas a troca fica bloqueada. **Sugestões de troca de voz** recebe as sugestões de quem usa o app (contas com acesso à nuvem, pelo menu do áudio) e aplica todas de uma vez.
 
 ## Revisão de conteúdo
 
@@ -115,9 +115,9 @@ Qualquer pessoa pode entrar com Google, mas só contas aprovadas têm dados na n
 
 ## Site na Vercel
 
-Publicado em **[frenching-app.vercel.app](https://frenching-app.vercel.app)**. Cada envio para a branch `main` no GitHub gera um deploy novo.
+Publicado em **[frenching-app.vercel.app](https://frenching-app.vercel.app)**. Cada envio para a branch `main` no GitHub gera um deploy novo, a não ser que o envio mexa só no app desktop (`src/main`, `src/preload`, `build/`, `scripts/`, README…): aí o `ignoreCommand` do `vercel.json` pula o build. Ele só faz o build quando muda algo em `src/renderer`, `src/web`, `public-web`, `vite.web.config.ts`, `vercel.json`, `package.json`, `package-lock.json` ou nos `tsconfig` do site.
 
-As configurações vêm do `vercel.json`: instalação com `npm ci` (sem baixar o Electron), build com `npm run build:web` e pasta `dist-web`. Não precisa de variáveis de ambiente. O domínio do site precisa estar em **Firebase → Authentication → Configurações → Domínios autorizados** para o login com Google funcionar.
+As configurações vêm do `vercel.json`: instalação com `npm ci` (sem baixar o Electron), build com `npm run build:web`, pasta `dist-web`, cache dos arquivos e cabeçalhos de segurança (o site não abre dentro de outro site, e câmera, microfone e localização ficam bloqueados). Não precisa de variáveis de ambiente. O domínio do site precisa estar em **Firebase → Authentication → Configurações → Domínios autorizados** para o login com Google funcionar.
 
 Quando o site é atualizado, quem está com ele aberto (ou instalado) vê o aviso **"Há uma versão nova do Frenching"** com o botão de atualizar.
 
@@ -131,7 +131,7 @@ Cada versão do app para Windows fica em **[Releases](https://github.com/kiingsw
    - `Frenching-Setup-<versão>.exe.blockmap`: deixa a atualização baixar só o que mudou;
    - `latest.yml`: diz ao app instalado qual é a versão mais recente;
    - `Frenching-<versão>-portable.exe`: versão portátil.
-3. No GitHub, **Releases → Draft a new release**, crie a tag `v<versão>` na branch `main`, escreva as novidades e anexe **os quatro arquivos**. Sem o `latest.yml` (e o `.blockmap`), os apps instalados não ficam sabendo da versão nova.
+3. Depois do push, crie a release com a tag `v<versão>` na branch `main`, as novidades e **os quatro arquivos** anexados: pelo site (**Releases → Draft a new release**) ou pelo terminal com o GitHub CLI (`gh release create v<versão> --target main --title "Frenching <versão>" --notes-file NOTAS.md` seguido dos quatro arquivos de `release/`). Sem o `latest.yml` (e o `.blockmap`), os apps instalados não ficam sabendo da versão nova.
 4. Publique a release (não deixe como rascunho nem como pré-lançamento: o app só enxerga releases publicadas).
 
 A atualização automática fica em `src/main/updater.ts` (electron-updater). Para testar sem publicar, gere uma versão maior em outra pasta (`npx electron-builder --win nsis --publish never -c.extraMetadata.version=X -c.directories.output=release-test`), sirva essa pasta por HTTP e abra o app de `release/win-unpacked/` com `FRENCHING_UPDATE_FEED=http://endereço`.
