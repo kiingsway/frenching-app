@@ -18,6 +18,14 @@ import ceCotidiano from './ce-cotidiano'
 import ceCartas from './ce-cartas'
 import gbArtigos from './gb-artigos'
 import gbGenero from './gb-genero'
+import gbAdjetivos from './gb-adjetivos'
+import gbPresent from './gb-present'
+import gbNegacao from './gb-negacao'
+import gbInterrogacao from './gb-interrogacao'
+import gbPreposicoes from './gb-preposicoes'
+import gbPossessivos from './gb-possessivos'
+import gbPasseCompose from './gb-passe-compose'
+import gbFuturProche from './gb-futur-proche'
 
 // Registro das páginas de tópico já escritas. Novas páginas entram aqui.
 export const ALL_CONTENT: TopicContent[] = [
@@ -39,7 +47,15 @@ export const ALL_CONTENT: TopicContent[] = [
   ceCotidiano,
   ceCartas,
   gbArtigos,
-  gbGenero
+  gbGenero,
+  gbAdjetivos,
+  gbPresent,
+  gbNegacao,
+  gbInterrogacao,
+  gbPreposicoes,
+  gbPossessivos,
+  gbPasseCompose,
+  gbFuturProche
 ]
 
 const CONTENT: Record<string, TopicContent> = Object.fromEntries(
