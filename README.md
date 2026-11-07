@@ -131,7 +131,7 @@ Cada versão do app para Windows fica em **[Releases](https://github.com/kiingsw
    - `Frenching-Setup-<versão>.exe.blockmap`: deixa a atualização baixar só o que mudou;
    - `latest.yml`: diz ao app instalado qual é a versão mais recente;
    - `Frenching-<versão>-portable.exe`: versão portátil.
-3. No GitHub, **Releases → Draft a new release**, crie a tag `v<versão>` na branch `main`, escreva as novidades e anexe **os quatro arquivos**. Sem o `latest.yml` (e o `.blockmap`), os apps instalados não ficam sabendo da versão nova. Opcionalmente, anexe também um `.zip` do `dist-web/` para quem quiser hospedar o site em outro lugar.
+3. No GitHub, **Releases → Draft a new release**, crie a tag `v<versão>` na branch `main`, escreva as novidades e anexe **os quatro arquivos**. Sem o `latest.yml` (e o `.blockmap`), os apps instalados não ficam sabendo da versão nova.
 4. Publique a release (não deixe como rascunho nem como pré-lançamento: o app só enxerga releases publicadas).
 
 A atualização automática fica em `src/main/updater.ts` (electron-updater). Para testar sem publicar, gere uma versão maior em outra pasta (`npx electron-builder --win nsis --publish never -c.extraMetadata.version=X -c.directories.output=release-test`), sirva essa pasta por HTTP e abra o app de `release/win-unpacked/` com `FRENCHING_UPDATE_FEED=http://endereço`.
