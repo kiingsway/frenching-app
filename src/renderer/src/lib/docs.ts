@@ -8,9 +8,15 @@ export interface ProjectDoc {
   content: string
 }
 
-// O README é para quem desenvolve (GitHub), não para quem usa o app: fica de fora
+// O README (para quem desenvolve, no GitHub) e o CLAUDE.md (instruções para o Claude)
+// não são para quem usa o app: ficam de fora
 const FILES = import.meta.glob<string>(
-  ['../../../../*.md', '../../../../docs/**/*.md', '!../../../../README.md'],
+  [
+    '../../../../*.md',
+    '../../../../docs/**/*.md',
+    '!../../../../README.md',
+    '!../../../../CLAUDE.md'
+  ],
   {
     query: '?raw',
     import: 'default',
