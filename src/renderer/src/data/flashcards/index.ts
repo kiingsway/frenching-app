@@ -1,4 +1,5 @@
 import conectores from './conectores'
+import essenciais from './essenciais'
 import falsosCognatos from './falsos-cognatos'
 import opiniao from './opiniao'
 import type { Flashcard, FlashcardDeck, FlashcardDeckDraft } from './types'
@@ -10,7 +11,13 @@ const build = (draft: FlashcardDeckDraft): FlashcardDeck => ({
   cards: draft.cards.map((card, i) => ({ ...card, id: `${draft.id}-${i + 1}`, deckId: draft.id }))
 })
 
-export const FLASHCARD_DECKS: FlashcardDeck[] = [conectores, falsosCognatos, opiniao].map(build)
+// O baralho iniciante vem primeiro (os ids dependem só da posição dentro de cada baralho)
+export const FLASHCARD_DECKS: FlashcardDeck[] = [
+  essenciais,
+  conectores,
+  falsosCognatos,
+  opiniao
+].map(build)
 
 export const ALL_FLASHCARDS: Flashcard[] = FLASHCARD_DECKS.flatMap((deck) => deck.cards)
 
