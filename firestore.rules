@@ -25,12 +25,19 @@ service cloud.firestore {
         || exists(/databases/$(database)/documents/apps/frenching/members/$(uid));
     }
 
+    // Quais apps do projeto guardam dados de usuário, e com que condição.
+    // Um app que não está aqui não lê nem grava nada, para ninguém usar o banco com um
+    // appId inventado. App novo sem controle de usuários: || appId == 'id-do-app'
+    function canUseApp(appId, uid) {
+      return appId == 'frenching' && isFrenchingMember(uid);
+    }
+
     // Dados de cada usuário, por app: users/{uid}/apps/{appId}/...
-    // Cada usuário só lê e grava os próprios dados; no Frenching, só se aprovado
+    // Cada usuário só lê e grava os próprios dados, nos apps permitidos acima
     match /users/{uid}/apps/{appId}/{document=**} {
       allow read, write: if signedIn()
         && request.auth.uid == uid
-        && (appId != 'frenching' || isFrenchingMember(uid));
+        && canUseApp(appId, uid);
     }
 
     // Frenching: sugestões de troca de voz dos áudios
