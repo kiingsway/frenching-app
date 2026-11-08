@@ -120,16 +120,15 @@ export default function AudioSection({
   // App compilado/site: sugestão de troca de voz (salva na conta)
   const [sending, setSending] = useState(false)
   const mySuggestion = key ? suggestions.mine.find((s) => s.key === key) : undefined
-  const otherVoice: VoiceId = voice === 'denise' ? 'vivienne' : 'denise'
   const suggest: SuggestOptions | undefined =
     key && voiceMode === 'suggest'
       ? {
           status: mySuggestion?.status ?? 'none',
-          toVoiceLabel: AUDIO_VOICES[mySuggestion?.toVoice ?? otherVoice].label,
+          toVoiceLabel: mySuggestion ? AUDIO_VOICES[mySuggestion.toVoice].label : '',
           sending,
-          onSuggest: () => {
+          onSuggest: (toVoice) => {
             setSending(true)
-            void suggestVoiceChange(key, voice)
+            void suggestVoiceChange(key, voice, toVoice)
               .catch((e) => console.error('Falha ao sugerir a troca de voz', e))
               .finally(() => {
                 setSending(false)

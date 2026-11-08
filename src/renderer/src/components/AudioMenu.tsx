@@ -45,15 +45,16 @@ const hintSx = { px: 2, pt: 0.75, pb: 0.5, fontSize: 12, color: 'text.secondary'
 // O que o menu oferece sobre a voz deste áudio:
 //  change  – npm run dev, conta administradora: escolher a voz (gera o áudio de novo)
 //  locked  – npm run dev sem ser admin: as vozes aparecem, mas trocar pede a conta admin
-//  suggest – app compilado/site, conta com acesso à nuvem: sugerir a outra voz
+//  suggest – app compilado/site, conta com acesso à nuvem: sugerir outra voz
 //  show    – app compilado/site sem acesso: só mostra a voz usada
 export type VoiceMode = 'change' | 'locked' | 'suggest' | 'show'
 
 export interface SuggestOptions {
   status: 'none' | 'pending' | 'applied'
+  // Voz da sugestão já feita (vazio enquanto não há sugestão)
   toVoiceLabel: string
   sending: boolean
-  onSuggest: () => void
+  onSuggest: (toVoice: VoiceId) => void
   onCancel: () => void
 }
 
@@ -203,22 +204,30 @@ export default function AudioMenu({
         </Box>
       )}
 
-      {/* App compilado/site: a voz usada (e, com acesso à nuvem, sugerir a outra) */}
+      {/* App compilado/site: a voz usada (e, com acesso à nuvem, sugerir uma das outras) */}
       {(voiceMode === 'suggest' || voiceMode === 'show') && (
         <MenuItem disabled sx={infoItemSx}>
           <VoiceBadge id={voice} current />
           <VoiceName id={voice} current />
         </MenuItem>
       )}
-      {voiceMode === 'suggest' && suggest && suggest.status === 'none' && (
-        <MenuItem onClick={suggest.onSuggest} disabled={suggest.sending} sx={itemSx}>
-          <Box
-            component={suggest.sending ? FiLoader : FiFlag}
-            sx={{ fontSize: 16, color: 'text.secondary' }}
-          />
-          Sugerir trocar para {suggest.toVoiceLabel}
-        </MenuItem>
-      )}
+      {voiceMode === 'suggest' &&
+        suggest &&
+        suggest.status === 'none' &&
+        VOICE_IDS.filter((id) => id !== voice).map((id) => (
+          <MenuItem
+            key={id}
+            onClick={() => suggest.onSuggest(id)}
+            disabled={suggest.sending}
+            sx={itemSx}
+          >
+            <Box
+              component={suggest.sending ? FiLoader : FiFlag}
+              sx={{ fontSize: 16, color: 'text.secondary' }}
+            />
+            Sugerir trocar para {AUDIO_VOICES[id].label}
+          </MenuItem>
+        ))}
       {voiceMode === 'suggest' && suggest && suggest.status === 'pending' && (
         <MenuItem disabled sx={infoItemSx}>
           <Box component={FiClock} sx={{ fontSize: 16, color: 'warning.main' }} />

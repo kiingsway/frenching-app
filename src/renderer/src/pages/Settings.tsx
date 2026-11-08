@@ -44,7 +44,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import Typography from '@mui/material/Typography'
 import { useColorScheme } from '@mui/material/styles'
 import Page from '@/components/Page'
-import SuggestionDots from '@/components/SuggestionDots'
+import SuggestionDots, { UpdateButtonDot } from '@/components/SuggestionDots'
 import { riseIn, stagger } from '@/components/motion'
 import { ACCENT_PRESETS, accentColors, isCustomAccent, setAccent, useAccent } from '@/lib/accent'
 import { hasCloudAccess, isAdmin, useAccess } from '@/lib/access'
@@ -638,6 +638,7 @@ function UpdateButton(): ReactElement | null {
         onClick={installDesktopUpdate}
       >
         Reiniciar e atualizar
+        <UpdateButtonDot />
       </Button>
     )
   const busy = status.state === 'checking' || status.state === 'downloading'

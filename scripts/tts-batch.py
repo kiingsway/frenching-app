@@ -11,12 +11,13 @@
 # todo esperando a rede). Cada áudio é gravado num .part e só vira .mp3 quando
 # termina, para nunca sobrar um arquivo pela metade.
 #
-# Como em tts-fr.py, o SSML declara fr-FR (sem isso, a voz multilíngue lê alguns
-# textos curtos em inglês).
+# O SSML declara o idioma da própria voz, fr-FR ou fr-CA (o edge-tts declara sempre
+# en-US, e assim a voz multilíngue lê alguns textos curtos em inglês).
 
 import asyncio
 import json
 import os
+import re
 import sys
 
 import edge_tts
@@ -26,8 +27,11 @@ import edge_tts.communicate as communicate
 def mkssml(tc, escaped_text):
     if isinstance(escaped_text, bytes):
         escaped_text = escaped_text.decode("utf-8")
+    # O edge-tts guarda a voz como "Microsoft Server Speech ... (fr-CA, SylvieNeural)"
+    match = re.search(r"\b(fr-[A-Z]{2})\b", tc.voice)
+    lang = match.group(1) if match else "fr-FR"
     return (
-        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='fr-FR'>"
+        f"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='{lang}'>"
         f"<voice name='{tc.voice}'>"
         f"<prosody pitch='{tc.pitch}' rate='{tc.rate}' volume='{tc.volume}'>"
         f"{escaped_text}"

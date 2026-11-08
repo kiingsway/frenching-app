@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react'
+import { useAppUpdate } from './app-update'
 import { desktopUpdates } from './platform'
 import type { UpdaterStatus } from './updater-types'
 
@@ -43,6 +44,15 @@ function getSnapshot(): typeof snapshot {
 
 export function useDesktopUpdate(): { status: UpdaterStatus; dismissed: boolean } {
   return useSyncExternalStore(subscribe, getSnapshot)
+}
+
+// Há versão nova pronta para entrar: no app do Windows, baixada (mesmo com o aviso
+// fechado, porque o botão continua em Configurações); no site, enquanto o aviso estiver
+// aberto (fechado, ela entra na próxima vez que o site abrir)
+export function useUpdateAvailable(): boolean {
+  const { status } = useDesktopUpdate()
+  const { needRefresh } = useAppUpdate()
+  return status.state === 'ready' || needRefresh
 }
 
 export const checkForDesktopUpdate = (): void => void desktopUpdates?.check()

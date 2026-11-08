@@ -287,7 +287,7 @@ export default function App(): ReactElement {
       >
         <Box sx={{ position: 'relative', display: 'flex' }}>
           <Icon size={20} />
-          {item.id === 'settings' && <SuggestionDots access />}
+          {item.id === 'settings' && <SuggestionDots access update />}
           {item.soon && <FiLock size={10} style={{ position: 'absolute', right: -9, top: -3 }} />}
         </Box>
         <Typography
@@ -317,8 +317,9 @@ export default function App(): ReactElement {
       >
         <ListItemIcon sx={{ minWidth: 36, position: 'relative' }}>
           <Icon size={18} />
-          {/* Bolinhas das sugestões de troca de voz, sobre o ícone de Configurações */}
-          {item.id === 'settings' && <SuggestionDots access />}
+          {/* Bolinhas das sugestões de voz, dos pedidos de acesso e da atualização,
+              sobre o ícone de Configurações */}
+          {item.id === 'settings' && <SuggestionDots access update />}
         </ListItemIcon>
         <ListItemText
           primary={item.label}

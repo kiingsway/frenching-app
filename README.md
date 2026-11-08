@@ -4,7 +4,7 @@ App de estudos de francês para o **TEF Canada / TCF Canada**, com a meta de che
 
 Roda como **app desktop** (Electron, Windows) e como **site/PWA** (Vercel), a partir do mesmo código.
 
-> Versão **1.1.13** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
+> Versão **1.2.0** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
 
 ## Como usar
 
@@ -22,7 +22,7 @@ O app para Windows e o site são o mesmo Frenching. Com a conta Google, o progre
 ## O que tem
 
 - **Painel**: lista de estudos com o progresso de cada seção.
-- **Páginas de estudo** em português e em francês (botão PT/FR), com as fontes no fim. Na versão em francês, cada trecho tem áudio: clique para ouvir; botão direito (no celular, pressionar e segurar) abre o menu do áudio, para recomeçar e ver a voz usada. Contas com acesso à nuvem também podem sugerir a outra voz.
+- **Páginas de estudo** em português e em francês (botão PT/FR), com as fontes no fim. Na versão em francês, cada trecho tem áudio: clique para ouvir; botão direito (no celular, pressionar e segurar) abre o menu do áudio, para recomeçar e ver a voz usada. Contas com acesso à nuvem também podem sugerir outra voz.
 - **Gramática**: 312 questões de múltipla escolha em 50 tópicos (A1 a C1), com explicação, treino rápido, prática por nível/tópico e revisão de erros.
 - **Flashcards**: 50 cartões em 3 baralhos (conectores e articuladores, falsos cognatos PT↔FR, dar opinião e argumentar), cada um com tradução, frase de exemplo e áudio em francês. Repetição espaçada com o algoritmo **FSRS** (biblioteca [ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs), roda no próprio app, retenção-alvo de 90%): notas Errei/Difícil/Bom/Fácil com o próximo intervalo em cada botão, atalhos (Espaço vira, 1–4 respondem, A toca o áudio), limite de cartões novos por dia nas Configurações e escolha de baralhos. Cada cartão tem um só estado de memória; a direção (FR→PT ou PT→FR) é sorteada a cada vez.
 - **Conta opcional (Google)**: progresso e configurações salvos na conta (Firebase), sincronizados entre computadores. Sem login, ou enquanto a conta não é aprovada para usar a nuvem, tudo fica só no computador.
@@ -74,7 +74,7 @@ O `.env` **não vai para o Git**. Sem ele, o app funciona normalmente, só sem o
 
 ## Áudios
 
-Os textos em francês têm áudio gerado com **edge-tts** (vozes Vivienne e Denise) e salvo em `src/renderer/src/assets/audio/` como mp3 (~20 MB). **Os mp3 vão no repositório**: o build do app e do site só os copia, sem gerar nada.
+Os textos em francês têm áudio gerado com **edge-tts** e salvo em `src/renderer/src/assets/audio/` como mp3 (~20 MB). **Os mp3 vão no repositório**: o build do app e do site só os copia, sem gerar nada.
 
 Para gerar áudios novos (depois de escrever conteúdo), é preciso Python 3:
 
@@ -85,6 +85,8 @@ npm run audio -- --force      # gera todos de novo
 npm run audio -- --only=chave1,chave2
 npm run audio -- --jobs=3      # quantos áudios ao mesmo tempo (padrão: 5)
 ```
+
+Vozes disponíveis: **Vivienne** (padrão) e **Denise**, da França; **Sylvie** (mulher) e **Antoine** (homem), do Canadá. A lista fica em `AUDIO_VOICES` (`src/renderer/src/lib/audio-texts.ts`). Uma voz só é usada nos textos marcados com ela em `assets/audio/voices.json`.
 
 O script gera os áudios das páginas de estudo (partes listadas no campo `audio` de cada página) e de todos os flashcards (palavra e exemplo em francês).
 

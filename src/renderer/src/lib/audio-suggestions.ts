@@ -131,7 +131,11 @@ export const mySuggestionFor = (key: string): AudioSuggestion | undefined =>
 
 // ---------- Ações de quem usa o app ----------
 
-export async function suggestVoiceChange(key: string, currentVoice: VoiceId): Promise<void> {
+export async function suggestVoiceChange(
+  key: string,
+  currentVoice: VoiceId,
+  toVoice: VoiceId
+): Promise<void> {
   const user = state.user
   if (!user)
     throw new Error(
@@ -140,7 +144,6 @@ export async function suggestVoiceChange(key: string, currentVoice: VoiceId): Pr
         : 'Entre com Google (Configurações → Conta) para sugerir.'
     )
   const entry = getAudioEntry(key)
-  const toVoice: VoiceId = currentVoice === 'denise' ? 'vivienne' : 'denise'
   await setDoc(doc(mineRef(user.uid), key), {
     key,
     text: entry?.spoken ?? '',

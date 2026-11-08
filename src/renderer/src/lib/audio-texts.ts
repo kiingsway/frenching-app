@@ -15,12 +15,15 @@ export const AUDIO_PARTS: AudioPart[] = [
 ]
 
 // Vozes do edge-tts. A Vivienne é a padrão; a Denise só fala francês e serve para
-// textos que a Vivienne (multilíngue) lê em inglês, como "TEF Canada".
+// textos que a Vivienne (multilíngue) lê em inglês, como "TEF Canada". A Sylvie (mulher)
+// e o Antoine (homem) têm o sotaque do francês canadense.
 // A voz de cada texto que não usa a padrão fica em assets/audio/voices.json
 // (chave do arquivo → id da voz).
 export const AUDIO_VOICES = {
   vivienne: { label: 'Vivienne', name: 'fr-FR-VivienneMultilingualNeural' },
-  denise: { label: 'Denise', name: 'fr-FR-DeniseNeural' }
+  denise: { label: 'Denise', name: 'fr-FR-DeniseNeural' },
+  sylvie: { label: 'Sylvie (Canadá)', name: 'fr-CA-SylvieNeural' },
+  antoine: { label: 'Antoine (Canadá)', name: 'fr-CA-AntoineNeural' }
 } as const
 
 export type VoiceId = keyof typeof AUDIO_VOICES
