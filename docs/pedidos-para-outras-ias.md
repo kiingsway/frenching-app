@@ -23,7 +23,7 @@ Você vai gerar conteúdo para um app de estudos de francês para brasileiros qu
 
 Regras:
 - Francês correto e natural, com a ortografia padrão (acentos, apóstrofo tipográfico ’ e espaço antes de : ; ? ! no texto em francês).
-- Quando fizer diferença, mostre o uso no Canadá/Québec ao lado do da França.
+- Priorize o francês canadense (Québec): vocabulário, expressões e exemplos do Canadá são a forma principal (ex.: courriel, fin de semaine, magasiner). Quando a forma da França for diferente, mostre-a ao lado como alternativa, porque ela também pode aparecer na prova.
 - Explicações em português do Brasil, curtas e diretas, pensando nos erros típicos de quem fala português.
 - Fontes: use só páginas que existem de verdade, com o endereço completo, e prefira fontes oficiais (IRCC, France Éducation international, Le français des affaires) e de referência (Le Robert, Larousse, Usito, Lawless French, Kwiziq, TV5Monde, RFI). Se não tiver certeza de um endereço, não invente: deixe de fora.
 - Responda SÓ com o JSON pedido, sem comentários antes ou depois.
@@ -40,7 +40,7 @@ Cada cartão tem:
 - "fr": a palavra ou expressão em francês, só o que se fala (com artigo nos substantivos: "le loyer"). Notas de gramática vão em "note".
 - "pt": a tradução em português.
 - "example": uma frase de exemplo útil para a prova, em francês ("fr") e a tradução ("pt").
-- "note" (opcional): observação de uso (preposição que acompanha, registro formal/informal, auxiliar do passé composé, forma usada no Québec).
+- "note" (opcional): observação de uso (preposição que acompanha, registro formal/informal, auxiliar do passé composé, forma usada na França quando for diferente da canadense).
 - "trap" (opcional, só para falsos cognatos): a armadilha explicada, ex.: "Não é atender. Atender = répondre, servir."
 
 Formato:
@@ -102,6 +102,8 @@ Cada versão tem:
   { "type": "table", "headers": ["...", "..."], "rows": [["...", "..."]] }   (nenhuma célula vazia)
   { "type": "callout", "tone": "tip" ou "warning", "title": "...", "text": "..." }
 - Inclua pelo menos um "warning" com o erro típico de quem fala português e um "tip" com o que a prova cobra.
+- Tradução obrigatória na versão "pt": toda palavra, expressão ou frase em francês vem com a tradução em português, entre parênteses logo depois dela (ex.: la voie (a linha)) ou numa tabela com uma coluna para o francês e outra para o português. Vale para parágrafos, listas, tabelas, avisos e exemplos citados, sem exceção para palavras "fáceis". Só nomes próprios ficam sem tradução (RFI, Radio-Canada).
+- A versão "fr" fica toda em francês, sem traduções em português, porque vira áudio.
 - Tamanho: de 6 a 12 blocos por versão.
 
 "sources": as fontes usadas, no fim (título e endereço real).

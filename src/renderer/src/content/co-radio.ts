@@ -25,7 +25,7 @@ const content: TopicContent = {
             'O fato principal: o quê, onde, quando, por quê'
           ],
           [
-            'Micro-trottoir',
+            'Micro-trottoir (enquete de rua)',
             'Várias pessoas na rua respondem à mesma pergunta',
             'Quem é a favor, quem é contra, quem hesita'
           ],
@@ -41,7 +41,7 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Os primeiros segundos de um trecho de rádio costumam anunciar o tema e o convidado: "Nous recevons aujourd’hui Marie Dupont, sociologue, qui a étudié…". ' +
+          'Os primeiros segundos de um trecho de rádio costumam anunciar o tema e o convidado: "Nous recevons aujourd’hui Marie Dupont, sociologue, qui a étudié…" (Recebemos hoje Marie Dupont, socióloga, que estudou…). ' +
           'Quem capta essa frase já sabe do que se trata e consegue antecipar o vocabulário.'
       },
 
@@ -49,10 +49,10 @@ const content: TopicContent = {
       {
         type: 'list',
         items: [
-          'Anunciar um tema: il s’agit de, il est question de, on parle de, à propos de.',
-          'Números e tendências: une hausse (alta), une baisse (queda), doubler, la moitié, un tiers, en moyenne.',
-          'Citar alguém: selon, d’après (segundo), affirmer, souligner (destacar), estimer (considerar), rappeler (lembrar).',
-          'Causa e consequência: en raison de, à cause de, grâce à, ce qui entraîne, par conséquent.'
+          'Anunciar um tema: il s’agit de (trata-se de), il est question de (a questão é), on parle de (fala-se de), à propos de (a respeito de).',
+          'Números e tendências: une hausse (alta), une baisse (queda), doubler (dobrar), la moitié (a metade), un tiers (um terço), en moyenne (em média).',
+          'Citar alguém: selon, d’après (segundo), affirmer (afirmar), souligner (destacar), estimer (considerar), rappeler (lembrar).',
+          'Causa e consequência: en raison de (devido a), à cause de (por causa de), grâce à (graças a), ce qui entraîne (o que provoca), par conséquent (por consequência).'
         ]
       },
 
@@ -71,7 +71,7 @@ const content: TopicContent = {
         tone: 'tip',
         title: 'Como treinar',
         text:
-          'O "Journal en français facile" da RFI e os vídeos do TV5MONDE Apprendre são noticiários com nível controlado. ' +
+          'O "Journal en français facile" (jornal em francês fácil) da RFI e os vídeos do TV5MONDE Apprendre são noticiários com nível controlado. ' +
           'Comece por eles e passe para o rádio comum (Radio-Canada, France Inter) quando entender a ideia principal já na primeira escuta.'
       }
     ]

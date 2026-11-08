@@ -22,11 +22,11 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Posição', 'Expressões'],
         rows: [
-          ['Concordar', 'Je suis tout à fait d’accord. · C’est exactement ça. · Vous avez raison.'],
-          ['Discordar', 'Je ne suis pas de cet avis. · Pas du tout. · Je ne vois pas les choses comme ça.'],
-          ['Concordar em parte', 'Oui, mais… · C’est vrai, cela dit… · Je comprends, pourtant…'],
-          ['Dúvida', 'Je me demande si… · Je ne suis pas convaincu. · Ça reste à voir.'],
-          ['Certeza', 'Il est évident que… · Sans aucun doute. · Je suis persuadé que…']
+          ['Concordar', 'Je suis tout à fait d’accord. (Concordo totalmente.) · C’est exactement ça. (É exatamente isso.) · Vous avez raison. (Você tem razão.)'],
+          ['Discordar', 'Je ne suis pas de cet avis. (Não sou dessa opinião.) · Pas du tout. (De jeito nenhum.) · Je ne vois pas les choses comme ça. (Não vejo as coisas assim.)'],
+          ['Concordar em parte', 'Oui, mais… (Sim, mas…) · C’est vrai, cela dit… (É verdade, dito isso…) · Je comprends, pourtant… (Entendo, no entanto…)'],
+          ['Dúvida', 'Je me demande si… (Eu me pergunto se…) · Je ne suis pas convaincu. (Não estou convencido.) · Ça reste à voir. (Isso ainda vamos ver.)'],
+          ['Certeza', 'Il est évident que… (É evidente que…) · Sans aucun doute. (Sem nenhuma dúvida.) · Je suis persuadé que… (Estou convencido de que…)']
         ]
       },
 
@@ -34,10 +34,10 @@ const content: TopicContent = {
       {
         type: 'list',
         items: [
-          'Ironia: "Ah, génial, encore une réunion !" é uma crítica, mesmo usando uma palavra positiva.',
-          'Atenuação: "Ce n’est pas mal" e "C’est plutôt intéressant" são elogios moderados, não entusiasmo.',
-          'Exagero: "C’est une catastrophe" pode ser só um incômodo dito com força.',
-          'Hesitação: "Bof", "euh" e "je sais pas trop" indicam falta de convicção.'
+          'Ironia: "Ah, génial, encore une réunion !" (Ah, que ótimo, mais uma reunião!) é uma crítica, mesmo usando uma palavra positiva.',
+          'Atenuação: "Ce n’est pas mal" (Não é ruim) e "C’est plutôt intéressant" (É bem interessante) são elogios moderados, não entusiasmo.',
+          'Exagero: "C’est une catastrophe" (É uma catástrofe) pode ser só um incômodo dito com força.',
+          'Hesitação: "Bof" (ah, sei lá), "euh" (hã) e "je sais pas trop" (não sei muito bem) indicam falta de convicção.'
         ]
       },
 
@@ -45,8 +45,8 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'A opinião costuma vir depois de um conector de oposição. Em "C’est cher, mais c’est de très bonne qualité", a pessoa é a favor. ' +
-          'Preste atenção especial a mais, pourtant, cependant, en revanche e finalement.'
+          'A opinião costuma vir depois de um conector de oposição. Em "C’est cher, mais c’est de très bonne qualité" (É caro, mas é de ótima qualidade), a pessoa é a favor. ' +
+          'Preste atenção especial a mais (mas), pourtant (no entanto), cependant (porém), en revanche (em compensação) e finalement (no fim).'
       },
       {
         type: 'callout',

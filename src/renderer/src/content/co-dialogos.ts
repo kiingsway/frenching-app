@@ -24,8 +24,8 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Escute como as pessoas se tratam. "Vous" e fórmulas como "Madame" ou "je vous en prie" indicam uma relação formal (cliente e atendente, desconhecidos). ' +
-          '"Tu", apelidos e frases curtas indicam amigos, família ou colegas próximos. Algumas perguntas cobram justamente isso.'
+          'Escute como as pessoas se tratam. "Vous" (o senhor, a senhora) e fórmulas como "Madame" (senhora) ou "je vous en prie" (por favor, não há de quê) indicam uma relação formal (cliente e atendente, desconhecidos). ' +
+          '"Tu" (você, informal), apelidos e frases curtas indicam amigos, família ou colegas próximos. Algumas perguntas cobram justamente isso.'
       },
 
       { type: 'heading', text: 'Situações frequentes' },
@@ -33,11 +33,11 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Situação', 'Expressões típicas'],
         rows: [
-          ['Loja', 'Je peux vous aider ? · Vous faites quelle taille ? · Je voudrais l’échanger.'],
-          ['Restaurante', 'Vous avez réservé ? · L’addition, s’il vous plaît. · C’est pour emporter ?'],
-          ['Consulta médica', 'Qu’est-ce qui vous amène ? · J’ai mal à la gorge. · Je vous fais une ordonnance.'],
-          ['Banco, correios, administração', 'Il me faut une pièce d’identité. · Remplissez ce formulaire. · C’est au guichet 4.'],
-          ['Trabalho', 'On fait le point ? · Je suis débordé. · Tu peux me remplacer jeudi ?']
+          ['Loja', 'Je peux vous aider ? (Posso ajudar?) · Vous faites quelle taille ? (Qual é o seu tamanho?) · Je voudrais l’échanger. (Queria trocar.)'],
+          ['Restaurante', 'Vous avez réservé ? (Vocês têm reserva?) · L’addition, s’il vous plaît. (A conta, por favor.) · C’est pour emporter ? (É para viagem?)'],
+          ['Consulta médica', 'Qu’est-ce qui vous amène ? (O que o traz aqui?) · J’ai mal à la gorge. (Estou com dor de garganta.) · Je vous fais une ordonnance. (Vou lhe passar uma receita.)'],
+          ['Banco, correios, administração', 'Il me faut une pièce d’identité. (Preciso de um documento de identidade.) · Remplissez ce formulaire. (Preencha este formulário.) · C’est au guichet 4. (É no guichê 4.)'],
+          ['Trabalho', 'On fait le point ? (Vamos ver como estão as coisas?) · Je suis débordé. (Estou sobrecarregado.) · Tu peux me remplacer jeudi ? (Você pode me substituir na quinta?)']
         ]
       },
 
@@ -45,8 +45,8 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Muitas vezes o pedido não é dito de forma direta. "Il fait un peu froid ici, non ?" pode ser um pedido para fechar a janela. ' +
-          '"Je ne suis pas sûr que ce soit possible" costuma ser uma recusa educada. ' +
+          'Muitas vezes o pedido não é dito de forma direta. "Il fait un peu froid ici, non ?" (Está meio frio aqui, não?) pode ser um pedido para fechar a janela. ' +
+          '"Je ne suis pas sûr que ce soit possible" (Não tenho certeza de que seja possível) costuma ser uma recusa educada. ' +
           'Pergunte-se sempre o que a frase faz na conversa: pedir, recusar, aceitar, reclamar ou propor.'
       },
       {
@@ -54,7 +54,7 @@ const content: TopicContent = {
         tone: 'warning',
         title: 'A primeira ideia nem sempre é a final',
         text:
-          'Nos diálogos as pessoas mudam de ideia: "On se voit lundi ? — Lundi, je ne peux pas… Mardi plutôt ?". ' +
+          'Nos diálogos as pessoas mudam de ideia: "On se voit lundi ? — Lundi, je ne peux pas… Mardi plutôt ?" (A gente se vê na segunda? — Na segunda não posso… Pode ser na terça?). ' +
           'Se a pergunta é sobre o que ficou combinado, a resposta é o que foi aceito no fim.'
       },
       {
@@ -62,7 +62,7 @@ const content: TopicContent = {
         tone: 'tip',
         title: 'Como treinar',
         text:
-          'Assista a cenas curtas de séries ou a vídeos de FLE sem legenda e responda às quatro perguntas: onde, quem, o quê e como termina. ' +
+          'Assista a cenas curtas de séries ou a vídeos de FLE (français langue étrangère, francês como língua estrangeira) sem legenda e responda às quatro perguntas: onde, quem, o quê e como termina. ' +
           'Depois confira com a legenda.'
       }
     ]

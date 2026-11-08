@@ -25,13 +25,13 @@ const content: TopicContent = {
         rows: [
           [
             'Québec',
-            'O t e o d antes de i e u soam como "ts" e "dz" (tu soa "tsu", dire soa "dzire"); vogais mais longas e abertas',
+            'O t e o d antes de i e u soam como "ts" e "dz" (tu, "você", soa "tsu"; dire, "dizer", soa "dzire"); vogais mais longas e abertas',
             'char (carro), magasiner (fazer compras), fin de semaine (fim de semana)'
           ],
           [
             'Bélgica',
             'Ritmo e entonação próprios; algumas vogais mais longas',
-            'septante (70), nonante (90), "s’il vous plaît" ao entregar algo'
+            'septante (70), nonante (90), "s’il vous plaît" (por favor; lá, também "aqui está") ao entregar algo'
           ],
           [
             'Suíça',
@@ -58,9 +58,9 @@ const content: TopicContent = {
       {
         type: 'list',
         items: [
-          '"Tu" depois do verbo marca uma pergunta na fala informal: "Tu viens-tu ?" quer dizer "Tu viens ?".',
-          '"Pantoute" significa "pas du tout", e "c’est plate" significa "c’est ennuyeux".',
-          '"Bienvenue" também é a resposta para "merci", como "de nada".',
+          '"Tu" depois do verbo marca uma pergunta na fala informal: "Tu viens-tu ?" quer dizer "Tu viens ?" (Você vem?).',
+          '"Pantoute" significa "pas du tout" (de jeito nenhum), e "c’est plate" significa "c’est ennuyeux" (é chato).',
+          '"Bienvenue" (bem-vindo) também é a resposta para "merci" (obrigado), como "de nada".',
           'As refeições: déjeuner (café da manhã), dîner (almoço) e souper (jantar).'
         ]
       },

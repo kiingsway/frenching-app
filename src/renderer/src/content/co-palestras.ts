@@ -20,11 +20,11 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Função', 'Marcadores'],
         rows: [
-          ['Anunciar o plano', 'Dans un premier temps… · Je commencerai par… · Nous verrons ensuite…'],
-          ['Passar à ideia seguinte', 'Passons maintenant à… · Par ailleurs… · D’autre part…'],
-          ['Dar um exemplo', 'Prenons l’exemple de… · C’est le cas de… · Notamment…'],
-          ['Reformular', 'Autrement dit… · C’est-à-dire… · En d’autres termes…'],
-          ['Concluir', 'En somme… · Pour conclure… · Retenons que…']
+          ['Anunciar o plano', 'Dans un premier temps… (Em um primeiro momento…) · Je commencerai par… (Vou começar por…) · Nous verrons ensuite… (Veremos em seguida…)'],
+          ['Passar à ideia seguinte', 'Passons maintenant à… (Passemos agora a…) · Par ailleurs… (Além disso…) · D’autre part… (Por outro lado…)'],
+          ['Dar um exemplo', 'Prenons l’exemple de… (Tomemos o exemplo de…) · C’est le cas de… (É o caso de…) · Notamment… (Principalmente…)'],
+          ['Reformular', 'Autrement dit… (Em outras palavras…) · C’est-à-dire… (Ou seja…) · En d’autres termes… (Em outros termos…)'],
+          ['Concluir', 'En somme… (Em suma…) · Pour conclure… (Para concluir…) · Retenons que… (Guardemos que…)']
         ]
       },
 
@@ -34,7 +34,7 @@ const content: TopicContent = {
         items: [
           'A tese costuma aparecer no início e ser retomada na conclusão.',
           'Exemplos e números servem para sustentar a tese: as perguntas raramente cobram o exemplo em si, e sim o que ele demonstra.',
-          'Reformulações (autrement dit, c’est-à-dire) são uma segunda chance de entender uma ideia difícil.',
+          'Reformulações, como autrement dit (em outras palavras) e c’est-à-dire (ou seja), são uma segunda chance de entender uma ideia difícil.',
           'Nuances importam: "il semblerait que" (parece que) não é o mesmo que "il est prouvé que" (está provado que).'
         ]
       },
@@ -43,8 +43,8 @@ const content: TopicContent = {
       {
         type: 'list',
         items: [
-          'Pensamento: une hypothèse, un enjeu (o que está em jogo), un constat (uma constatação), une démarche (uma abordagem).',
-          'Mudança: une évolution, une mutation (transformação profunda), un phénomène, une tendance.',
+          'Pensamento: une hypothèse (uma hipótese), un enjeu (o que está em jogo), un constat (uma constatação), une démarche (uma abordagem).',
+          'Mudança: une évolution (uma evolução), une mutation (transformação profunda), un phénomène (um fenômeno), une tendance (uma tendência).',
           'Relações: découler de (resultar de), relever de (ser da alçada de), mettre en évidence (evidenciar), remettre en cause (questionar).'
         ]
       },

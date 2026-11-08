@@ -15,7 +15,7 @@ const content: TopicContent = {
         items: [
           'Leia a pergunta e as quatro alternativas durante o tempo de leitura.',
           'Identifique o que é pedido: um lugar, um número, uma pessoa, uma opinião, uma intenção.',
-          'Imagine a situação: uma pergunta que fala em "vol" e "porte" já indica um aeroporto.',
+          'Imagine a situação: uma pergunta que fala em "vol" (voo) e "porte" (portão) já indica um aeroporto.',
           'Repare no que diferencia as alternativas: se todas falam de horários, a resposta depende de um número.'
         ]
       },
@@ -25,7 +25,7 @@ const content: TopicContent = {
         type: 'paragraph',
         text:
           'Não tente entender cada palavra. Concentre-se nas que carregam sentido (substantivos, verbos, números, negações) ' +
-          'e nos conectores que mudam a direção da frase (mais, pourtant, finalement). Quando perder uma frase, não pare: siga o áudio e retome o fio.'
+          'e nos conectores que mudam a direção da frase: mais (mas), pourtant (no entanto), finalement (no fim). Quando perder uma frase, não pare: siga o áudio e retome o fio.'
       },
 
       { type: 'heading', text: 'Inferência: deduzir o implícito' },
@@ -38,9 +38,9 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Pergunta', 'Indícios no áudio'],
         rows: [
-          ['Onde estão?', 'Ruídos de fundo e vocabulário (ordonnance, quai, addition)'],
-          ['Qual é a relação entre eles?', 'Tu ou vous, o tom, as fórmulas de cortesia'],
-          ['Como a pessoa se sente?', 'Entonação, ritmo, exclamações como "Enfin !", "Encore ?", "Tant mieux"'],
+          ['Onde estão?', 'Ruídos de fundo e vocabulário: ordonnance (receita médica), quai (plataforma), addition (conta)'],
+          ['Qual é a relação entre eles?', 'Tu (você, informal) ou vous (o senhor, a senhora), o tom, as fórmulas de cortesia'],
+          ['Como a pessoa se sente?', 'Entonação, ritmo, exclamações como "Enfin !" (Até que enfim!), "Encore ?" (De novo?), "Tant mieux" (Ainda bem)'],
           ['O que vai acontecer depois?', 'Verbos no futuro e o que foi combinado no fim do diálogo']
         ]
       },

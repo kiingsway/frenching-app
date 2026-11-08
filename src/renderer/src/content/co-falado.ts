@@ -14,14 +14,14 @@ const content: TopicContent = {
         type: 'paragraph',
         text:
           'Quando uma palavra termina em consoante muda e a seguinte começa com vogal, a consoante pode ser pronunciada e se juntar à próxima palavra: ' +
-          '"les amis" soa "lé-za-mi" e "ils ont" soa "il-zon". Isso muda a forma sonora das palavras e confunde quem procura cada palavra separada.'
+          '"les amis" (os amigos) soa "lé-za-mi" e "ils ont" (eles têm) soa "il-zon". Isso muda a forma sonora das palavras e confunde quem procura cada palavra separada.'
       },
       {
         type: 'list',
         items: [
-          'Obrigatória: depois de artigos e determinantes (les enfants, un ami, mes amis), entre pronome e verbo (nous avons, ils arrivent) e depois de preposições curtas (chez eux, dans un).',
-          'Proibida: depois de "et" (em "et un", o t nunca soa), antes de h aspirado ("les héros" sem ligação) e depois de um substantivo no singular.',
-          'A liaison diferencia "ils ont" (com som de z) de "ils sont" (com som de s), um par clássico de confusão.'
+          'Obrigatória: depois de artigos e determinantes (les enfants, "as crianças"; un ami, "um amigo"; mes amis, "meus amigos"), entre pronome e verbo (nous avons, "nós temos"; ils arrivent, "eles chegam") e depois de preposições curtas (chez eux, "na casa deles"; dans un, "em um").',
+          'Proibida: depois de "et" (e): em "et un" (e um), o t nunca soa; antes de h aspirado ("les héros", os heróis, sem ligação) e depois de um substantivo no singular.',
+          'A liaison diferencia "ils ont" (eles têm, com som de z) de "ils sont" (eles são, com som de s), um par clássico de confusão.'
         ]
       },
 
@@ -29,7 +29,7 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Na escrita, a elisão já existe (l’ami, j’aime, qu’il). Na fala informal ela vai além: o e de muitas palavras some e as palavras se encurtam.'
+          'Na escrita, a elisão já existe: l’ami (o amigo), j’aime (eu gosto), qu’il (que ele). Na fala informal ela vai além: o e de muitas palavras some e as palavras se encurtam.'
       },
       {
         type: 'table',
@@ -48,8 +48,8 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Na fala do dia a dia, o "ne" da negação quase sempre desaparece: "Je ne sais pas" vira "Je sais pas" e "Il n’y a plus de pain" vira "Y a plus de pain". ' +
-          'O "pas", o "plus", o "jamais" e o "rien" ficam e carregam a negação. Preste atenção a eles: mesmo sem o "ne", a frase continua negativa.'
+          'Na fala do dia a dia, o "ne" da negação quase sempre desaparece: "Je ne sais pas" (não sei) vira "Je sais pas" e "Il n’y a plus de pain" (não tem mais pão) vira "Y a plus de pain". ' +
+          'O "pas" (não), o "plus" (mais), o "jamais" (nunca) e o "rien" (nada) ficam e carregam a negação. Preste atenção a eles: mesmo sem o "ne", a frase continua negativa.'
       },
       {
         type: 'callout',
@@ -67,7 +67,7 @@ const content: TopicContent = {
           'Ça marche, ça roule: tudo bem, combinado.',
           'Un truc, un machin: uma coisa (quando não se lembra da palavra).',
           'Bosser (trabalhar), un boulot (um emprego), la bouffe (a comida), une bagnole (um carro).',
-          'Trop, grave, carrément: muito, totalmente ("c’est trop bien", "t’as carrément raison").',
+          'Trop, grave, carrément: muito, totalmente: "c’est trop bien" (é bom demais), "t’as carrément raison" (você tem toda a razão).',
           'Du coup: então, por isso (muito usado só para ligar frases).'
         ]
       },
@@ -76,8 +76,8 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          '"Euh", "bah", "ben", "bon", "enfin", "tu vois" e "quoi" no fim da frase não trazem informação: servem para ganhar tempo. ' +
-          'Não tente traduzi-las; concentre-se nas palavras com conteúdo.'
+          '"Euh" (hã), "bah" e "ben" (bem, é…), "bon" (bom), "enfin" (enfim), "tu vois" (sabe?) e "quoi" no fim da frase (tipo, sabe) não trazem informação: servem para ganhar tempo. ' +
+          'Durante o áudio, não tente traduzi-las; concentre-se nas palavras com conteúdo.'
       },
       {
         type: 'callout',
