@@ -4,7 +4,7 @@ App de estudos de francês para o **TEF Canada / TCF Canada**, com a meta de che
 
 Roda como **app desktop** (Electron, Windows) e como **site/PWA** (Vercel), a partir do mesmo código.
 
-> Versão **1.1.8** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
+> Versão **1.1.9** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
 
 ## Como usar
 
@@ -124,16 +124,23 @@ Quando o site é atualizado, quem está com ele aberto (ou instalado) vê o avis
 
 ## Releases (versão para Windows)
 
-Cada versão do app para Windows fica em **[Releases](https://github.com/kiingsway/frenching-app/releases)**. Para publicar uma versão nova:
+Cada versão do app para Windows fica em **[Releases](https://github.com/kiingsway/frenching-app/releases)**. A publicação é automática: **cada push na `main` com uma versão nova no `package.json` gera uma Release**, e os apps instalados a encontram sozinhos. Quem faz isso é o workflow `.github/workflows/release.yml`, que roda no GitHub Actions:
 
-1. Suba a versão em `package.json` (ex.: `1.0.0` → `1.1.0`). A atualização automática só acontece se a versão nova for **maior** que a instalada.
-2. Rode `npm run dist:win` (precisa do `.env`, para o login com Google funcionar no app). Em `release/` saem:
+1. Lê a versão do `package.json`. Se já existe Release dela, para por aí. A atualização automática só acontece se a versão nova for **maior** que a instalada.
+2. Roda `npm ci` e `npm run dist:win`, que geram em `release/`:
    - `Frenching-Setup-<versão>.exe`: instalador;
    - `Frenching-Setup-<versão>.exe.blockmap`: deixa a atualização baixar só o que mudou;
    - `latest.yml`: diz ao app instalado qual é a versão mais recente;
    - `Frenching-<versão>-portable.exe`: versão portátil.
-3. Depois do push, crie a release com a tag `v<versão>` na branch `main`, as novidades e **os quatro arquivos** anexados: pelo site (**Releases → Draft a new release**) ou pelo terminal com o GitHub CLI (`gh release create v<versão> --target main --title "Frenching <versão>" --notes-file NOTAS.md` seguido dos quatro arquivos de `release/`). Sem o `latest.yml` (e o `.blockmap`), os apps instalados não ficam sabendo da versão nova.
-4. Publique a release (não deixe como rascunho nem como pré-lançamento: o app só enxerga releases publicadas).
+3. Cria a Release com a tag `v<versão>`, os quatro arquivos e as notas geradas a partir dos commits. Para melhorar as notas, edite a Release no GitHub depois.
+
+O build precisa do cliente OAuth do Google, para o login funcionar no app. Ele fica nos **Secrets** do repositório (`MAIN_VITE_GOOGLE_CLIENT_ID` e `MAIN_VITE_GOOGLE_CLIENT_SECRET`), e o workflow falha sem eles. Para cadastrar ou trocar, a partir do seu `.env`:
+
+```bash
+gh secret set -f .env --repo kiingsway/frenching-app
+```
+
+Para gerar os arquivos só no seu computador, sem publicar, rode `npm run dist:win` (precisa do `.env`).
 
 A atualização automática fica em `src/main/updater.ts` (electron-updater). Para testar sem publicar, gere uma versão maior em outra pasta (`npx electron-builder --win nsis --publish never -c.extraMetadata.version=X -c.directories.output=release-test`), sirva essa pasta por HTTP e abra o app de `release/win-unpacked/` com `FRENCHING_UPDATE_FEED=http://endereço`.
 
@@ -142,6 +149,7 @@ O app instalado e o `npm run dev` usam a mesma pasta de dados (`%APPDATA%\french
 ## Estrutura
 
 ```
+.github/workflows/  publicação automática da Release do Windows
 src/
   main/        processo principal do Electron (janela, login Google, ferramentas de áudio e de revisão)
   preload/     ponte segura entre o Electron e a página (window.api)
