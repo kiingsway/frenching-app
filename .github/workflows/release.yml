@@ -87,3 +87,16 @@ jobs:
             "release/Frenching-Setup-$VERSION.exe.blockmap" \
             "release/latest.yml" \
             "release/Frenching-$VERSION-portable.exe"
+
+      # Só as duas últimas ficam: a nova e a anterior, cujo .blockmap permite à atualização
+      # baixar só o que mudou. Roda depois de publicar, e as tags continuam no repositório
+      - name: Apaga as Releases mais antigas
+        if: steps.version.outputs.exists == 'false'
+        run: |
+          gh release list --exclude-drafts --exclude-pre-releases --limit 100 \
+            --json tagName,publishedAt \
+            --jq 'sort_by(.publishedAt) | reverse | .[2:] | .[].tagName' |
+            while read -r TAG; do
+              echo "Apagando a Release $TAG"
+              gh release delete "$TAG" --yes
+            done

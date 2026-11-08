@@ -4,7 +4,7 @@ App de estudos de francês para o **TEF Canada / TCF Canada**, com a meta de che
 
 Roda como **app desktop** (Electron, Windows) e como **site/PWA** (Vercel), a partir do mesmo código.
 
-> Versão **1.1.11** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
+> Versão **1.1.12** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
 
 ## Como usar
 
@@ -133,6 +133,7 @@ Cada versão do app para Windows fica em **[Releases](https://github.com/kiingsw
    - `latest.yml`: diz ao app instalado qual é a versão mais recente;
    - `Frenching-<versão>-portable.exe`: versão portátil.
 3. Cria a Release com a tag `v<versão>`, os quatro arquivos e as notas geradas a partir dos commits. Para melhorar as notas, edite a Release no GitHub depois.
+4. Apaga as Releases mais antigas e deixa só as **duas últimas**: a nova e a anterior, cujo `.blockmap` permite baixar só o que mudou. As tags continuam no repositório.
 
 O build precisa do cliente OAuth do Google, para o login funcionar no app. Ele fica nos **Secrets** do repositório (`MAIN_VITE_GOOGLE_CLIENT_ID` e `MAIN_VITE_GOOGLE_CLIENT_SECRET`), e o workflow falha sem eles. Para cadastrar ou trocar, a partir do seu `.env`:
 

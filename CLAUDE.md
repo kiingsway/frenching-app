@@ -57,7 +57,7 @@ A versão aparece em Configurações → Sobre e é a que a atualização autom�
 
 - Um commit com várias mudanças sobe pelo tipo mais alto entre elas.
 - Cite a versão nova na mensagem do commit (ex.: "1.1.1: ...").
-- Subir a versão não publica nada por si só. **Cada push na `main` com versão nova publica uma Release automaticamente**, que chega aos apps instalados (`.github/workflows/release.yml`, ver README → Releases). Não crie tags nem Releases à mão.
+- Subir a versão não publica nada por si só. **Cada push na `main` com versão nova publica uma Release automaticamente**, que chega aos apps instalados (`.github/workflows/release.yml`, ver README → Releases). O workflow mantém só as duas últimas Releases e apaga as mais antigas, sem apagar as tags. Não crie tags nem Releases à mão.
 
 ## Push
 
