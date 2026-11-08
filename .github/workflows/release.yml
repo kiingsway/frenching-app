@@ -24,7 +24,11 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
+      # Histórico completo e tags: as notas da Release listam os commits desde a anterior
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Lê a versão e procura a Release
         id: version
@@ -63,10 +67,21 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
+          # Notas: um item por commit desde a Release anterior. O --generate-notes do
+          # GitHub só lista pull requests, e aqui os commits vão direto para a main
+          PREV=$(git describe --tags --abbrev=0 --match 'v*')
+          NOTES="$RUNNER_TEMP/notas.md"
+          {
+            echo "### Novidades"
+            echo
+            git log --no-merges --format='- %s' "$PREV..HEAD"
+            echo
+            echo "**Comparação:** https://github.com/$GITHUB_REPOSITORY/compare/$PREV...v$VERSION"
+          } > "$NOTES"
           gh release create "v$VERSION" \
             --target "$GITHUB_SHA" \
             --title "Frenching $VERSION" \
-            --generate-notes \
+            --notes-file "$NOTES" \
             --latest \
             "release/Frenching-Setup-$VERSION.exe" \
             "release/Frenching-Setup-$VERSION.exe.blockmap" \
