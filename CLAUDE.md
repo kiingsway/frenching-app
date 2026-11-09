@@ -1,5 +1,9 @@
 # Frenching: instruções para o Claude
 
+## Tarefas pendentes
+
+- **Armazenamento dos áudios (sem decisão, o usuário ainda está pensando):** ele vai colocar cerca de 5x mais áudio no app e quer decidir onde guardar. A conversa, as opções e o que falta decidir estão em [docs/armazenamento-de-audios.md](docs/armazenamento-de-audios.md). Não mude nada no armazenamento sem ele decidir; ao retomar o assunto, comece por esse documento.
+
 ## Regras de conteúdo
 
 Valem ao escrever ou integrar conteúdo, inclusive o gerado por outras IAs. Os modelos de pedido e os formatos em JSON estão em [docs/pedidos-para-outras-ias.md](docs/pedidos-para-outras-ias.md): ao mudar uma regra aqui, atualize lá também.

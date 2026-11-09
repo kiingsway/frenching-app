@@ -4,7 +4,7 @@ App de estudos de francês para o **TEF Canada / TCF Canada**, com a meta de che
 
 Roda como **app desktop** (Electron, Windows) e como **site/PWA** (Vercel), a partir do mesmo código.
 
-> Versão **1.2.4** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
+> Versão **1.2.5** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
 
 ## Como usar
 
@@ -169,7 +169,7 @@ scripts/       geração de áudios e ícones
 public-web/    arquivos estáticos só do site (ícones do PWA)
 build/         recursos do instalador do Windows (ícone)
 content-review/  revisões das questões e dos flashcards (feitas no npm run dev)
-docs/          guia para pedir conteúdo a outras IAs e plano das abas de prática
+docs/          guia para pedir conteúdo a outras IAs, plano das abas de prática e opções de armazenamento dos áudios
 topicos-de-estudo.md   lista de estudos (aparece no app em Configurações → Documentos)
 ```
 

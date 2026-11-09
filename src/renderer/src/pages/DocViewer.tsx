@@ -85,6 +85,47 @@ const COMPONENTS: Components = {
     >
       {children}
     </Paper>
+  ),
+  table: ({ children }) => <DocTable>{children}</DocTable>
+}
+
+// Tabela com contorno e cantos arredondados, cabeçalho destacado e linhas separadas.
+// Em telas estreitas, rola para o lado dentro do próprio contorno
+function DocTable({ children }: { children: ReactNode }): ReactElement {
+  return (
+    <Paper variant="outlined" sx={{ my: 2.5, overflowX: 'auto', bgcolor: 'transparent' }}>
+      <Box
+        component="table"
+        sx={{
+          width: '100%',
+          borderCollapse: 'collapse',
+          fontSize: 14,
+          lineHeight: 1.5,
+          '& th, & td': {
+            px: 1.75,
+            py: 1.1,
+            textAlign: 'left',
+            verticalAlign: 'top',
+            // Não parte palavras no meio: quebra só entre palavras
+            overflowWrap: 'normal',
+            minWidth: 90
+          },
+          '& thead th': {
+            fontWeight: 600,
+            fontSize: 13,
+            whiteSpace: 'nowrap',
+            color: 'text.secondary',
+            bgcolor: 'action.hover',
+            borderBottom: 1,
+            borderColor: 'divider'
+          },
+          '& tbody tr + tr td': { borderTop: 1, borderColor: 'divider' },
+          '& tbody tr:hover td': { bgcolor: 'action.hover' }
+        }}
+      >
+        {children}
+      </Box>
+    </Paper>
   )
 }
 
@@ -147,30 +188,50 @@ export default function DocViewer({
   const doc = getProjectDoc(docId)
 
   return (
-    <Page>
-      <Button
-        size="small"
-        variant="outlined"
-        startIcon={<FiArrowLeft />}
-        onClick={onBack}
-        sx={{ mb: 3 }}
+    <>
+      {/* Barra fixa no topo: continua visível durante o scroll */}
+      <Paper
+        square
+        elevation={0}
+        sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 10,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1.5,
+          px: { xs: 2, sm: 3, md: 5 },
+          py: 1.5,
+          borderBottom: 1,
+          borderColor: 'divider'
+        }}
       >
-        Configurações
-      </Button>
-      {doc ? (
-        <>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<FiArrowLeft />}
+          onClick={onBack}
+          sx={{ flexShrink: 0 }}
+        >
+          Configurações
+        </Button>
+        {doc && (
+          <Typography variant="body2" color="text.secondary" noWrap title={doc.fileName}>
             {doc.fileName}
           </Typography>
+        )}
+      </Paper>
+      <Page>
+        {doc ? (
           <Box sx={{ overflowWrap: 'anywhere', '& li ul': { pl: 3.5 } }}>
             <Markdown remarkPlugins={[remarkGfm]} components={COMPONENTS}>
               {doc.content}
             </Markdown>
           </Box>
-        </>
-      ) : (
-        <Typography color="text.secondary">Documento não encontrado.</Typography>
-      )}
-    </Page>
+        ) : (
+          <Typography color="text.secondary">Documento não encontrado.</Typography>
+        )}
+      </Page>
+    </>
   )
 }
