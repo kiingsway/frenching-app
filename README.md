@@ -4,7 +4,7 @@ App de estudos de francês para o **TEF Canada / TCF Canada**, com a meta de che
 
 Roda como **app desktop** (Electron, Windows) e como **site/PWA** (Vercel), a partir do mesmo código.
 
-> Versão **1.2.1** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
+> Versão **1.2.2** · Repositório: [github.com/kiingsway/frenching-app](https://github.com/kiingsway/frenching-app)
 
 ## Como usar
 
@@ -86,7 +86,7 @@ npm run audio -- --only=chave1,chave2
 npm run audio -- --jobs=3      # quantos áudios ao mesmo tempo (padrão: 5)
 ```
 
-Vozes disponíveis: **Vivienne** (padrão) e **Denise**, da França; **Sylvie** (mulher) e **Antoine** (homem), do Canadá. A lista fica em `AUDIO_VOICES` (`src/renderer/src/lib/audio-texts.ts`). Uma voz só é usada nos textos marcados com ela em `assets/audio/voices.json`.
+Vozes disponíveis: **Sylvie** (mulher, padrão) e **Antoine** (homem), do Canadá; **Denise** e **Vivienne**, da França. A lista fica em `AUDIO_VOICES` (`src/renderer/src/lib/audio-texts.ts`). Textos novos usam a Sylvie; os que usam outra voz ficam marcados em `assets/audio/voices.json`, inclusive os gerados antes de ela virar a padrão.
 
 O script gera os áudios das páginas de estudo (partes listadas no campo `audio` de cada página) e de todos os flashcards (palavra e exemplo em francês).
 

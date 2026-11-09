@@ -14,7 +14,7 @@
 // O edge-tts roda em lote por scripts/tts-batch.py (um processo Python só, vários
 // áudios ao mesmo tempo), que força o francês na leitura (sem isso, a voz
 // multilíngue lê alguns textos curtos em inglês).
-// A voz padrão é a Vivienne; textos com outra voz (Denise, Sylvie ou Antoine, veja
+// A voz padrão é a Sylvie; textos com outra voz (Antoine, Denise ou Vivienne, veja
 // AUDIO_VOICES em lib/audio-texts.ts) ficam em assets/audio/voices.json.
 //
 // O progresso vai para scripts/.audio-status.json, que a lista de áudios do app

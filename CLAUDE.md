@@ -33,7 +33,7 @@ Valem ao escrever ou integrar conteúdo, inclusive o gerado por outras IAs. Os m
 ### Áudio
 
 - Depois de criar conteúdo ou mudar o francês, rode `npm run audio`, que gera só o que falta. **Não use `--force`** sem o usuário pedir; para textos específicos, use `--only=chave1,chave2`.
-- Vozes (`AUDIO_VOICES` em `src/renderer/src/lib/audio-texts.ts`): Vivienne (padrão) e Denise, da França; Sylvie (mulher) e Antoine (homem), do Canadá. A voz de cada texto que não usa a padrão fica em `assets/audio/voices.json`. Não troque a voz de textos existentes sem o usuário pedir, porque isso gera os áudios de novo.
+- Vozes (`AUDIO_VOICES` em `src/renderer/src/lib/audio-texts.ts`): Sylvie (mulher, padrão) e Antoine (homem), do Canadá; Denise e Vivienne, da França. A voz de cada texto que não usa a padrão fica em `assets/audio/voices.json`, inclusive os gerados antes de a Sylvie virar a padrão: ao mudar a voz padrão, marque os áudios existentes com a voz atual deles. Não troque a voz de textos existentes sem o usuário pedir, porque isso gera os áudios de novo.
 
 ### Revisão
 

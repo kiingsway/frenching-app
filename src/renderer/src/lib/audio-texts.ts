@@ -14,21 +14,21 @@ export const AUDIO_PARTS: AudioPart[] = [
   'tables'
 ]
 
-// Vozes do edge-tts. A Vivienne é a padrão; a Denise só fala francês e serve para
-// textos que a Vivienne (multilíngue) lê em inglês, como "TEF Canada". A Sylvie (mulher)
-// e o Antoine (homem) têm o sotaque do francês canadense.
+// Vozes do edge-tts, na ordem em que aparecem no app. A Sylvie (mulher, padrão) e o
+// Antoine (homem) têm o sotaque do francês canadense. A Denise e a Vivienne são da França.
 // A voz de cada texto que não usa a padrão fica em assets/audio/voices.json
-// (chave do arquivo → id da voz).
+// (chave do arquivo → id da voz). Os áudios gerados antes de a Sylvie virar a padrão
+// estão lá com a voz que usam, para não mudarem sem querer.
 export const AUDIO_VOICES = {
-  vivienne: { label: 'Vivienne', country: 'FR', name: 'fr-FR-VivienneMultilingualNeural' },
-  denise: { label: 'Denise', country: 'FR', name: 'fr-FR-DeniseNeural' },
   sylvie: { label: 'Sylvie', country: 'CA', name: 'fr-CA-SylvieNeural' },
-  antoine: { label: 'Antoine', country: 'CA', name: 'fr-CA-AntoineNeural' }
+  antoine: { label: 'Antoine', country: 'CA', name: 'fr-CA-AntoineNeural' },
+  denise: { label: 'Denise', country: 'FR', name: 'fr-FR-DeniseNeural' },
+  vivienne: { label: 'Vivienne', country: 'FR', name: 'fr-FR-VivienneMultilingualNeural' }
 } as const
 
 export type VoiceId = keyof typeof AUDIO_VOICES
 
-export const DEFAULT_VOICE: VoiceId = 'vivienne'
+export const DEFAULT_VOICE: VoiceId = 'sylvie'
 
 export type VoiceOverrides = Record<string, VoiceId>
 
