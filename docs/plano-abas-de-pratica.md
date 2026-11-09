@@ -13,7 +13,7 @@ Treinar as quatro provas do TEF Canada e do TCF Canada do jeito que elas são co
 | Assunto | Decisão |
 |---|---|
 | Internet | Tudo funciona offline depois de instalado, menos os áudios fora do pacote do app, que precisam de internet na primeira vez (veja `armazenamento-de-audios.md`). A conta Google continua opcional e só guarda o progresso. |
-| Correção por IA | Fica de fora. A produção é autoavaliada com critérios e resposta modelo. |
+| Correção da produção | Por conta de quem pratica. O app não chama nenhuma IA: traz autoavaliação com critérios e resposta modelo, e gera um **texto pronto para enviar a uma IA** que corrija, se a pessoa quiser. |
 | Modos | Toda aba tem **Treino** (com ajuda e explicação na hora) e **Prova** (com tempo e sem ajuda). |
 | Exame | Quem pratica escolhe **TEF** ou **TCF** e o formato acompanha a escolha. |
 | Conteúdo | Textos, áudios e temas originais, escritos por nós ou por outras IAs. Provas oficiais servem de referência de formato e nunca são copiadas. |
@@ -113,6 +113,15 @@ Uma limitação importante: vozes sintéticas não têm os ruídos, as interrup�
 
 **A autoavaliação:** nota de 1 a 5 em **realização da tarefa**, **coerência e coesão**, **vocabulário** e **gramática**, e o histórico mostra o critério mais fraco. Cada tema traz resposta modelo em francês canadense e uma lista do que ela faz bem, como conectores e estrutura.
 
+**Corrigir com uma IA:** um botão "Copiar pedido de correção" monta um texto pronto para colar em qualquer IA, como ChatGPT, Gemini ou Claude. O app só copia o texto: quem envia e avalia a resposta é a própria pessoa, e isso funciona offline até a hora de colar. O texto leva:
+- a prova, a tarefa e o tema;
+- a faixa de palavras e o número de palavras escritas;
+- os critérios de correção da prova e a meta de NCLC 7;
+- o texto escrito;
+- o pedido de nota por critério, erros corrigidos com explicação em português e uma versão melhorada, com o francês canadense como forma principal.
+
+Depois, a pessoa pode registrar as notas nos mesmos critérios da autoavaliação. A resposta da IA pode ter erros e não equivale à nota da prova.
+
 **Pronto quando:** houver 5 temas por tarefa (25 no total), cada um com resposta modelo, e o histórico guardar textos e notas.
 
 ## Fase 4: Produção oral
@@ -130,6 +139,8 @@ Uma limitação importante: vozes sintéticas não têm os ruídos, as interrup�
 **Como simular o examinador sem IA:** falas gravadas, como perguntas e objeções, tocam em momentos definidos ou quando você aperta um botão. Isso **não é uma conversa de verdade**: o app não entende o que você diz. Serve para treinar a reação e a fluidez, mas não substitui praticar com uma pessoa.
 
 **A autoavaliação:** os mesmos critérios da escrita, mais **pronúncia**, **fluidez** e **interação**. Cada tema traz exemplos de frases úteis e uma resposta modelo com áudio.
+
+**Corrigir com uma IA:** o mesmo botão da produção escrita, com a tarefa, o tema e os critérios. O app não transcreve a fala, então a pessoa escreve ou cola a transcrição antes de copiar. Uma correção feita pelo texto não avalia pronúncia nem fluidez.
 
 **O que precisa ser construído:**
 - Gravação com `MediaRecorder`, guardada em **IndexedDB, só no computador**. As gravações não vão para a conta, para não pesar nem expor a voz de ninguém.
@@ -170,7 +181,7 @@ Cada aba nova sobe a versão como **minor** (`x.Y.0`), e o conteúdo novo depois
 
 ## O que fica de fora
 
-- Correção automática de texto ou de pronúncia, por IA ou por qualquer serviço online.
+- Correção automática dentro do app, de texto ou de pronúncia, por IA ou por qualquer serviço online. O app só gera o texto para a pessoa enviar.
 - Conversa real com um examinador virtual.
 - Envio de gravações para a nuvem.
 - Promessa de nota: os resultados são treino, não previsão oficial.
