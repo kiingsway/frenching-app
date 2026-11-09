@@ -16,7 +16,7 @@ import { getAudioKeyByUrl, getAudioUrlByKey } from '@/lib/audio'
 import { isGenerating, useAudioDev } from '@/lib/audio-dev'
 import { bundledVoiceFor } from '@/lib/audio-entries'
 import { cancelSuggestion, suggestVoiceChange, useAudioSuggestions } from '@/lib/audio-suggestions'
-import { AUDIO_VOICES, DEFAULT_VOICE, type VoiceId } from '@/lib/audio-texts'
+import { DEFAULT_VOICE, type VoiceId } from '@/lib/audio-texts'
 import { audioTools } from '@/lib/platform'
 
 // Cor primária do tema (variável CSS do MUI) com transparência
@@ -124,7 +124,7 @@ export default function AudioSection({
     key && voiceMode === 'suggest'
       ? {
           status: mySuggestion?.status ?? 'none',
-          toVoiceLabel: mySuggestion ? AUDIO_VOICES[mySuggestion.toVoice].label : '',
+          toVoice: mySuggestion?.toVoice,
           sending,
           onSuggest: (toVoice) => {
             setSending(true)

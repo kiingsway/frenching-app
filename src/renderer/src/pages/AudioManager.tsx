@@ -21,12 +21,14 @@ import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
 import LinearProgress from '@mui/material/LinearProgress'
-import NativeSelect from '@mui/material/NativeSelect'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import Typography from '@mui/material/Typography'
 import Page from '@/components/Page'
+import VoiceLabel from '@/components/VoiceLabel'
 import { isAdmin, useAccess } from '@/lib/access'
 import { getAudioUrlByKey, hasAudioFile } from '@/lib/audio'
 import { buildEntries, bundledVoiceFor, PART_LABELS, type AudioEntry } from '@/lib/audio-entries'
@@ -252,10 +254,13 @@ const AudioRow = memo(function AudioRow({
         </Typography>
       </Box>
       {readOnly ? (
-        <Typography variant="body2">{AUDIO_VOICES[voice].label}</Typography>
+        <Typography variant="body2" component="div">
+          <VoiceLabel id={voice} />
+        </Typography>
       ) : (
-        <NativeSelect
+        <Select
           variant="standard"
+          size="small"
           disabled={running || !canChangeVoice}
           value={voice}
           title={
@@ -267,11 +272,11 @@ const AudioRow = memo(function AudioRow({
           sx={{ fontSize: 14 }}
         >
           {VOICE_IDS.map((id) => (
-            <option key={id} value={id}>
-              {AUDIO_VOICES[id].label}
-            </option>
+            <MenuItem key={id} value={id} sx={{ fontSize: 14 }}>
+              <VoiceLabel id={id} />
+            </MenuItem>
           ))}
-        </NativeSelect>
+        </Select>
       )}
       {!readOnly && <Box>{statusNode}</Box>}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

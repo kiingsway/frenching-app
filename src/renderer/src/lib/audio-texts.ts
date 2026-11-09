@@ -20,10 +20,10 @@ export const AUDIO_PARTS: AudioPart[] = [
 // A voz de cada texto que não usa a padrão fica em assets/audio/voices.json
 // (chave do arquivo → id da voz).
 export const AUDIO_VOICES = {
-  vivienne: { label: 'Vivienne', name: 'fr-FR-VivienneMultilingualNeural' },
-  denise: { label: 'Denise', name: 'fr-FR-DeniseNeural' },
-  sylvie: { label: 'Sylvie (Canadá)', name: 'fr-CA-SylvieNeural' },
-  antoine: { label: 'Antoine (Canadá)', name: 'fr-CA-AntoineNeural' }
+  vivienne: { label: 'Vivienne', country: 'FR', name: 'fr-FR-VivienneMultilingualNeural' },
+  denise: { label: 'Denise', country: 'FR', name: 'fr-FR-DeniseNeural' },
+  sylvie: { label: 'Sylvie', country: 'CA', name: 'fr-CA-SylvieNeural' },
+  antoine: { label: 'Antoine', country: 'CA', name: 'fr-CA-AntoineNeural' }
 } as const
 
 export type VoiceId = keyof typeof AUDIO_VOICES

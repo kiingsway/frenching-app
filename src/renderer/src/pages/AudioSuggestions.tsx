@@ -20,40 +20,11 @@ import {
   useAudioSuggestions,
   type AudioSuggestion
 } from '@/lib/audio-suggestions'
-import { AUDIO_VOICES } from '@/lib/audio-texts'
+import VoiceLabel from '@/components/VoiceLabel'
 import type { AudioPart } from '@/content/types'
 
 const formatDate = (ms: number): string =>
   new Date(ms).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' })
-
-// Bolinha com a inicial da voz
-function VoiceBadge({ voice }: { voice: keyof typeof AUDIO_VOICES }): ReactElement {
-  return (
-    <Box
-      component="span"
-      sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75, fontSize: 13 }}
-    >
-      <Box
-        component="span"
-        sx={{
-          width: 20,
-          height: 20,
-          borderRadius: '50%',
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 11,
-          fontWeight: 700,
-          bgcolor: 'rgba(var(--mui-palette-primary-mainChannel) / 0.14)',
-          color: 'primary.main'
-        }}
-      >
-        {AUDIO_VOICES[voice].label[0]}
-      </Box>
-      {AUDIO_VOICES[voice].label}
-    </Box>
-  )
-}
 
 function SuggestionRow({
   s,
@@ -95,14 +66,18 @@ function SuggestionRow({
           {` · ${formatDate(s.createdAt)}`}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1, color: 'text.secondary' }}>
-          <VoiceBadge voice={s.fromVoice} />
+          <Box component="span" sx={{ fontSize: 13 }}>
+            <VoiceLabel id={s.fromVoice} />
+          </Box>
           <FiArrowRight />
-          <VoiceBadge voice={s.toVoice} />
+          <Box component="span" sx={{ fontSize: 13 }}>
+            <VoiceLabel id={s.toVoice} />
+          </Box>
         </Box>
         {applied && (
           <Typography variant="body2" sx={{ mt: 1, color: 'success.main' }}>
-            Aplicada em {formatDate(s.appliedAt ?? s.createdAt)}: agora este áudio usa a{' '}
-            {AUDIO_VOICES[s.toVoice].label}.
+            Aplicada em {formatDate(s.appliedAt ?? s.createdAt)}: agora este áudio usa a voz{' '}
+            <VoiceLabel id={s.toVoice} />.
             {!dev && ' O áudio novo chega na próxima versão do app.'}
           </Typography>
         )}

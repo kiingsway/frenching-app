@@ -6,11 +6,9 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import { AUDIO_VOICES, DEFAULT_VOICE, type VoiceId } from '@/lib/audio-texts'
+import VoiceLabel, { VoiceFlag } from './VoiceLabel'
 
 const VOICE_IDS = Object.keys(AUDIO_VOICES) as VoiceId[]
-
-const tint = (opacity: number): string =>
-  `rgba(var(--mui-palette-primary-mainChannel) / ${opacity})`
 
 // Item com cantos arredondados, solto das bordas do menu
 const itemSx = {
@@ -52,34 +50,10 @@ export type VoiceMode = 'change' | 'locked' | 'suggest' | 'show'
 export interface SuggestOptions {
   status: 'none' | 'pending' | 'applied'
   // Voz da sugestão já feita (vazio enquanto não há sugestão)
-  toVoiceLabel: string
+  toVoice?: VoiceId
   sending: boolean
   onSuggest: (toVoice: VoiceId) => void
   onCancel: () => void
-}
-
-// Inicial da voz numa bolinha; cheia na voz atual
-function VoiceBadge({ id, current }: { id: VoiceId; current: boolean }): ReactElement {
-  return (
-    <Box
-      sx={{
-        width: 24,
-        height: 24,
-        borderRadius: '50%',
-        flexShrink: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: 12,
-        fontWeight: 700,
-        transition: 'background-color 150ms, color 150ms',
-        bgcolor: current ? 'primary.main' : tint(0.12),
-        color: current ? 'primary.contrastText' : 'primary.main'
-      }}
-    >
-      {AUDIO_VOICES[id].label[0]}
-    </Box>
-  )
 }
 
 function VoiceName({ id, current }: { id: VoiceId; current: boolean }): ReactElement {
@@ -171,7 +145,7 @@ export default function AudioMenu({
               onClick={() => onChangeVoice(id)}
               sx={locked && current ? infoItemSx : itemSx}
             >
-              <VoiceBadge id={id} current={current} />
+              <VoiceFlag id={id} size={24} current={current} />
               <VoiceName id={id} current={current} />
               {current && (
                 <Box
@@ -207,7 +181,7 @@ export default function AudioMenu({
       {/* App compilado/site: a voz usada (e, com acesso à nuvem, sugerir uma das outras) */}
       {(voiceMode === 'suggest' || voiceMode === 'show') && (
         <MenuItem disabled sx={infoItemSx}>
-          <VoiceBadge id={voice} current />
+          <VoiceFlag id={voice} size={24} current />
           <VoiceName id={voice} current />
         </MenuItem>
       )}
@@ -225,13 +199,17 @@ export default function AudioMenu({
               component={suggest.sending ? FiLoader : FiFlag}
               sx={{ fontSize: 16, color: 'text.secondary' }}
             />
-            Sugerir trocar para {AUDIO_VOICES[id].label}
+            <span>
+              Sugerir trocar para <VoiceLabel id={id} />
+            </span>
           </MenuItem>
         ))}
       {voiceMode === 'suggest' && suggest && suggest.status === 'pending' && (
         <MenuItem disabled sx={infoItemSx}>
           <Box component={FiClock} sx={{ fontSize: 16, color: 'warning.main' }} />
-          Troca para {suggest.toVoiceLabel} sugerida
+          <span>
+            Troca para {suggest.toVoice && <VoiceLabel id={suggest.toVoice} />} sugerida
+          </span>
         </MenuItem>
       )}
       {voiceMode === 'suggest' && suggest && suggest.status === 'pending' && (
@@ -243,7 +221,9 @@ export default function AudioMenu({
       {voiceMode === 'suggest' && suggest && suggest.status === 'applied' && (
         <MenuItem disabled sx={infoItemSx}>
           <Box component={FiCheck} sx={{ fontSize: 16, color: 'success.main' }} />
-          Troca para {suggest.toVoiceLabel} aplicada
+          <span>
+            Troca para {suggest.toVoice && <VoiceLabel id={suggest.toVoice} />} aplicada
+          </span>
         </MenuItem>
       )}
       {voiceMode === 'suggest' && suggest && (
