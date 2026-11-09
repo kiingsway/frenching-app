@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
+import { FaWindows } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 import {
   FiCheck,
@@ -9,6 +10,7 @@ import {
   FiFileText,
   FiFlag,
   FiGithub,
+  FiGlobe,
   FiLayers,
   FiLogOut,
   FiMonitor,
@@ -957,7 +959,16 @@ export default function Settings({
               <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, flexWrap: 'wrap' }}>
                 <Typography sx={{ fontWeight: 600, fontSize: 17 }}>{APP_NAME}</Typography>
                 <Typography variant="body2" color="text.secondary">
-                  versão {APP_VERSION} · {isElectron ? 'app para computador' : 'site'}
+                  versão {APP_VERSION} ·{' '}
+                  <Box
+                    component="span"
+                    role="img"
+                    aria-label={isElectron ? 'App para Windows' : 'Site'}
+                    title={isElectron ? 'App para Windows' : 'Site'}
+                    sx={{ display: 'inline-flex', verticalAlign: '-2px', fontSize: 14 }}
+                  >
+                    {isElectron ? <FaWindows /> : <FiGlobe />}
+                  </Box>
                 </Typography>
               </Box>
               <Typography variant="body2" color="text.secondary">
