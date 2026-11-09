@@ -2,7 +2,7 @@
 
 ## Tarefas pendentes
 
-- **Armazenamento dos áudios (sem decisão, o usuário ainda está pensando):** ele vai colocar cerca de 5x mais áudio no app e quer decidir onde guardar. A conversa, as opções e o que falta decidir estão em [docs/armazenamento-de-audios.md](docs/armazenamento-de-audios.md). Não mude nada no armazenamento sem ele decidir; ao retomar o assunto, comece por esse documento.
+- **Armazenamento dos áudios (direção definida, detalhes em aberto, nada construído):** o usuário vai colocar cerca de 5x mais áudio, com áudios longos e várias vozes para o mesmo texto, e prefere um `.exe` bem leve. Parte dos áudios vem no app, e o resto é baixado quando for preciso e fica guardado. O serviço na nuvem fica para depois. As decisões e o que falta decidir estão em [docs/armazenamento-de-audios.md](docs/armazenamento-de-audios.md). Ao retomar o assunto, comece por esse documento; não construa nada sem o usuário pedir.
 
 ## Regras de conteúdo
 

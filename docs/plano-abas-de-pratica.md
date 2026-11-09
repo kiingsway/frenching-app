@@ -12,7 +12,7 @@ Treinar as quatro provas do TEF Canada e do TCF Canada do jeito que elas são co
 
 | Assunto | Decisão |
 |---|---|
-| Internet | Tudo funciona offline depois de instalado. A conta Google continua opcional e só guarda o progresso. |
+| Internet | Tudo funciona offline depois de instalado, menos os áudios fora do pacote do app, que precisam de internet na primeira vez (veja `armazenamento-de-audios.md`). A conta Google continua opcional e só guarda o progresso. |
 | Correção por IA | Fica de fora. A produção é autoavaliada com critérios e resposta modelo. |
 | Modos | Toda aba tem **Treino** (com ajuda e explicação na hora) e **Prova** (com tempo e sem ajuda). |
 | Exame | Quem pratica escolhe **TEF** ou **TCF** e o formato acompanha a escolha. |
@@ -86,7 +86,7 @@ interface ReadingPassage {
 | Diálogos | Um texto tem uma voz só | Cada fala tem a sua voz, e o player toca as falas em sequência |
 | Mesmo texto em duas vozes | O arquivo se chama pelo texto, então só existe uma versão | O nome dos áudios desta aba inclui a voz e a velocidade |
 | Sotaques | Só Canadá e França | Vozes do Canadá primeiro, depois França. Bélgica, Suíça e África só se o `edge-tts` tiver vozes boas |
-| Offline no site | O áudio entra no cache só depois de tocado | Botão para baixar um conjunto antes de praticar. No app do Windows, os áudios já vêm junto |
+| Offline | No site, o áudio entra no cache só depois de tocado | Estes áudios ficam fora do pacote do app, como definido em `armazenamento-de-audios.md`. Precisa de um botão para baixar um conjunto antes de praticar, no app e no site |
 
 Uma limitação importante: vozes sintéticas não têm os ruídos, as interrupções e o ritmo de uma gravação real. Servem para treinar, mas é bom complementar com RFI e Radio-Canada, já citadas nas páginas de estudo.
 
