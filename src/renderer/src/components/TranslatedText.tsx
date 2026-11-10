@@ -6,7 +6,8 @@ import Tooltip from '@mui/material/Tooltip'
 // No conteúdo, escreva [[texto em francês|tradução em português]]. O texto em francês
 // aparece com um sublinhado pontilhado, e a tradução surge ao passar o mouse, ao focar
 // com o teclado ou ao tocar na tela.
-// Em teste: por enquanto só a página "Diferenças entre TEF Canada e TCF Canada" usa isso.
+// Em teste: por enquanto só as páginas "Diferenças entre TEF Canada e TCF Canada"
+// (prova-tef-tcf) e "Mensagens curtas" (co-mensagens) usam isso.
 const MARKUP = /\[\[([^|\]]+)\|([^\]]+)\]\]/g
 
 function FrenchTerm({ fr, pt }: { fr: string; pt: string }): ReactElement {

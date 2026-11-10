@@ -49,10 +49,10 @@ const content: TopicContent = {
       {
         type: 'list',
         items: [
-          'Transporte: le quai (plataforma), la voie (linha), la correspondance (conexão), retardé (atrasado), annulé (cancelado), l’embarquement (o embarque), la porte (portão).',
-          'Telefone: rappeler (ligar de volta), laisser un message (deixar um recado), joindre quelqu’un (falar com alguém), dans les plus brefs délais (o quanto antes).',
-          'Loja: les soldes (liquidação), une remise ou une réduction (desconto), la caisse (caixa), fermer ses portes (fechar).',
-          'Tempo: dès (a partir de), jusqu’à (até), d’ici (dentro de), en avance (adiantado), à l’heure (no horário), en retard (atrasado).'
+          'Transporte: [[le quai|a plataforma]], [[la voie|a linha]], [[la correspondance|a conexão]], [[retardé|atrasado]], [[annulé|cancelado]], [[l’embarquement|o embarque]], [[la porte|o portão]].',
+          'Telefone: [[rappeler|ligar de volta]], [[laisser un message|deixar um recado]], [[joindre quelqu’un|falar com alguém]], [[dans les plus brefs délais|o quanto antes]].',
+          'Loja: [[les soldes|a liquidação]], [[une remise|um desconto]] ou [[une réduction|um desconto]], [[la caisse|o caixa]], [[fermer ses portes|fechar]].',
+          'Tempo: [[dès|a partir de]], [[jusqu’à|até]], [[d’ici|dentro de]], [[en avance|adiantado]], [[à l’heure|no horário]], [[en retard|atrasado]].'
         ]
       },
 
@@ -60,8 +60,8 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Boa parte das perguntas cobra um número. Os anúncios usam o relógio de 24 horas ("le train de 18 h 42", o trem das 18h42), ' +
-          'e os números de 70 a 99 são compostos: soixante-dix (70), quatre-vingts (80), quatre-vingt-dix (90). ' +
+          'Boa parte das perguntas cobra um número. Os anúncios usam o relógio de 24 horas ("[[le train de 18 h 42|o trem das 18h42]]"), ' +
+          'e os números de 70 a 99 são compostos: [[soixante-dix|70]], [[quatre-vingts|80]], [[quatre-vingt-dix|90]]. ' +
           'Treine até reconhecê-los sem precisar traduzir.'
       },
       {
@@ -69,7 +69,7 @@ const content: TopicContent = {
         tone: 'warning',
         title: 'Cuidado com a informação corrigida',
         text:
-          'Anúncios muitas vezes dão uma informação e depois a corrigem: "le train partira de la voie 3, et non de la voie 5" (o trem partirá da linha 3, e não da linha 5). ' +
+          'Anúncios muitas vezes dão uma informação e depois a corrigem: "[[le train partira de la voie 3, et non de la voie 5|o trem partirá da linha 3, e não da linha 5]]". ' +
           'A resposta certa é a informação final, não a primeira que você ouviu.'
       },
       {
