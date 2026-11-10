@@ -26,10 +26,14 @@ const content: TopicContent = {
         type: 'table',
         headers: ['', 'TEF Canada', 'TCF Canada'],
         rows: [
-          ['Nome', 'Test d’évaluation de français', 'Test de connaissance du français'],
+          [
+            'Nome',
+            '[[Test d’évaluation de français|Teste de avaliação de francês]]',
+            '[[Test de connaissance du français|Teste de conhecimento do francês]]'
+          ],
           [
             'Organização',
-            'Le français des affaires (Câmara de Comércio de Paris Île-de-France)',
+            '[[Le français des affaires|nome da organização; ao pé da letra, "o francês dos negócios"]] (Câmara de Comércio de Paris Île-de-France)',
             'France Éducation international (Ministério da Educação da França)'
           ],
           [
@@ -68,7 +72,7 @@ const content: TopicContent = {
         rows: [
           [
             'Tarefa 1',
-            'Seção A: continuar uma notícia (fait divers) a partir do começo dado. Mínimo de 80 palavras.',
+            'Seção A: continuar uma notícia do tipo [[fait divers|notícia curta sobre um acontecimento do dia a dia, como um acidente, um crime ou uma curiosidade]] a partir do começo dado. Mínimo de 80 palavras.',
             'Mensagem curta (convite, pedido, informação). 60 a 120 palavras.'
           ],
           [

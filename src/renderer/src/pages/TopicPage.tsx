@@ -30,6 +30,7 @@ import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import AudioSection, { type AudioSectionVariant } from '@/components/AudioSection'
 import Page from '@/components/Page'
+import { translatedText } from '@/components/TranslatedText'
 import { getAudioUrl } from '@/lib/audio'
 import { SECTIONS, type Topic } from '@/data/topics'
 import { getTopicContent } from '@/content'
@@ -202,7 +203,7 @@ function renderBlock(block: Block, key: number, audioFor: AudioFor, label: strin
           {withAudio(
             audioFor('headings', block.text),
             label,
-            <Typography variant="h6">{block.text}</Typography>
+            <Typography variant="h6">{translatedText(block.text)}</Typography>
           )}
         </Box>
       )
@@ -212,7 +213,7 @@ function renderBlock(block: Block, key: number, audioFor: AudioFor, label: strin
           {withAudio(
             audioFor('paragraphs', block.text),
             label,
-            <Typography>{block.text}</Typography>
+            <Typography>{translatedText(block.text)}</Typography>
           )}
         </Box>
       )
@@ -225,7 +226,7 @@ function renderBlock(block: Block, key: number, audioFor: AudioFor, label: strin
                 audioFor('lists', item),
                 label,
                 <Box component="span" sx={{ display: 'block' }}>
-                  {item}
+                  {translatedText(item)}
                 </Box>,
                 'inline'
               )}
@@ -258,7 +259,7 @@ function renderBlock(block: Block, key: number, audioFor: AudioFor, label: strin
                       key={i}
                       sx={{ fontWeight: 600, bgcolor: 'action.hover', ...(src && CELL_WITH_AUDIO) }}
                     >
-                      {withAudio(src, label, h, 'cell')}
+                      {withAudio(src, label, translatedText(h), 'cell')}
                     </TableCell>
                   )
                 })}
@@ -278,7 +279,7 @@ function renderBlock(block: Block, key: number, audioFor: AudioFor, label: strin
                           ...(src && CELL_WITH_AUDIO)
                         }}
                       >
-                        {withAudio(src, label, cell, 'cell')}
+                        {withAudio(src, label, translatedText(cell), 'cell')}
                       </TableCell>
                     )
                   })}
@@ -301,14 +302,14 @@ function renderBlock(block: Block, key: number, audioFor: AudioFor, label: strin
             withAudio(
               audioFor('callouts', block.title),
               label,
-              <AlertTitle sx={{ mb: 0.5 }}>{block.title}</AlertTitle>,
+              <AlertTitle sx={{ mb: 0.5 }}>{translatedText(block.title)}</AlertTitle>,
               'inline'
             )}
           {withAudio(
             audioFor('callouts', block.text),
             label,
             <Box component="span" sx={{ display: 'block' }}>
-              {block.text}
+              {translatedText(block.text)}
             </Box>,
             'inline'
           )}
@@ -598,7 +599,7 @@ export default function TopicPage({
                   </AudioSection>
                 </Box>
               ) : (
-                <Typography sx={{ fontSize: 17, mb: 2 }}>{localized.summary}</Typography>
+                <Typography sx={{ fontSize: 17, mb: 2 }}>{translatedText(localized.summary)}</Typography>
               )}
               {localized.blocks.map((block, i) => renderBlock(block, i, audioFor, t.listen))}
             </>
