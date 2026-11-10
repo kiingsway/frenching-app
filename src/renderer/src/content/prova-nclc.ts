@@ -13,7 +13,7 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'NCLC significa Niveaux de compétence linguistique canadiens. É a escala oficial do Canadá para medir o francês de adultos; ' +
+          'NCLC significa [[Niveaux de compétence linguistique canadiens|Níveis de competência linguística canadenses]]. É a escala oficial do Canadá para medir o francês de adultos; ' +
           'a versão em inglês se chama CLB (Canadian Language Benchmarks). As duas são paralelas: NCLC 7 em francês vale o mesmo que CLB 7 em inglês.'
       },
       {
@@ -77,7 +77,7 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Use a nota da coluna "Équivalence ancien score" do seu certificado. ' +
+          'Use a nota da coluna "[[Équivalence ancien score|equivalência na pontuação antiga]]" do seu certificado. ' +
           'Compreensão oral vai até 360, compreensão escrita até 300 e as expressões até 450.'
       },
       {
@@ -98,8 +98,8 @@ const content: TopicContent = {
         tone: 'warning',
         title: 'Atenção ao certificado do TEF',
         text:
-          'O certificado do TEF mostra duas notas: "Score / 699" e "Équivalence ancien score". ' +
-          'O IRCC pede apenas a "Équivalence ancien score". Para provas feitas entre 11/12/2023 e 06/05/2024 houve uma conversão temporária diferente, ' +
+          'O certificado do TEF mostra duas notas: "[[Score / 699|pontuação de 0 a 699]]" e "[[Équivalence ancien score|equivalência na pontuação antiga]]". ' +
+          'O IRCC pede apenas a "[[Équivalence ancien score|equivalência na pontuação antiga]]". Para provas feitas entre 11/12/2023 e 06/05/2024 houve uma conversão temporária diferente, ' +
           'que já foi desfeita; quem fez a prova nesse período deve atualizar o perfil com as notas novas.'
       },
 
@@ -289,7 +289,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

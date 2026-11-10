@@ -27,6 +27,8 @@ export interface LocalizedContent {
 // paragraphs = parágrafos · lists = cada item das listas
 // callouts = caixas de dica/aviso (título e texto têm áudios separados)
 // tables = cada célula das tabelas, cabeçalhos incluídos
+// terms = os termos em francês marcados na versão em português com [[francês|tradução]]
+//         (tocam pela dica de tradução, veja components/TranslatedText.tsx)
 export type AudioPart =
   | 'title'
   | 'summary'
@@ -35,6 +37,7 @@ export type AudioPart =
   | 'lists'
   | 'callouts'
   | 'tables'
+  | 'terms'
 
 export interface TopicContent {
   id: string

@@ -1,23 +1,7 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  type KeyboardEvent,
-  type MouseEvent,
-  type PointerEvent,
-  type ReactElement,
-  type ReactNode
-} from 'react'
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactElement, type ReactNode } from 'react'
 import { FiLoader, FiPause, FiPlay } from 'react-icons/fi'
 import Box from '@mui/material/Box'
-import AudioMenu, { type SuggestOptions, type VoiceMode } from '@/components/AudioMenu'
-import { isAdmin, useAccess } from '@/lib/access'
-import { getAudioKeyByUrl, getAudioUrlByKey } from '@/lib/audio'
-import { isGenerating, useAudioDev } from '@/lib/audio-dev'
-import { bundledVoiceFor } from '@/lib/audio-entries'
-import { cancelSuggestion, suggestVoiceChange, useAudioSuggestions } from '@/lib/audio-suggestions'
-import { DEFAULT_VOICE, type VoiceId } from '@/lib/audio-texts'
-import { audioTools } from '@/lib/platform'
+import { useAudioMenu } from '@/components/useAudioMenu'
 
 // Cor primária do tema (variável CSS do MUI) com transparência
 const tint = (opacity: number): string =>
@@ -29,6 +13,7 @@ let pauseCurrent: (() => void) | null = null
 // Trecho de texto com áudio: parado não tem destaque; no hover ganha um fundo leve.
 // Clicar (ou Espaço/Enter com foco) toca e pausa; o ícone mostra o estado atual.
 // Durante a reprodução, um fundo se preenche da esquerda para a direita junto com o áudio.
+// O botão direito (ou tocar e segurar) abre o menu de recomeçar e de voz (useAudioMenu).
 // Variantes de tamanho:
 //   block  – o destaque avança um pouco para fora do texto (títulos, parágrafos)
 //   inline – o destaque fica dentro do bloco (itens de lista, caixas de dica/aviso)
@@ -86,61 +71,16 @@ export default function AudioSection({
   const progressRef = useRef<HTMLDivElement | null>(null)
   const frameRef = useRef<number | null>(null)
   const [playing, setPlaying] = useState(false)
-  // Posição do menu de botão direito (null = fechado)
-  const [menuAt, setMenuAt] = useState<{ top: number; left: number } | null>(null)
 
-  // No modo de desenvolvimento, o arquivo pode ser gerado de novo com o app aberto
-  // (ex.: troca de voz): a data de geração na URL faz tocar sempre a versão nova
-  const dev = useAudioDev()
-  const key = getAudioKeyByUrl(src)
-  const mtime = key ? dev.mtimes[key] : undefined
-  const playSrc = key && mtime ? getAudioUrlByKey(key, mtime) : src
-  // No npm run dev a voz vem do voices.json atual; no app compilado, da versão do build
-  const voice: VoiceId = !key
-    ? DEFAULT_VOICE
-    : dev.available
-      ? (dev.voices[key] ?? DEFAULT_VOICE)
-      : bundledVoiceFor(key)
-  const generating = !!key && isGenerating(dev.status, key)
-  // O que o menu oferece sobre a voz (veja VoiceMode em AudioMenu):
-  // npm run dev → trocar só a conta admin; app compilado/site → sugerir só com acesso
-  // à nuvem (admin incluso), senão apenas mostra a voz usada
-  const access = useAccess()
-  const suggestions = useAudioSuggestions()
-  const voiceMode: VoiceMode | undefined = !key
-    ? undefined
-    : dev.available
-      ? isAdmin(access)
-        ? 'change'
-        : 'locked'
-      : suggestions.user
-        ? 'suggest'
-        : 'show'
-
-  // App compilado/site: sugestão de troca de voz (salva na conta)
-  const [sending, setSending] = useState(false)
-  const mySuggestion = key ? suggestions.mine.find((s) => s.key === key) : undefined
-  const suggest: SuggestOptions | undefined =
-    key && voiceMode === 'suggest'
-      ? {
-          status: mySuggestion?.status ?? 'none',
-          toVoice: mySuggestion?.toVoice,
-          sending,
-          onSuggest: (toVoice) => {
-            setSending(true)
-            void suggestVoiceChange(key, voice, toVoice)
-              .catch((e) => console.error('Falha ao sugerir a troca de voz', e))
-              .finally(() => {
-                setSending(false)
-                setMenuAt(null)
-              })
-          },
-          onCancel: () => {
-            setMenuAt(null)
-            void cancelSuggestion(key)
-          }
-        }
-      : undefined
+  const { playSrc, generating, menu, handlers, wasLongPress } = useAudioMenu(src, {
+    restart: () => restart(),
+    stop: () => {
+      if (audioRef.current && playing) {
+        pause(audioRef.current)
+        pauseCurrent = null
+      }
+    }
+  })
 
   // A largura do preenchimento é atualizada direto no elemento, a cada quadro,
   // para acompanhar o áudio de forma suave sem re-renderizar o componente
@@ -211,21 +151,10 @@ export default function AudioSection({
 
   // Volta ao início e toca (mesmo se estava pausado no meio)
   const restart = (): void => {
-    setMenuAt(null)
     const audio = getAudio()
     audio.currentTime = 0
     setProgress(0)
     if (!playing) play(audio)
-  }
-
-  const changeVoice = (next: VoiceId): void => {
-    setMenuAt(null)
-    if (!key || next === voice || voiceMode !== 'change') return
-    if (audioRef.current && playing) {
-      pause(audioRef.current)
-      pauseCurrent = null
-    }
-    void audioTools!.setVoice(key, next)
   }
 
   const onKeyDown = (e: KeyboardEvent): void => {
@@ -235,61 +164,9 @@ export default function AudioSection({
     }
   }
 
-  // Botão direito (ou a tecla de menu / Shift+F10, que abre junto ao trecho)
-  const onContextMenu = (e: MouseEvent<HTMLElement>): void => {
-    e.preventDefault()
-    // Toque longo: o menu já foi aberto pelo temporizador
-    if (longPress.current?.fired) return
-    // O navegador mandou o contextmenu antes do temporizador: abre agora e ignora o
-    // "clique" ao soltar o dedo (o próximo toque cria um registro novo)
-    if (longPress.current) {
-      cancelLongPress()
-      longPress.current.fired = true
-    }
-    if (e.clientX === 0 && e.clientY === 0) {
-      const rect = e.currentTarget.getBoundingClientRect()
-      setMenuAt({ top: rect.bottom, left: rect.left })
-    } else setMenuAt({ top: e.clientY, left: e.clientX })
-  }
-
-  // Tela de toque: pressionar e segurar abre o mesmo menu. O navegador nem sempre
-  // manda o contextmenu no toque longo (às vezes só seleciona o texto), então o app
-  // conta o tempo ele mesmo; mexer o dedo (rolar a página) cancela
-  const longPress = useRef<{ timer: number; x: number; y: number; fired: boolean } | null>(null)
-  const cancelLongPress = (): void => {
-    if (longPress.current) clearTimeout(longPress.current.timer)
-  }
-  const onPointerDown = (e: PointerEvent<HTMLElement>): void => {
-    cancelLongPress()
-    if (e.pointerType !== 'touch') {
-      longPress.current = null
-      return
-    }
-    const { clientX: x, clientY: y } = e
-    longPress.current = {
-      x,
-      y,
-      fired: false,
-      timer: window.setTimeout(() => {
-        if (!longPress.current) return
-        longPress.current.fired = true
-        window.getSelection()?.removeAllRanges()
-        navigator.vibrate?.(10)
-        setMenuAt({ top: y, left: x })
-      }, 450)
-    }
-  }
-  const onPointerMove = (e: PointerEvent<HTMLElement>): void => {
-    const lp = longPress.current
-    if (lp && !lp.fired && Math.hypot(e.clientX - lp.x, e.clientY - lp.y) > 10) cancelLongPress()
-  }
   // Depois do toque longo, o "clique" que vem ao soltar o dedo não toca o áudio
   const onClick = (): void => {
-    if (longPress.current?.fired) {
-      longPress.current = null
-      return
-    }
-    toggle()
+    if (!wasLongPress()) toggle()
   }
 
   const statusClass = [playing && 'playing', generating && 'generating'].filter(Boolean).join(' ')
@@ -303,11 +180,7 @@ export default function AudioSection({
         aria-pressed={playing}
         onClick={onClick}
         onKeyDown={onKeyDown}
-        onContextMenu={onContextMenu}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={cancelLongPress}
-        onPointerCancel={cancelLongPress}
+        {...handlers}
         className={statusClass || undefined}
         sx={{
           position: 'relative',
@@ -382,17 +255,7 @@ export default function AudioSection({
       </Box>
 
       {/* Fica fora do trecho: cliques no menu não chegam ao toggle do áudio */}
-      <AudioMenu
-        at={menuAt}
-        onClose={() => setMenuAt(null)}
-        onRestart={restart}
-        voice={voice}
-        voiceMode={voiceMode}
-        onChangeVoice={changeVoice}
-        generating={generating}
-        busy={!!dev.status?.running}
-        suggest={suggest}
-      />
+      {menu}
     </>
   )
 }

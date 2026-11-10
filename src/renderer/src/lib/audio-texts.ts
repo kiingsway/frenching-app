@@ -11,7 +11,8 @@ export const AUDIO_PARTS: AudioPart[] = [
   'paragraphs',
   'lists',
   'callouts',
-  'tables'
+  'tables',
+  'terms'
 ]
 
 // Vozes do edge-tts, na ordem em que aparecem no app. A Sylvie (mulher, padrão) e o
@@ -55,7 +56,38 @@ export function textsFor(page: TopicContent, part: AudioPart): string[] {
       return blocks.flatMap((block) =>
         block.type === 'table' ? [...block.headers, ...block.rows.flat()] : []
       )
+    case 'terms':
+      // O francês de cada [[francês|tradução]] da versão em português
+      return allTexts(page.pt).flatMap((text) => termsIn(text).map((term) => term.fr))
   }
+}
+
+// Termo em francês com a tradução, escrito no texto em português como [[francês|tradução]]
+export const TERM_MARKUP = /\[\[([^|\]]+)\|([^\]]+)\]\]/g
+
+export function termsIn(text: string): { fr: string; pt: string }[] {
+  return [...text.matchAll(TERM_MARKUP)].map((match) => ({ fr: match[1], pt: match[2] }))
+}
+
+// Todos os textos de uma versão da página: título, resumo e cada texto dos blocos
+function allTexts(content: TopicContent['pt']): string[] {
+  return [
+    content.title,
+    content.summary,
+    ...content.blocks.flatMap((block) => {
+      switch (block.type) {
+        case 'heading':
+        case 'paragraph':
+          return [block.text]
+        case 'list':
+          return block.items
+        case 'callout':
+          return [...(block.title ? [block.title] : []), block.text]
+        case 'table':
+          return [...block.headers, ...block.rows.flat()]
+      }
+    })
+  ]
 }
 
 // Flashcards: todo cartão tem áudio do lado em francês, a palavra/expressão e a

@@ -28,6 +28,7 @@ export const PART_LABELS: Record<EntryPart, string> = {
   lists: 'Item de lista',
   callouts: 'Caixa',
   tables: 'Célula de tabela',
+  terms: 'Termo traduzido',
   cardWord: 'Palavra do cartão',
   cardExample: 'Exemplo do cartão'
 }

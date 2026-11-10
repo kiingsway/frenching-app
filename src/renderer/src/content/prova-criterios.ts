@@ -57,7 +57,7 @@ const content: TopicContent = {
           'Fugir do tema ou responder só parte da tarefa.',
           'Texto curto demais (ou, no TCF, muito acima da faixa de palavras).',
           'Registro errado: tratar por "tu" quem deveria ser "vous", ou o contrário.',
-          'Repetir as mesmas palavras e estruturas ("c’est bien", "c’est intéressant") do começo ao fim.',
+          'Repetir as mesmas palavras e estruturas ("[[c’est bien|é bom]]", "[[c’est intéressant|é interessante]]") do começo ao fim.',
           'Frases soltas, sem conectores nem organização em parágrafos.',
           'Na fala: monólogo decorado que ignora o examinador, silêncios longos.'
         ]
@@ -68,10 +68,10 @@ const content: TopicContent = {
         type: 'list',
         items: [
           'Texto organizado em parágrafos, com introdução e conclusão.',
-          'Conectores variados: cependant, en revanche, par conséquent, d’ailleurs, bien que…',
+          'Conectores variados: [[cependant|no entanto]], [[en revanche|em compensação]], [[par conséquent|por consequência]], [[d’ailleurs|aliás]], [[bien que|embora]]…',
           'Opinião clara, sustentada por argumentos e exemplos concretos.',
           'Mistura de tempos verbais bem usados: presente, passé composé, imparfait, futuro, condicional.',
-          'Algumas estruturas complexas: relativos (dont, lequel), subjuntivo depois de il faut que e bien que, hipóteses com si.',
+          'Algumas estruturas complexas: relativos ([[dont|do qual, cujo]], [[lequel|o qual]]), subjuntivo depois de [[il faut que|é preciso que]] e [[bien que|embora]], hipóteses com [[si|se]].',
           'Erros pontuais são aceitáveis, desde que não atrapalhem a compreensão.'
         ]
       },
@@ -181,7 +181,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

@@ -195,7 +195,14 @@ function withAudio(
   )
 }
 
-function renderBlock(block: Block, key: number, audioFor: AudioFor, label: string): ReactElement {
+// `terms`: os termos [[francês|tradução]] da versão em português têm áudio
+function renderBlock(
+  block: Block,
+  key: number,
+  audioFor: AudioFor,
+  label: string,
+  terms: boolean
+): ReactElement {
   switch (block.type) {
     case 'heading':
       return (
@@ -203,7 +210,7 @@ function renderBlock(block: Block, key: number, audioFor: AudioFor, label: strin
           {withAudio(
             audioFor('headings', block.text),
             label,
-            <Typography variant="h6">{translatedText(block.text)}</Typography>
+            <Typography variant="h6">{translatedText(block.text, terms)}</Typography>
           )}
         </Box>
       )
@@ -213,7 +220,7 @@ function renderBlock(block: Block, key: number, audioFor: AudioFor, label: strin
           {withAudio(
             audioFor('paragraphs', block.text),
             label,
-            <Typography>{translatedText(block.text)}</Typography>
+            <Typography>{translatedText(block.text, terms)}</Typography>
           )}
         </Box>
       )
@@ -226,7 +233,7 @@ function renderBlock(block: Block, key: number, audioFor: AudioFor, label: strin
                 audioFor('lists', item),
                 label,
                 <Box component="span" sx={{ display: 'block' }}>
-                  {translatedText(item)}
+                  {translatedText(item, terms)}
                 </Box>,
                 'inline'
               )}
@@ -259,7 +266,7 @@ function renderBlock(block: Block, key: number, audioFor: AudioFor, label: strin
                       key={i}
                       sx={{ fontWeight: 600, bgcolor: 'action.hover', ...(src && CELL_WITH_AUDIO) }}
                     >
-                      {withAudio(src, label, translatedText(h), 'cell')}
+                      {withAudio(src, label, translatedText(h, terms), 'cell')}
                     </TableCell>
                   )
                 })}
@@ -279,7 +286,7 @@ function renderBlock(block: Block, key: number, audioFor: AudioFor, label: strin
                           ...(src && CELL_WITH_AUDIO)
                         }}
                       >
-                        {withAudio(src, label, translatedText(cell), 'cell')}
+                        {withAudio(src, label, translatedText(cell, terms), 'cell')}
                       </TableCell>
                     )
                   })}
@@ -302,14 +309,14 @@ function renderBlock(block: Block, key: number, audioFor: AudioFor, label: strin
             withAudio(
               audioFor('callouts', block.title),
               label,
-              <AlertTitle sx={{ mb: 0.5 }}>{translatedText(block.title)}</AlertTitle>,
+              <AlertTitle sx={{ mb: 0.5 }}>{translatedText(block.title, terms)}</AlertTitle>,
               'inline'
             )}
           {withAudio(
             audioFor('callouts', block.text),
             label,
             <Box component="span" sx={{ display: 'block' }}>
-              {translatedText(block.text)}
+              {translatedText(block.text, terms)}
             </Box>,
             'inline'
           )}
@@ -350,6 +357,8 @@ export default function TopicPage({
     lang === 'fr' && content?.audio?.includes(part) ? getAudioUrl(text) : undefined
   const titleAudio = content && audioFor('title', content.fr.title)
   const summaryAudio = content && audioFor('summary', content.fr.summary)
+  // Termos em francês da versão em português ([[francês|tradução]]) com áudio
+  const termsAudio = lang === 'pt' && !!content?.audio?.includes('terms')
 
   // Anterior/Próximo só levam a tópicos com conteúdo; páginas sem conteúdo não navegam
   const index = ALL_TOPICS.findIndex((topic) => topic.id === topicId)
@@ -599,9 +608,13 @@ export default function TopicPage({
                   </AudioSection>
                 </Box>
               ) : (
-                <Typography sx={{ fontSize: 17, mb: 2 }}>{translatedText(localized.summary)}</Typography>
+                <Typography sx={{ fontSize: 17, mb: 2 }}>
+                  {translatedText(localized.summary, termsAudio)}
+                </Typography>
               )}
-              {localized.blocks.map((block, i) => renderBlock(block, i, audioFor, t.listen))}
+              {localized.blocks.map((block, i) =>
+                renderBlock(block, i, audioFor, t.listen, termsAudio)
+              )}
             </>
           ) : (
             <Typography color="text.secondary">{t.notWritten}</Typography>

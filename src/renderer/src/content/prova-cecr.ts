@@ -13,7 +13,7 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'O CECR (Cadre européen commun de référence pour les langues; em inglês, CEFR) é a escala europeia de proficiência em línguas, criada pelo Conselho da Europa. ' +
+          'O CECR ([[Cadre européen commun de référence pour les langues|Quadro Europeu Comum de Referência para as Línguas]]; em inglês, CEFR) é a escala europeia de proficiência em línguas, criada pelo Conselho da Europa. ' +
           'Tem 6 níveis em 3 grupos: usuário básico (A1, A2), independente (B1, B2) e proficiente (C1, C2).'
       },
       {
@@ -155,7 +155,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

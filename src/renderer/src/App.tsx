@@ -30,6 +30,7 @@ import Grammar from './pages/Grammar'
 import Placeholder from './pages/Placeholder'
 import Settings from './pages/Settings'
 import DocViewer from './pages/DocViewer'
+import Changelog from './pages/Changelog'
 import AudioManager from './pages/AudioManager'
 import AudioSuggestions from './pages/AudioSuggestions'
 import AccessRequests from './pages/AccessRequests'
@@ -55,6 +56,7 @@ type PageId =
   | 'grammar-review'
   | 'flashcard-list'
   | 'access'
+  | 'changelog'
 
 const DRAWER_WIDTH = 240
 
@@ -126,8 +128,11 @@ function renderPage(
           onOpenGrammarReview={() => openReview('settings')}
           onOpenFlashcardList={() => openFlashcardList('settings')}
           onOpenAccess={() => goTo('access')}
+          onOpenChangelog={() => goTo('changelog')}
         />
       )
+    case 'changelog':
+      return <Changelog onBack={() => goTo('settings')} />
     case 'access':
       return <AccessRequests onBack={() => goTo('settings')} />
     case 'audio-suggestions':
@@ -161,7 +166,7 @@ function renderPage(
 const TOPIC_ORDER = new Map(SECTIONS.flatMap((s) => s.topics).map((t, i) => [t.id, i]))
 
 // Telas que ficam "dentro" de outra aba (abertas por um botão, com "voltar")
-const SETTINGS_SUBPAGES: PageId[] = ['doc', 'audio', 'audio-suggestions', 'access']
+const SETTINGS_SUBPAGES: PageId[] = ['doc', 'audio', 'audio-suggestions', 'access', 'changelog']
 
 interface View {
   key: string
@@ -257,7 +262,7 @@ export default function App(): ReactElement {
   const isSelected = (id: PageId): boolean =>
     id === page ||
     (id === 'settings' &&
-      (page === 'doc' || page === 'audio' || page === 'audio-suggestions' || page === 'access')) ||
+      SETTINGS_SUBPAGES.includes(page)) ||
     (id === reviewBack && (page === 'grammar-review' || page === 'flashcard-list'))
 
   // Item da barra de baixo: ícone em cima, nome curto embaixo

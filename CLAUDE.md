@@ -19,7 +19,9 @@ Valem ao escrever ou integrar conteúdo, inclusive o gerado por outras IAs. Os m
 ### Páginas de estudo
 
 - Duas versões completas e equivalentes, `pt` e `fr` (título, resumo e blocos), com o botão PT/FR, e as fontes usadas no campo `sources`, que aparecem no fim da página.
-- **Na versão `pt`, todo francês vem traduzido:** cada palavra, expressão ou frase tem a tradução entre parênteses logo depois dela ou numa tabela. Vale também para palavras "fáceis". Só nomes próprios ficam sem tradução.
+- **Na versão `pt`, todo francês é marcado com a tradução:** `[[francês|tradução]]`, por exemplo `[[la voie|a linha]]`. O app mostra o termo destacado, com a tradução numa dica e o áudio ao clicar (`components/TranslatedText.tsx`). Vale também para palavras "fáceis" e para títulos de seção, tabelas e avisos. Só nomes próprios ficam sem marcação. Não traduza entre parênteses.
+- Página com termos marcados leva `'terms'` no campo `audio`; depois rode `npm run audio` para gerar os áudios dos termos.
+- As seções "Conhecendo a prova" e "Compreensão oral" já usam a marcação. As outras páginas ainda têm a tradução entre parênteses (ou nenhuma) e serão convertidas aos poucos.
 - **A versão `fr` fica toda em francês**, porque também é treino de leitura e vira áudio.
 - De 6 a 12 blocos por versão, na ordem explicação → exemplos → armadilhas → dica para a prova, com pelo menos um aviso (`warning`) do erro típico de quem fala português e uma dica (`tip`) do que a prova cobra. Tabelas sem célula vazia.
 
@@ -63,6 +65,16 @@ A versão aparece em Configurações → Sobre e é a que a atualização autom�
 - Um commit com várias mudanças sobe pelo tipo mais alto entre elas.
 - Cite a versão nova na mensagem do commit (ex.: "1.1.1: ...").
 - Subir a versão não publica nada por si só. **Cada push na `main` com versão nova publica uma Release automaticamente**, que chega aos apps instalados (`.github/workflows/release.yml`, ver README → Releases). O workflow mantém só as duas últimas Releases e apaga as mais antigas, sem apagar as tags. Não crie tags nem Releases à mão.
+
+## Novidades (changelog)
+
+O app mostra as novidades em **Configurações → Sobre → Novidades**, só quando a pessoa abre (nunca sozinho), com uma aba por versão minor (1.3, 1.2…). O conteúdo fica em `src/renderer/src/data/changelog.ts`.
+
+- **Toda mudança que quem usa o app percebe ganha uma entrada no mesmo commit**, na versão nova. Mudanças só internas (workflow, documentação técnica, regras para o Claude) ficam de fora.
+- Formato do [Keep a Changelog](https://keepachangelog.com), com as seções em português e em francês: Adicionado/Ajouté, Modificado/Modifié, Obsoleto/Obsolète, Removido/Supprimé, Corrigido/Corrigé, Segurança/Sécurité.
+- Cada item tem `pt` e `fr`, escritos para quem usa o app: o que mudou e onde, sem termos técnicos nem nomes de arquivo.
+- A versão mais nova fica no topo, com a data (AAAA-MM-DD).
+- As entradas cobrem desde a 1.0.0, escritas depois a partir do histórico de commits.
 
 ## Push
 

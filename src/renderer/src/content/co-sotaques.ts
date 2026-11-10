@@ -25,18 +25,18 @@ const content: TopicContent = {
         rows: [
           [
             'Québec',
-            'O t e o d antes de i e u soam como "ts" e "dz" (tu, "você", soa "tsu"; dire, "dizer", soa "dzire"); vogais mais longas e abertas',
-            'char (carro), magasiner (fazer compras), fin de semaine (fim de semana)'
+            'O t e o d antes de i e u soam como "ts" e "dz" ([[tu|você]] soa "tsu"; [[dire|dizer]] soa "dzire"); vogais mais longas e abertas',
+            '[[char|carro]], [[magasiner|fazer compras]], [[fin de semaine|fim de semana]]'
           ],
           [
             'Bélgica',
             'Ritmo e entonação próprios; algumas vogais mais longas',
-            'septante (70), nonante (90), "s’il vous plaît" (por favor; lá, também "aqui está") ao entregar algo'
+            '[[septante|70]], [[nonante|90]], "[[s’il vous plaît|por favor; na Bélgica, também "aqui está"]]" ao entregar algo'
           ],
           [
             'Suíça',
             'Fala mais pausada, vogais alongadas no fim das palavras',
-            'septante (70), huitante (80, em alguns cantões), nonante (90), le natel (celular)'
+            '[[septante|70]], [[huitante|80]] (em alguns cantões), [[nonante|90]], [[le natel|o celular]]'
           ],
           [
             'África francófona',
@@ -50,18 +50,18 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Na Bélgica e na Suíça, 70 é septante e 90 é nonante, em vez de soixante-dix e quatre-vingt-dix. ' +
-          'Em alguns cantões suíços, 80 é huitante. Num anúncio com preço ou horário, isso pode decidir a resposta.'
+          'Na Bélgica e na Suíça, 70 é [[septante|70]] e 90 é [[nonante|90]], em vez de [[soixante-dix|70]] e [[quatre-vingt-dix|90]]. ' +
+          'Em alguns cantões suíços, 80 é [[huitante|80]]. Num anúncio com preço ou horário, isso pode decidir a resposta.'
       },
 
       { type: 'heading', text: 'O francês do Québec no dia a dia' },
       {
         type: 'list',
         items: [
-          '"Tu" depois do verbo marca uma pergunta na fala informal: "Tu viens-tu ?" quer dizer "Tu viens ?" (Você vem?).',
-          '"Pantoute" significa "pas du tout" (de jeito nenhum), e "c’est plate" significa "c’est ennuyeux" (é chato).',
-          '"Bienvenue" (bem-vindo) também é a resposta para "merci" (obrigado), como "de nada".',
-          'As refeições: déjeuner (café da manhã), dîner (almoço) e souper (jantar).'
+          '"[[Tu|você]]" depois do verbo marca uma pergunta na fala informal: "[[Tu viens-tu ?|Você vem?]]" quer dizer "[[Tu viens ?|Você vem?]]".',
+          '"[[Pantoute|de jeito nenhum]]" significa "[[pas du tout|de jeito nenhum]]", e "[[c’est plate|é chato]]" significa "[[c’est ennuyeux|é chato]]".',
+          '"[[Bienvenue|bem-vindo]]" também é a resposta para "[[merci|obrigado]]", como "de nada".',
+          'As refeições no Québec: [[déjeuner|café da manhã]], [[dîner|almoço]] e [[souper|jantar]].'
         ]
       },
       {
@@ -163,7 +163,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

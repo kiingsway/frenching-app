@@ -53,7 +53,12 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Tarefa', 'O que fazer', 'Tamanho', 'Tempo sugerido'],
         rows: [
-          ['TEF – Seção A', 'Continuar uma notícia (fait divers) a partir do começo dado', 'Mínimo de 80 palavras', '25 min'],
+          [
+            'TEF – Seção A',
+            'Continuar uma notícia do tipo [[fait divers|notícia curta sobre um acontecimento do dia a dia, como um acidente, um crime ou uma curiosidade]] a partir do começo dado',
+            'Mínimo de 80 palavras',
+            '25 min'
+          ],
           ['TEF – Seção B', 'Texto ou carta defendendo um ponto de vista', 'Mínimo de 200 palavras', '35 min'],
           ['TCF – Tarefa 1', 'Mensagem curta: convite, pedido, informação', '60 a 120 palavras', '10 a 15 min'],
           ['TCF – Tarefa 2', 'Artigo ou relato de experiência', '120 a 150 palavras', '15 a 20 min'],
@@ -86,7 +91,7 @@ const content: TopicContent = {
         tone: 'tip',
         title: 'O examinador não é seu adversário',
         text:
-          'Nas tarefas de interação, ele faz o papel combinado. Se não entender, peça para repetir ("Pourriez-vous répéter, s’il vous plaît ?"): ' +
+          'Nas tarefas de interação, ele faz o papel combinado. Se não entender, peça para repetir ("[[Pourriez-vous répéter, s’il vous plaît ?|O senhor poderia repetir, por favor?]]"): ' +
           'isso faz parte de uma comunicação natural e não tira pontos.'
       },
 
@@ -215,7 +220,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

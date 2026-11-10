@@ -9,6 +9,7 @@ import {
   FiCloudOff,
   FiFileText,
   FiFlag,
+  FiGift,
   FiGithub,
   FiGlobe,
   FiLayers,
@@ -782,7 +783,8 @@ export default function Settings({
   onOpenAudioSuggestions,
   onOpenGrammarReview,
   onOpenFlashcardList,
-  onOpenAccess
+  onOpenAccess,
+  onOpenChangelog
 }: {
   onOpenDoc: (docId: string) => void
   onOpenAudio: () => void
@@ -790,6 +792,7 @@ export default function Settings({
   onOpenGrammarReview: () => void
   onOpenFlashcardList: () => void
   onOpenAccess: () => void
+  onOpenChangelog: () => void
 }): ReactElement {
   const admin = isAdmin(useAccess())
   const suggestions = useAudioSuggestions()
@@ -979,6 +982,9 @@ export default function Settings({
           <UpdateLine />
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 2 }}>
             <UpdateButton />
+            <Button variant="outlined" size="small" startIcon={<FiGift />} onClick={onOpenChangelog}>
+              Novidades
+            </Button>
             {GITHUB_URL && (
               <Button
                 variant="outlined"

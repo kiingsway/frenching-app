@@ -6,7 +6,7 @@ const content: TopicContent = {
   pt: {
     title: 'Gestão de tempo e estratégias para QCM',
     summary:
-      'As provas de compreensão oral e escrita são QCM (questionário de múltipla escolha). ' +
+      'As provas de compreensão oral e escrita são [[QCM|questionário de múltipla escolha]]. ' +
       'Além de entender francês, ir bem nelas depende de administrar o tempo e de conhecer as armadilhas mais comuns.',
     blocks: [
       { type: 'heading', text: 'Regra número 1: responda todas' },
@@ -50,7 +50,7 @@ const content: TopicContent = {
           'Antes: leia a pergunta e as alternativas. Descubra o que procurar: um número, um lugar, uma opinião, a intenção de quem fala.',
           'Durante: preste atenção ao sentido geral e às palavras-chave. Não tente entender cada palavra.',
           'Depois: responda na hora e passe para a próxima. Não fique remoendo o áudio anterior.',
-          'Em opiniões, procure o tom: ironia, dúvida, entusiasmo. "Ce n’est pas mal" é um elogio moderado, não uma crítica.'
+          'Em opiniões, procure o tom: ironia, dúvida, entusiasmo. "[[Ce n’est pas mal|não é ruim]]" é um elogio moderado, não uma crítica.'
         ]
       },
 
@@ -60,7 +60,7 @@ const content: TopicContent = {
         items: [
           'Leia a pergunta antes do texto. Assim você sabe se precisa de um detalhe (busca rápida) ou da ideia geral (leitura completa).',
           'Em textos do dia a dia (anúncios, horários), procure só a informação pedida.',
-          'Em textos argumentativos, identifique a opinião do autor: introdução, conectores de oposição (mais, cependant, pourtant) e conclusão.',
+          'Em textos argumentativos, identifique a opinião do autor: introdução, conectores de oposição ([[mais|mas]], [[cependant|no entanto]], [[pourtant|porém]]) e conclusão.',
           'A resposta certa quase sempre está escrita com outras palavras (paráfrase ou sinônimo).'
         ]
       },
@@ -72,9 +72,18 @@ const content: TopicContent = {
         rows: [
           ['A alternativa repete palavras exatas do texto ou do áudio', 'Desconfie: a certa costuma ser uma paráfrase'],
           ['A alternativa é verdadeira, mas não responde à pergunta', 'Releia a pergunta antes de marcar'],
-          ['A alternativa exagera (toujours, jamais, tous)', 'Procure no texto se a afirmação é tão absoluta'],
-          ['Negações e restrições (ne… que, ne… plus, sauf)', 'Leia com calma: "il ne reste que deux places" quer dizer que ainda há vagas'],
-          ['Mudança de ideia no meio (mais, finalement)', 'O que vem depois do "mais" costuma ser o que vale']
+          [
+            'A alternativa exagera ([[toujours|sempre]], [[jamais|nunca]], [[tous|todos]])',
+            'Procure no texto se a afirmação é tão absoluta'
+          ],
+          [
+            'Negações e restrições ([[ne… que|só, apenas]], [[ne… plus|não… mais]], [[sauf|exceto]])',
+            'Leia com calma: "[[il ne reste que deux places|só restam dois lugares]]" quer dizer que ainda há vagas'
+          ],
+          [
+            'Mudança de ideia no meio ([[mais|mas]], [[finalement|afinal]])',
+            'O que vem depois do "[[mais|mas]]" costuma ser o que vale'
+          ]
         ]
       },
       {
@@ -173,7 +182,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

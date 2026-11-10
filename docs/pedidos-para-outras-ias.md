@@ -102,8 +102,13 @@ Cada versão tem:
   { "type": "table", "headers": ["...", "..."], "rows": [["...", "..."]] }   (nenhuma célula vazia)
   { "type": "callout", "tone": "tip" ou "warning", "title": "...", "text": "..." }
 - Inclua pelo menos um "warning" com o erro típico de quem fala português e um "tip" com o que a prova cobra.
-- Tradução obrigatória na versão "pt": toda palavra, expressão ou frase em francês vem com a tradução em português, entre parênteses logo depois dela (ex.: la voie (a linha)) ou numa tabela com uma coluna para o francês e outra para o português. Vale para parágrafos, listas, tabelas, avisos e exemplos citados, sem exceção para palavras "fáceis". Só nomes próprios ficam sem tradução (RFI, Radio-Canada).
-- A versão "fr" fica toda em francês, sem traduções em português, porque vira áudio.
+- Tradução obrigatória na versão "pt": toda palavra, expressão ou frase em francês é marcada assim: [[francês|tradução em português]]. Exemplos: [[la voie|a linha]], [[Je peux vous aider ?|Posso ajudar?]], [[soixante-dix|70]]. Vale para títulos de seção, parágrafos, listas, tabelas, avisos e exemplos citados, sem exceção para palavras "fáceis". Só nomes próprios ficam sem marcação (RFI, Radio-Canada).
+  - Não use parênteses para traduzir: o app mostra o francês destacado, com a tradução numa dica e o áudio ao clicar.
+  - Cada marcação tem um trecho só em francês e não leva outra marcação dentro. Uma frase longa pode ser marcada inteira.
+  - Dentro da marcação, não use os caracteres | e ] além dos da própria marcação.
+  - O texto em volta continua em português: "a resposta certa é [[à l’heure|no horário]]".
+  - Uma tabela pode ter colunas separadas para o francês e o português; nesse caso, as células em francês também levam a marcação.
+- A versão "fr" fica toda em francês, sem traduções nem marcações, porque vira áudio.
 - Tamanho: de 6 a 12 blocos por versão.
 
 "sources": as fontes usadas, no fim (título e endereço real).
@@ -118,6 +123,8 @@ Formato:
 ```
 
 Os tópicos que faltam aparecem como "em breve" no Painel e estão listados em [topicos-de-estudo.md](../topicos-de-estudo.md).
+
+Ao integrar a página, o Claude confere se todo francês da versão "pt" está marcado, acrescenta `'terms'` ao campo `audio` e gera os áudios dos termos.
 
 ---
 
