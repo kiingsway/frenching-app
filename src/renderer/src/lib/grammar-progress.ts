@@ -1,5 +1,4 @@
-import type { GrammarQuestion } from '@/data/grammar'
-import { createMapStore } from './map-store'
+import { createMapStore, type MapStore } from './map-store'
 
 // Desempenho em cada questão de gramática, salvo no computador (e na conta, com login)
 export interface QuestionStats {
@@ -12,32 +11,43 @@ export interface QuestionStats {
 
 export type GrammarStats = Record<string, QuestionStats>
 
+// Store de desempenho por questão (Gramática e Compreensão escrita usam o mesmo formato).
 // Ao juntar com a conta, vale o registro com mais tentativas (em empate, o mais recente)
-export const grammarStore = createMapStore<QuestionStats>({
-  key: 'grammarStats',
-  isValid: (value): value is QuestionStats => {
-    const v = value as QuestionStats
-    return (
-      !!v &&
-      typeof v === 'object' &&
-      typeof v.seen === 'number' &&
-      typeof v.correct === 'number' &&
-      typeof v.last === 'boolean' &&
-      typeof v.at === 'number'
-    )
-  },
-  wins: (a, b) => a.seen > b.seen || (a.seen === b.seen && a.at > b.at)
-})
+export const createQuestionStore = (key: string): MapStore<QuestionStats> =>
+  createMapStore<QuestionStats>({
+    key,
+    isValid: (value): value is QuestionStats => {
+      const v = value as QuestionStats
+      return (
+        !!v &&
+        typeof v === 'object' &&
+        typeof v.seen === 'number' &&
+        typeof v.correct === 'number' &&
+        typeof v.last === 'boolean' &&
+        typeof v.at === 'number'
+      )
+    },
+    wins: (a, b) => a.seen > b.seen || (a.seen === b.seen && a.at > b.at)
+  })
 
-export function recordAnswer(questionId: string, correct: boolean): void {
-  const prev = grammarStore.get()[questionId]
-  grammarStore.set(questionId, {
+export const grammarStore = createQuestionStore('grammarStats')
+
+export function recordInStore(
+  store: MapStore<QuestionStats>,
+  questionId: string,
+  correct: boolean
+): void {
+  const prev = store.get()[questionId]
+  store.set(questionId, {
     seen: (prev?.seen ?? 0) + 1,
     correct: (prev?.correct ?? 0) + (correct ? 1 : 0),
     last: correct,
     at: Date.now()
   })
 }
+
+export const recordAnswer = (questionId: string, correct: boolean): void =>
+  recordInStore(grammarStore, questionId, correct)
 
 export const useGrammarStats = (): GrammarStats => grammarStore.use()
 
@@ -53,7 +63,7 @@ export interface Summary {
   accuracy: number | null
 }
 
-export function summarize(questions: GrammarQuestion[], all: GrammarStats): Summary {
+export function summarize(questions: { id: string }[], all: GrammarStats): Summary {
   let answered = 0
   let mastered = 0
   let wrong = 0
@@ -88,11 +98,11 @@ function shuffle<T>(items: T[]): T[] {
 
 // Escolhe até `count` questões, priorizando as nunca respondidas e as erradas
 // na última vez; dentro de cada grupo, a ordem é aleatória
-export function pickQuestions(
-  pool: GrammarQuestion[],
+export function pickQuestions<Q extends { id: string }>(
+  pool: Q[],
   count: number,
   all: GrammarStats
-): GrammarQuestion[] {
+): Q[] {
   const unseen = pool.filter((q) => !all[q.id])
   const wrong = pool.filter((q) => all[q.id] && !all[q.id].last)
   const rest = pool.filter((q) => all[q.id]?.last)

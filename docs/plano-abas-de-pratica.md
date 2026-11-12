@@ -2,7 +2,7 @@
 
 Como vamos construir as abas **Compreensão escrita**, **Compreensão oral**, **Produção escrita**, **Produção oral** e **Simulados**.
 
-> Plano decidido em 08/11/2026. Nada aqui foi construído ainda: as cinco abas continuam bloqueadas como "em breve".
+> Plano decidido em 08/11/2026. Em 12/11/2026 a aba Compreensão escrita foi construída e liberada com 5 textos de exemplo (Fase 1, falta o conteúdo); as outras quatro continuam bloqueadas como "em breve".
 
 ## Objetivo
 
@@ -69,6 +69,15 @@ interface ReadingPassage {
 ```
 
 **Pronto quando:** houver 30 textos com cerca de 60 questões, os dois modos funcionarem, o progresso sincronizar e a lista de revisão estiver no ar.
+
+**Situação em 12/11/2026:** a aba está no ar com 5 textos e 15 questões (A2, B1, B1, B2, C1), em `data/reading/textos.ts`. Já funcionam o Treino (com tradução e áudio do título, de cada parágrafo e de cada pergunta, gerados pelo `npm run audio`) e a Prova (sem áudio), o filtro por nível e tipo, a revisão de erros, o progresso sincronizado (campo `reading`) e a lista de revisão (`content-review/reading.json`). Os 25 textos que faltam seguem a distribuição A2: 6, B1: 10, B2: 10, C1: 4 (contando os 5 que já existem), com 3 questões por texto. O modelo de pedido está em `pedidos-para-outras-ias.md`.
+
+O que ficou diferente do desenho acima:
+- `text` e `translation` são listas de parágrafos, um item de tradução para cada parágrafo, para mostrar a tradução logo abaixo de cada um.
+- `kind` é o id do tópico da seção 2 (`ce-cotidiano`, `ce-cartas`…), e o botão do livro abre a teoria daquele tipo de texto.
+- Não há escolha entre TEF e TCF nesta aba: as duas têm 60 minutos, e a Prova usa 1 min 30 por questão (40 em 60 min no TEF, 39 em 60 min no TCF). A escolha entra nos Simulados.
+- A aba saiu na versão 1.4.1 (patch), a pedido do usuário, e não como minor.
+- Na Prova, a resposta pode ser trocada até apertar "Próxima"; depois, não dá para voltar. Questão sem resposta quando o tempo acaba conta como erro.
 
 ## Fase 2: Compreensão oral
 

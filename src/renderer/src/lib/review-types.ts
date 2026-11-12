@@ -1,9 +1,10 @@
-// Tipos da revisão de conteúdo (questões de gramática e flashcards), compartilhados
+// Tipos da revisão de conteúdo (questões de gramática, flashcards e compreensão escrita), compartilhados
 // pelo app e pelo processo principal (src/main/review.ts). Sem imports, como
 // lib/audio-texts.ts.
 
-// Cada tipo de conteúdo tem seu arquivo: content-review/grammar.json, flashcards.json
-export type ReviewKind = 'grammar' | 'flashcards'
+// Cada tipo de conteúdo tem seu arquivo: content-review/grammar.json, flashcards.json,
+// reading.json
+export type ReviewKind = 'grammar' | 'flashcards' | 'reading'
 
 export interface ReviewEntry {
   status: 'ok' | 'problem'

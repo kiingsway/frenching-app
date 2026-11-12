@@ -8,6 +8,7 @@ import { APP_ID, db } from './firebase'
 import { flashcardStore, newPerDayPref } from './flashcard-progress'
 import { grammarStore } from './grammar-progress'
 import type { MapStore } from './map-store'
+import { readingStore } from './reading-progress'
 import { themeModePref, topicLangPref, topicZoomPref, type Pref } from './prefs'
 import { load, save } from './storage'
 
@@ -20,7 +21,8 @@ import { load, save } from './storage'
 //   - ao entrar, o que está na conta passa a valer neste computador;
 //   - se a conta ainda não tem nada (primeiro login), sobe o que está no computador.
 //
-//  progress (tópicos concluídos, desempenho na gramática e estado FSRS dos flashcards)
+//  progress (tópicos concluídos, desempenho na gramática e na compreensão escrita e
+//  estado FSRS dos flashcards)
 //   - o que está na conta e o que está no computador se JUNTAM, registro a registro
 //     (um por tópico, por questão, por cartão), e o resultado fica nos dois lados;
 //   - em cada registro, vale a regra do seu store (tópico: marcação mais recente;
@@ -53,7 +55,8 @@ const SETTINGS: Record<string, Pref<unknown>> = {
 const PROGRESS: Record<string, MapStore<unknown>> = {
   topics: completedStore as MapStore<unknown>,
   grammar: grammarStore as MapStore<unknown>,
-  flashcards: flashcardStore as MapStore<unknown>
+  flashcards: flashcardStore as MapStore<unknown>,
+  reading: readingStore as MapStore<unknown>
 }
 
 // Conta dona do que está salvo neste computador (a última que sincronizou)

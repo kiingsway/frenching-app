@@ -10,7 +10,8 @@ Modelos de pedido para gerar conteúdo do Frenching em outra IA (ChatGPT, Gemini
 
 > Conteúdo gerado por IA pode ter erros de francês ou de fatos sobre a prova. Depois de integrado, revise na lista do app:
 > - Configurações → Lista de questões, para as questões de gramática;
-> - Lista de flashcards, para os cartões.
+> - Lista de flashcards, para os cartões;
+> - Lista de textos, para os textos de compreensão escrita.
 >
 > Marque OK ou Problema; o Claude corrige os marcados.
 
@@ -89,6 +90,43 @@ Formato:
 ```
 
 Os tópicos estão em [topicos-de-estudo.md](../topicos-de-estudo.md), na seção Gramática. Questões novas entram sempre no fim da lista do tópico.
+
+---
+
+## Textos de compreensão escrita (aba Compreensão escrita)
+
+```
+Crie [3] textos originais para treinar a compreensão escrita do TEF Canada e do TCF Canada, nível [A2 / B1 / B2 / C1], do tipo [documento do cotidiano / e-mail ou carta / oferta ou anúncio / notícia / texto argumentativo / texto literário].
+
+Cada texto:
+- Original: não copie nem adapte questões ou textos de provas oficiais ou de livros.
+- Situação do Canadá (Québec) sempre que fizer sentido, com vocabulário canadense (courriel, fin de semaine, texto, 4 ½, chauffé et éclairé). Pessoas, empresas e endereços fictícios; cidades reais podem aparecer, mas sem afirmar fatos reais sobre elas (estatísticas, leis, preços médios). Notícias falam de um acontecimento inventado, de preferência numa cidade fictícia.
+- Tamanho pelo nível: A2, 60 a 120 palavras; B1, 120 a 200; B2, 200 a 300; C1, 250 a 400.
+- "text": lista de parágrafos (num anúncio, uma linha por item), só texto simples, sem Markdown e sem 
+.
+- "translation": a tradução em português do Brasil, com o MESMO número de itens de "text", item por item.
+
+Cada texto tem 3 questões:
+- "prompt": a pergunta em francês, como na prova (ideia principal, detalhe, intenção do autor, sentido de uma expressão no contexto).
+- "options": 4 opções em francês; a PRIMEIRA é sempre a correta (o app embaralha). Só uma pode estar certa pelo texto. As erradas devem ser plausíveis: usam palavras do texto com o sentido trocado, ou dados que aparecem no texto mas respondem a outra pergunta.
+- A resposta certa usa paráfrase (sinônimos), em vez de repetir a frase do texto.
+- "explanation": em português, cite o trecho do texto que dá a resposta e diga por que a armadilha principal está errada. Mostre a forma da França quando o texto usar uma palavra só do Canadá.
+
+Formato:
+{
+  "id": "[id-curto-sem-acento, ex.: ce-annonce-velo]",
+  "level": "[A2 | B1 | B2 | C1]",
+  "kind": "[ce-cotidiano | ce-cartas | ce-ofertas | ce-noticias | ce-argumentativos | ce-literarios]",
+  "title": "[título do documento, em francês]",
+  "text": ["...", "..."],
+  "translation": ["...", "..."],
+  "questions": [
+    { "prompt": "...", "options": ["certa", "errada", "errada", "errada"], "explanation": "..." }
+  ]
+}
+```
+
+Para vários textos, peça uma lista desses objetos. Os textos novos entram no fim de `data/reading/textos.ts`; os ids não mudam depois de publicados.
 
 ---
 

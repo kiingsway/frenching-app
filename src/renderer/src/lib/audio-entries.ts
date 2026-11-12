@@ -1,12 +1,15 @@
 import { ALL_CONTENT } from '@/content'
 import type { AudioPart } from '@/content/types'
 import { FLASHCARD_DECKS } from '@/data/flashcards'
+import { TEXTOS } from '@/data/reading/textos'
 import { audioKey, hasSpeech, speechText } from './audio-key'
 import {
   DEFAULT_VOICE,
   flashcardTexts,
+  readingTexts,
   textsFor,
   type FlashcardAudioPart,
+  type ReadingAudioPart,
   type VoiceId,
   type VoiceOverrides
 } from './audio-texts'
@@ -16,9 +19,9 @@ import bundledVoices from '../assets/audio/voices.json'
 
 // Todos os textos com áudio, um por arquivo (textos iguais usam o mesmo arquivo).
 // Mesma lista que o scripts/generate-audio.mts gera, na mesma ordem: primeiro as
-// páginas de estudo, depois os flashcards.
+// páginas de estudo, depois os flashcards, depois os textos de compreensão escrita.
 
-export type EntryPart = AudioPart | FlashcardAudioPart
+export type EntryPart = AudioPart | FlashcardAudioPart | ReadingAudioPart
 
 export const PART_LABELS: Record<EntryPart, string> = {
   title: 'Título',
@@ -30,7 +33,10 @@ export const PART_LABELS: Record<EntryPart, string> = {
   tables: 'Célula de tabela',
   terms: 'Termo traduzido',
   cardWord: 'Palavra do cartão',
-  cardExample: 'Exemplo do cartão'
+  cardExample: 'Exemplo do cartão',
+  readingTitle: 'Título do texto',
+  readingText: 'Parágrafo do texto',
+  readingQuestion: 'Pergunta'
 }
 
 export interface AudioEntry {
@@ -38,7 +44,8 @@ export interface AudioEntry {
   // O que a voz vai falar (speechText), e o texto como aparece na página
   spoken: string
   original: string
-  // Página de estudo ou baralho de flashcards (`flashcards-${deckId}`)
+  // Página de estudo, baralho de flashcards (`flashcards-${deckId}`) ou texto de
+  // compreensão escrita (`reading-${passageId}`)
   pageId: string
   pageTitle: string
   part: EntryPart
@@ -77,6 +84,9 @@ export function buildEntries(): AudioEntry[] {
     for (const card of deck.cards)
       for (const [part, text] of flashcardTexts(card))
         add(text, `flashcards-${deck.id}`, `Flashcards · ${deck.title}`, part)
+  for (const passage of TEXTOS)
+    for (const [part, text] of readingTexts(passage))
+      add(text, `reading-${passage.id}`, `Compreensão escrita · ${passage.title}`, part)
   return [...byKey.values()]
 }
 

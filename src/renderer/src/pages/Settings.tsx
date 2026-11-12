@@ -869,6 +869,7 @@ export default function Settings({
   onOpenAudioReports,
   onOpenGrammarReview,
   onOpenFlashcardList,
+  onOpenReadingReview,
   onOpenAccess,
   onOpenPageReports,
   onOpenChangelog
@@ -878,6 +879,7 @@ export default function Settings({
   onOpenAudioReports: () => void
   onOpenGrammarReview: () => void
   onOpenFlashcardList: () => void
+  onOpenReadingReview: () => void
   onOpenAccess: () => void
   onOpenPageReports: () => void
   onOpenChangelog: () => void
@@ -1034,6 +1036,18 @@ export default function Settings({
           </List>
         </SettingsCard>
 
+        <SettingsCard>
+          <Typography variant="subtitle1">Compreensão escrita</Typography>
+          <List disablePadding component={motion.div} variants={stagger(0.1)} sx={{ mt: 2 }}>
+            <LinkButton
+              icon={FiBookOpen}
+              primary="Lista de textos"
+              secondary="Textos, traduções, questões e respostas certas"
+              onClick={onOpenReadingReview}
+            />
+          </List>
+        </SettingsCard>
+
         {/* Sobre: nome, versão, para que serve e o código no GitHub */}
         <SettingsCard>
           <Typography variant="subtitle1" sx={{ mb: 2 }}>
@@ -1082,7 +1096,12 @@ export default function Settings({
           <UpdateLine />
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 2 }}>
             <UpdateButton />
-            <Button variant="outlined" size="small" startIcon={<FiGift />} onClick={onOpenChangelog}>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<FiGift />}
+              onClick={onOpenChangelog}
+            >
               Novidades
             </Button>
             {GITHUB_URL && (

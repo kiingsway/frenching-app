@@ -8,7 +8,8 @@
 //
 // Para cada página com o campo `audio`, gera um mp3 para cada parte listada
 // (veja AudioPart em content/types.ts) da versão em francês, e para cada flashcard
-// (data/flashcards), a palavra e o exemplo em francês. O arquivo se chama pelo hash
+// (data/flashcards), a palavra e o exemplo em francês, e para cada texto de
+// compreensão escrita (data/reading/textos.ts), o título, os parágrafos e as perguntas. O arquivo se chama pelo hash
 // do texto falado (speechText), então só textos novos ou alterados são gerados de novo.
 // Requer o edge-tts (pip install edge-tts) e internet; o app em si continua offline.
 // O edge-tts roda em lote por scripts/tts-batch.py (um processo Python só, vários
@@ -38,12 +39,14 @@ import {
   AUDIO_VOICES,
   DEFAULT_VOICE,
   flashcardTexts,
+  readingTexts,
   textsFor,
   type AudioGenStatus,
   type VoiceOverrides
 } from '../src/renderer/src/lib/audio-texts.ts'
 import type { TopicContent } from '../src/renderer/src/content/types.ts'
 import type { FlashcardDeckDraft } from '../src/renderer/src/data/flashcards/types.ts'
+import type { ReadingPassageDraft } from '../src/renderer/src/data/reading/types.ts'
 
 const RATE = '-24%'
 
@@ -66,6 +69,7 @@ const JOBS = Math.max(
 const BATCH_SCRIPT = resolve('scripts/tts-batch.py')
 const CONTENT_DIR = resolve('src/renderer/src/content')
 const FLASHCARDS_DIR = resolve('src/renderer/src/data/flashcards')
+const READING_FILE = resolve('src/renderer/src/data/reading/textos.ts')
 const AUDIO_DIR = resolve('src/renderer/src/assets/audio')
 const STATUS_FILE = resolve('scripts/.audio-status.json')
 // Voz de cada texto que não usa a padrão (definida na lista de áudios do app)
@@ -115,6 +119,18 @@ for (const file of deckFiles) {
       if (!entries.has(key))
         entries.set(key, { label: `flashcards-${deck.id} (${part})`, spoken: speechText(text) })
     }
+  }
+}
+
+// Textos de compreensão escrita
+const readingPassages = (await import(pathToFileURL(READING_FILE).href))
+  .TEXTOS as ReadingPassageDraft[]
+for (const passage of readingPassages) {
+  for (const [part, text] of readingTexts(passage)) {
+    if (!hasSpeech(text)) continue
+    const key = audioKey(text)
+    if (!entries.has(key))
+      entries.set(key, { label: `reading-${passage.id} (${part})`, spoken: speechText(text) })
   }
 }
 

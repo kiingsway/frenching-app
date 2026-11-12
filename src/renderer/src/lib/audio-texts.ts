@@ -3,6 +3,7 @@
 // Só tem imports de tipo, para poder ser usado direto pelo Node no script.
 import type { AudioPart, TopicContent } from '../content/types'
 import type { CardDraft } from '../data/flashcards/types'
+import type { ReadingPassageDraft } from '../data/reading/types'
 
 export const AUDIO_PARTS: AudioPart[] = [
   'title',
@@ -100,6 +101,18 @@ export function flashcardTexts(card: CardDraft): [FlashcardAudioPart, string][] 
   return [
     ['cardWord', card.fr],
     ['cardExample', card.example.fr]
+  ]
+}
+
+// Compreensão escrita: o título, cada parágrafo do texto e cada pergunta têm áudio
+// (as opções não, porque clicar nelas é responder)
+export type ReadingAudioPart = 'readingTitle' | 'readingText' | 'readingQuestion'
+
+export function readingTexts(passage: ReadingPassageDraft): [ReadingAudioPart, string][] {
+  return [
+    ['readingTitle', passage.title],
+    ...passage.text.map((text): [ReadingAudioPart, string] => ['readingText', text]),
+    ...passage.questions.map(([prompt]): [ReadingAudioPart, string] => ['readingQuestion', prompt])
   ]
 }
 

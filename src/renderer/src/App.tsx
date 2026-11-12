@@ -36,6 +36,8 @@ import AudioReports from './pages/AudioReports'
 import AccessRequests from './pages/AccessRequests'
 import PageReports from './pages/PageReports'
 import GrammarReview from './pages/GrammarReview'
+import Reading from './pages/Reading'
+import ReadingReview from './pages/ReadingReview'
 import FlashcardList from './pages/FlashcardList'
 import SuggestionDots from './components/SuggestionDots'
 import TopicPage from './pages/TopicPage'
@@ -56,6 +58,7 @@ type PageId =
   | 'audio'
   | 'audio-reports'
   | 'grammar-review'
+  | 'reading-review'
   | 'flashcard-list'
   | 'access'
   | 'page-reports'
@@ -81,8 +84,7 @@ const NAV: NavItem[] = [
     id: 'reading',
     label: 'Compreensão escrita',
     short: 'Comp. escrita',
-    icon: FiBookOpen,
-    soon: true
+    icon: FiBookOpen
   },
   {
     id: 'listening',
@@ -113,7 +115,8 @@ function renderPage(
   // Configurações e voltam para onde vieram
   reviewBack: PageId,
   openReview: (from: PageId) => void,
-  openFlashcardList: (from: PageId) => void
+  openFlashcardList: (from: PageId) => void,
+  openReadingReview: (from: PageId) => void
 ): ReactElement {
   switch (id) {
     case 'dashboard':
@@ -122,6 +125,8 @@ function renderPage(
       return <Flashcards onOpenList={() => openFlashcardList('flashcards')} />
     case 'grammar':
       return <Grammar onOpenTopic={openTopic} onOpenReview={() => openReview('grammar')} />
+    case 'reading':
+      return <Reading onOpenTopic={openTopic} onOpenReview={() => openReadingReview('reading')} />
     case 'settings':
       return (
         <Settings
@@ -130,6 +135,7 @@ function renderPage(
           onOpenAudioReports={() => goTo('audio-reports')}
           onOpenGrammarReview={() => openReview('settings')}
           onOpenFlashcardList={() => openFlashcardList('settings')}
+          onOpenReadingReview={() => openReadingReview('settings')}
           onOpenAccess={() => goTo('access')}
           onOpenPageReports={() => goTo('page-reports')}
           onOpenChangelog={() => goTo('changelog')}
@@ -151,6 +157,13 @@ function renderPage(
       return (
         <GrammarReview
           backLabel={reviewBack === 'grammar' ? 'Gramática' : 'Configurações'}
+          onBack={() => goTo(reviewBack)}
+        />
+      )
+    case 'reading-review':
+      return (
+        <ReadingReview
+          backLabel={reviewBack === 'reading' ? 'Compreensão escrita' : 'Configurações'}
           onBack={() => goTo(reviewBack)}
         />
       )
@@ -181,6 +194,9 @@ const SETTINGS_SUBPAGES: PageId[] = [
   'changelog'
 ]
 
+// Listas de revisão: abertas pela própria aba ou pelas Configurações
+const REVIEW_PAGES: PageId[] = ['grammar-review', 'flashcard-list', 'reading-review']
+
 interface View {
   key: string
   // Posição da aba no menu (Configurações por último)
@@ -194,7 +210,7 @@ interface View {
 function viewOf(page: PageId, topicId: string | null, reviewBack: PageId): View {
   const owner: PageId = SETTINGS_SUBPAGES.includes(page)
     ? 'settings'
-    : page === 'grammar-review' || page === 'flashcard-list'
+    : REVIEW_PAGES.includes(page)
       ? reviewBack
       : page
   const index = NAV.findIndex((n) => n.id === owner)
@@ -270,6 +286,10 @@ export default function App(): ReactElement {
     setReviewBack(from)
     goTo('flashcard-list')
   }
+  const openReadingReview = (from: PageId): void => {
+    setReviewBack(from)
+    goTo('reading-review')
+  }
 
   // Janela estreita (ou celular, na versão web): menu vira uma barra embaixo
   const isMobile = useMediaQuery(useTheme().breakpoints.down('md'))
@@ -277,7 +297,7 @@ export default function App(): ReactElement {
   const isSelected = (id: PageId): boolean =>
     id === page ||
     (id === 'settings' && SETTINGS_SUBPAGES.includes(page)) ||
-    (id === reviewBack && (page === 'grammar-review' || page === 'flashcard-list'))
+    (id === reviewBack && REVIEW_PAGES.includes(page))
 
   // Item da barra de baixo: ícone em cima, nome curto embaixo
   const mobileNavItem = (item: NavItem): ReactElement => {
@@ -399,7 +419,8 @@ export default function App(): ReactElement {
             openDoc,
             reviewBack,
             openReview,
-            openFlashcardList
+            openFlashcardList,
+            openReadingReview
           )
         )}
       </motion.div>
@@ -482,7 +503,11 @@ export default function App(): ReactElement {
     // reducedMotion="user": se o Windows pede menos animações, elas ficam desligadas
     <MotionConfig reducedMotion="user">
       <Box
-        sx={{ display: 'flex', height: '100vh', '@supports (height: 100dvh)': { height: '100dvh' } }}
+        sx={{
+          display: 'flex',
+          height: '100vh',
+          '@supports (height: 100dvh)': { height: '100dvh' }
+        }}
       >
         <Drawer
           variant="permanent"

@@ -1,7 +1,7 @@
-// Revisão de conteúdo (Configurações → Questões de gramática / Lista de flashcards),
-// só no modo de desenvolvimento: as marcações vão para content-review/grammar.json e
-// content-review/flashcards.json, na raiz do projeto, para poderem ser lidas e
-// corrigidas no código depois.
+// Revisão de conteúdo (Configurações → Questões de gramática / Lista de flashcards /
+// Textos de compreensão escrita), só no modo de desenvolvimento: as marcações vão para
+// content-review/grammar.json, flashcards.json e reading.json, na raiz do projeto,
+// para poderem ser lidas e corrigidas no código depois.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { dirname, join } from 'path'
@@ -10,12 +10,14 @@ import type { ReviewEntry, ReviewKind, ReviewMap } from '../renderer/src/lib/rev
 
 const FILES: Record<ReviewKind, string> = {
   grammar: join(app.getAppPath(), 'content-review/grammar.json'),
-  flashcards: join(app.getAppPath(), 'content-review/flashcards.json')
+  flashcards: join(app.getAppPath(), 'content-review/flashcards.json'),
+  reading: join(app.getAppPath(), 'content-review/reading.json')
 }
 
 const available = !app.isPackaged
 
-const fileOf = (kind: unknown): string => FILES[kind === 'flashcards' ? 'flashcards' : 'grammar']
+const fileOf = (kind: unknown): string =>
+  FILES[kind === 'flashcards' || kind === 'reading' ? kind : 'grammar']
 
 function read(file: string): ReviewMap {
   try {

@@ -195,7 +195,9 @@ function ReportRow({
                 ? 'Abrir a página'
                 : r.pageId.startsWith('flashcards-')
                   ? 'Este áudio é de um flashcard'
-                  : 'A página não existe mais'
+                  : r.pageId.startsWith('reading-')
+                    ? 'Este áudio é de um texto de compreensão escrita'
+                    : 'A página não existe mais'
             }
           >
             <span>

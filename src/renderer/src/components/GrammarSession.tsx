@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState, type ReactElement } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { FiArrowRight, FiCheck, FiRepeat, FiRotateCcw, FiX } from 'react-icons/fi'
+import { FiArrowRight, FiRepeat, FiRotateCcw, FiX } from 'react-icons/fi'
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import ButtonBase from '@mui/material/ButtonBase'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+import ChoiceButton from '@/components/ChoiceButton'
 import GrammarPrompt from '@/components/GrammarPrompt'
 import Page from '@/components/Page'
 import { Kbd } from '@/components/ShortcutTip'
@@ -20,9 +20,6 @@ export interface SessionConfig {
   title: string
   questions: GrammarQuestion[]
 }
-
-const tint = (color: string, opacity: number): string =>
-  `rgba(var(--mui-palette-${color}-mainChannel) / ${opacity})`
 
 // Uma rodada de exercícios: uma questão por vez, correção na hora e resultado no fim.
 // Atalhos: 1–4 escolhem a opção; Enter ou → passam para a próxima.
@@ -218,64 +215,16 @@ export default function GrammarSession({
               const isCorrect = option === 0
               const isPicked = option === picked
               const state = !answered ? 'idle' : isCorrect ? 'correct' : isPicked ? 'wrong' : 'dim'
-              const color =
-                state === 'correct' ? 'success' : state === 'wrong' ? 'error' : 'primary'
               return (
-                <motion.div key={option} whileTap={answered ? undefined : { scale: 0.98 }}>
-                  <ButtonBase
-                    onClick={() => pick(option)}
-                    disabled={answered}
-                    sx={{
-                      width: '100%',
-                      justifyContent: 'flex-start',
-                      textAlign: 'left',
-                      gap: 1.5,
-                      px: 2,
-                      py: 1.5,
-                      borderRadius: 1,
-                      border: 1,
-                      fontSize: 17,
-                      transition: 'background-color 150ms, border-color 150ms, opacity 150ms',
-                      borderColor:
-                        state === 'idle' || state === 'dim' ? 'divider' : `${color}.main`,
-                      bgcolor:
-                        state === 'correct' || state === 'wrong'
-                          ? tint(color, 0.1)
-                          : 'background.paper',
-                      opacity: state === 'dim' ? 0.55 : 1,
-                      '&:hover':
-                        state === 'idle'
-                          ? { borderColor: 'primary.main', bgcolor: tint('primary', 0.05) }
-                          : {}
-                    }}
-                  >
-                    {/* Número do atalho, que vira ✓ ou ✕ depois de responder */}
-                    <Box
-                      sx={{
-                        width: 26,
-                        height: 26,
-                        flexShrink: 0,
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 13,
-                        fontWeight: 700,
-                        bgcolor:
-                          state === 'correct' || state === 'wrong'
-                            ? `${color}.main`
-                            : tint('primary', 0.12),
-                        color:
-                          state === 'correct' || state === 'wrong'
-                            ? `${color}.contrastText`
-                            : 'primary.main'
-                      }}
-                    >
-                      {state === 'correct' ? <FiCheck /> : state === 'wrong' ? <FiX /> : n + 1}
-                    </Box>
-                    <span lang="fr">{questions[index].options[option]}</span>
-                  </ButtonBase>
-                </motion.div>
+                <ChoiceButton
+                  key={option}
+                  state={state}
+                  number={n + 1}
+                  disabled={answered}
+                  onClick={() => pick(option)}
+                >
+                  {questions[index].options[option]}
+                </ChoiceButton>
               )
             })}
           </Box>

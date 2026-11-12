@@ -39,6 +39,30 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '1.4.1',
+    date: '2026-11-12',
+    changes: {
+      added: [
+        {
+          pt: 'A aba Compreensão escrita foi liberada: leia um documento (aviso, e-mail, anúncio, notícia, editorial) e responda às questões em francês, como no TEF e no TCF Canada. Por enquanto são 5 textos, do A2 ao C1; outros virão nas próximas versões.',
+          fr: 'L’onglet Compréhension écrite est ouvert : lisez un document (avis, courriel, annonce, article, éditorial) et répondez aux questions en français, comme au TEF et au TCF Canada. Pour l’instant, il y a 5 textes, du niveau A2 au C1 ; d’autres suivront dans les prochaines versions.'
+        },
+        {
+          pt: 'Dois modos na Compreensão escrita: Treino, com a explicação logo depois de cada resposta, a tradução do texto parágrafo por parágrafo e o áudio em francês ao clicar no título, num parágrafo ou na pergunta, e Prova, com cronômetro de 1 min 30 por questão, textos do mais fácil ao mais difícil e correção só no fim.',
+          fr: 'Deux modes en Compréhension écrite : Entraînement, avec l’explication juste après chaque réponse, la traduction du texte paragraphe par paragraphe et l’audio en français en cliquant sur le titre, un paragraphe ou la question, et Examen, avec un chronomètre de 1 min 30 par question, des textes du plus facile au plus difficile et la correction seulement à la fin.'
+        },
+        {
+          pt: 'Na Compreensão escrita, filtros por nível e por tipo de documento, o botão “Revisar erros” para refazer as questões que você errou e um atalho para a página de teoria de cada tipo de texto. O progresso é salvo na conta, como na Gramática.',
+          fr: 'En Compréhension écrite, des filtres par niveau et par type de document, le bouton « Revoir les erreurs » pour refaire les questions ratées et un raccourci vers la fiche théorique de chaque type de texte. La progression est enregistrée dans le compte, comme en Grammaire.'
+        },
+        {
+          pt: 'Em Configurações, a “Lista de textos” mostra todos os textos de compreensão escrita com a tradução, as questões e as respostas certas.',
+          fr: 'Dans Paramètres, la « Liste des textes » affiche tous les textes de compréhension écrite avec leur traduction, les questions et les bonnes réponses.'
+        }
+      ]
+    }
+  },
+  {
     version: '1.4.0',
     date: '2026-11-12',
     changes: {

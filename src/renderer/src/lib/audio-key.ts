@@ -6,6 +6,11 @@
 export function speechText(text: string): string {
   return (
     text
+      // Telefones não são faixas: 514 555-0182 → 5 1 4, 5 5 5, 0 1 8 2 (algarismo por
+      // algarismo, como se diz no Québec)
+      .replace(/\b(\d{3}) (\d{3})-(\d{4})\b/g, (_, a: string, b: string, c: string) =>
+        [a, b, c].map((group) => group.split('').join(' ')).join(', ')
+      )
       // Datas ano-mês-dia não são faixas: 2026-10-12 → 2026 10 12
       .replace(/\b(\d{4})-(\d{2})-(\d{2})\b/g, '$1 $2 $3')
       // Faixas: 549–699 → 549 à 699 · C1–C2 → C1 à C2
