@@ -12,8 +12,8 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Administrador do Frenching (sway9king@gmail.com): aprova acessos e aplica
-    // sugestões de áudio. Também tem acesso à nuvem sem precisar de aprovação
+    // Administrador do Frenching (sway9king@gmail.com): aprova acessos e cuida das
+    // páginas e áudios reportados. Também tem acesso à nuvem sem precisar de aprovação
     function isAdmin() {
       return signedIn() && request.auth.uid == 'xYK4ucxImscP4kdul7sRlk4l0UC2';
     }
@@ -40,11 +40,19 @@ service cloud.firestore {
         && canUseApp(appId, uid);
     }
 
-    // Frenching: sugestões de troca de voz dos áudios
-    // (users/{uid}/apps/frenching/audioSuggestions/{audioKey}).
-    // Quem sugeriu lê e grava pela regra acima; o admin lê e atualiza as de todos
-    match /{path=**}/audioSuggestions/{suggestionId} {
-      allow read, update: if isAdmin();
+    // Frenching: áudios reportados com um comentário
+    // (users/{uid}/apps/frenching/audioReports/{id}).
+    // Quem reportou lê e grava pela regra acima; o admin lê, resolve e apaga os de todos.
+    // (Substitui as antigas sugestões de troca de voz, audioSuggestions, que o app não usa mais)
+    match /{path=**}/audioReports/{reportId} {
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Frenching: páginas de estudo reportadas com erro
+    // (users/{uid}/apps/frenching/pageReports/{id}).
+    // Quem reportou grava pela regra de cima; o admin lê, resolve e apaga os de todos
+    match /{path=**}/pageReports/{reportId} {
+      allow read, update, delete: if isAdmin();
     }
 
     // Frenching: quem tem acesso à nuvem. Só o admin aprova (cria) e retira (apaga);

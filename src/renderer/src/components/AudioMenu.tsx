@@ -1,12 +1,12 @@
 import type { ReactElement } from 'react'
-import { FiCheck, FiClock, FiFlag, FiLoader, FiLock, FiRotateCcw, FiX } from 'react-icons/fi'
+import { FiCheck, FiClock, FiFlag, FiLoader, FiLock, FiRotateCcw } from 'react-icons/fi'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import { AUDIO_VOICES, DEFAULT_VOICE, type VoiceId } from '@/lib/audio-texts'
-import VoiceLabel, { VoiceFlag } from './VoiceLabel'
+import { VoiceFlag } from './VoiceLabel'
 
 const VOICE_IDS = Object.keys(AUDIO_VOICES) as VoiceId[]
 
@@ -40,20 +40,17 @@ const sectionLabelSx = {
 
 const hintSx = { px: 2, pt: 0.75, pb: 0.5, fontSize: 12, color: 'text.secondary', maxWidth: 236 }
 
-// O que o menu oferece sobre a voz deste áudio:
-//  change  – npm run dev, conta administradora: escolher a voz (gera o áudio de novo)
-//  locked  – npm run dev sem ser admin: as vozes aparecem, mas trocar pede a conta admin
-//  suggest – app compilado/site, conta com acesso à nuvem: sugerir outra voz
-//  show    – app compilado/site sem acesso: só mostra a voz usada
-export type VoiceMode = 'change' | 'locked' | 'suggest' | 'show'
+// As vozes só aparecem para a conta administradora:
+//  change – npm run dev: escolher a voz (gera o áudio de novo)
+//  locked – app compilado/site: as vozes aparecem, mas bloqueadas (só dá para gerar no dev)
+// Sem modo (contas comuns): o menu não mostra vozes, só "Reportar este áudio" (se houver
+// acesso à nuvem; veja ReportOptions)
+export type VoiceMode = 'change' | 'locked'
 
-export interface SuggestOptions {
-  status: 'none' | 'pending' | 'applied'
-  // Voz da sugestão já feita (vazio enquanto não há sugestão)
-  toVoice?: VoiceId
-  sending: boolean
-  onSuggest: (toVoice: VoiceId) => void
-  onCancel: () => void
+export interface ReportOptions {
+  // Quantos reportes seus deste áudio ainda não foram resolvidos
+  open: number
+  onReport: () => void
 }
 
 function VoiceName({ id, current }: { id: VoiceId; current: boolean }): ReactElement {
@@ -69,7 +66,8 @@ function VoiceName({ id, current }: { id: VoiceId; current: boolean }): ReactEle
   )
 }
 
-// Menu de botão direito de um trecho de áudio: recomeçar e a voz (veja VoiceMode)
+// Menu de botão direito de um trecho de áudio: recomeçar, a voz (só administrador; veja
+// VoiceMode) e reportar o áudio
 export default function AudioMenu({
   at,
   onClose,
@@ -79,23 +77,21 @@ export default function AudioMenu({
   onChangeVoice,
   generating,
   busy,
-  suggest
+  report
 }: {
   at: { top: number; left: number } | null
   onClose: () => void
   onRestart: () => void
   voice: VoiceId
-  // Sem valor: trecho sem áudio identificado, só "Recomeçar"
+  // Sem valor: sem vozes no menu (contas comuns ou trecho sem áudio identificado)
   voiceMode?: VoiceMode
   onChangeVoice: (voice: VoiceId) => void
   // Este áudio está sendo gerado / há alguma geração rodando
   generating: boolean
   busy: boolean
-  // Só no modo suggest
-  suggest?: SuggestOptions
+  // Conta com acesso à nuvem (fora do npm run dev do administrador): reportar o áudio
+  report?: ReportOptions
 }): ReactElement {
-  const pickable = voiceMode === 'change' || voiceMode === 'locked'
-
   return (
     <Menu
       open={!!at}
@@ -131,8 +127,8 @@ export default function AudioMenu({
         </Typography>
       )}
 
-      {/* npm run dev: todas as vozes (admin escolhe; sem admin, bloqueadas) */}
-      {pickable &&
+      {/* Administrador: todas as vozes (no npm run dev escolhe; fora dele, bloqueadas) */}
+      {voiceMode &&
         VOICE_IDS.map((id) => {
           const current = id === voice
           const locked = voiceMode === 'locked'
@@ -174,66 +170,30 @@ export default function AudioMenu({
       {voiceMode === 'locked' && (
         <Box sx={{ ...hintSx, display: 'flex', gap: 0.75, alignItems: 'flex-start' }}>
           <Box component={FiLock} sx={{ fontSize: 13, mt: '2px', flexShrink: 0 }} />
-          Só a conta administradora pode trocar a voz. Entre com ela em Configurações → Conta.
+          Só dá para trocar a voz (e gerar o áudio de novo) com o app aberto pelo npm run dev.
         </Box>
       )}
 
-      {/* App compilado/site: a voz usada (e, com acesso à nuvem, sugerir uma das outras) */}
-      {(voiceMode === 'suggest' || voiceMode === 'show') && (
-        <MenuItem disabled sx={infoItemSx}>
-          <VoiceFlag id={voice} size={24} current />
-          <VoiceName id={voice} current />
+      {/* Reportar o áudio com um comentário */}
+      {report && <Divider sx={{ my: '6px !important', mx: 1.5 }} />}
+      {report && (
+        <MenuItem onClick={report.onReport} sx={itemSx}>
+          <Box component={FiFlag} sx={{ fontSize: 16, color: 'text.secondary' }} />
+          Reportar este áudio
         </MenuItem>
       )}
-      {voiceMode === 'suggest' &&
-        suggest &&
-        suggest.status === 'none' &&
-        VOICE_IDS.filter((id) => id !== voice).map((id) => (
-          <MenuItem
-            key={id}
-            onClick={() => suggest.onSuggest(id)}
-            disabled={suggest.sending}
-            sx={itemSx}
-          >
+      {report && (
+        <Box sx={{ ...hintSx, display: 'flex', gap: 0.75, alignItems: 'flex-start' }}>
+          {report.open > 0 && (
             <Box
-              component={suggest.sending ? FiLoader : FiFlag}
-              sx={{ fontSize: 16, color: 'text.secondary' }}
+              component={FiClock}
+              sx={{ fontSize: 13, mt: '2px', flexShrink: 0, color: 'warning.main' }}
             />
-            <span>
-              Sugerir trocar para <VoiceLabel id={id} />
-            </span>
-          </MenuItem>
-        ))}
-      {voiceMode === 'suggest' && suggest && suggest.status === 'pending' && (
-        <MenuItem disabled sx={infoItemSx}>
-          <Box component={FiClock} sx={{ fontSize: 16, color: 'warning.main' }} />
-          <span>
-            Troca para {suggest.toVoice && <VoiceLabel id={suggest.toVoice} />} sugerida
-          </span>
-        </MenuItem>
-      )}
-      {voiceMode === 'suggest' && suggest && suggest.status === 'pending' && (
-        <MenuItem onClick={suggest.onCancel} sx={itemSx}>
-          <Box component={FiX} sx={{ fontSize: 16, color: 'text.secondary' }} />
-          Cancelar sugestão
-        </MenuItem>
-      )}
-      {voiceMode === 'suggest' && suggest && suggest.status === 'applied' && (
-        <MenuItem disabled sx={infoItemSx}>
-          <Box component={FiCheck} sx={{ fontSize: 16, color: 'success.main' }} />
-          <span>
-            Troca para {suggest.toVoice && <VoiceLabel id={suggest.toVoice} />} aplicada
-          </span>
-        </MenuItem>
-      )}
-      {voiceMode === 'suggest' && suggest && (
-        <Typography component="div" sx={hintSx}>
-          {suggest.status === 'pending'
-            ? 'Aguardando a revisão. Acompanhe em Configurações → Áudios.'
-            : suggest.status === 'applied'
-              ? 'O áudio novo chega na próxima versão do app.'
-              : 'Use se o áudio soar em inglês ou estranho.'}
-        </Typography>
+          )}
+          {report.open > 0
+            ? 'Você já reportou este áudio; aguardando a revisão. Acompanhe em Configurações → Áudios.'
+            : 'Use se o áudio soar em inglês, cortado ou estranho.'}
+        </Box>
       )}
     </Menu>
   )

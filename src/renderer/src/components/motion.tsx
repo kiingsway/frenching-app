@@ -1,7 +1,7 @@
 // Peças de animação reutilizáveis (biblioteca motion).
 // Todas respeitam a opção "reduzir movimento" do sistema (MotionConfig em App.tsx).
-import { useEffect, useRef, type ReactElement } from 'react'
-import { animate, motion, useReducedMotion, type Variants } from 'motion/react'
+import { useEffect, useRef, type ReactElement, type ReactNode } from 'react'
+import { AnimatePresence, animate, motion, useReducedMotion, type Variants } from 'motion/react'
 import Box from '@mui/material/Box'
 
 // Entrada em sequência: o contêiner usa `stagger` e cada filho usa `riseIn`
@@ -13,6 +13,64 @@ export const stagger = (delayChildren = 0, staggerChildren = 0.05): Variants => 
 export const riseIn: Variants = {
   hidden: { opacity: 0, y: 12 },
   show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } }
+}
+
+// ---------- Mergulho no jogo ----------
+//
+// Troca entre o menu e o jogo (Gramática e Flashcards), como uma câmera que muda de
+// foco: ao começar, o menu recua e desfoca, e o jogo chega do primeiro plano, saindo
+// do desfoque; ao sair, o contrário. `custom` diz o sentido (1 = entrar, -1 = sair).
+const DIVE_SPRING = { type: 'spring', stiffness: 320, damping: 30 } as const
+const diveVariants: Variants = {
+  enter: (dir: number) => ({
+    opacity: 0,
+    scale: dir > 0 ? 1.08 : 0.94,
+    filter: 'blur(10px)'
+  }),
+  center: {
+    opacity: 1,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: { ...DIVE_SPRING, opacity: { duration: 0.22 }, filter: { duration: 0.28 } },
+    // Sem filtro no fim: um filtro ativo prende elementos "fixed" dentro da tela
+    transitionEnd: { filter: 'none' }
+  },
+  exit: (dir: number) => ({
+    opacity: 0,
+    scale: dir > 0 ? 0.94 : 1.08,
+    filter: 'blur(8px)',
+    transition: { duration: 0.18, ease: 'easeIn' }
+  })
+}
+
+export function GameSwitch({
+  playing,
+  runKey,
+  children
+}: {
+  // Está no jogo (true) ou no menu (false)
+  playing: boolean
+  // Muda a cada rodada: começar outra rodada também mergulha
+  runKey: number
+  children: ReactNode
+}): ReactElement {
+  const dir = playing ? 1 : -1
+  return (
+    // initial={false}: ao abrir a aba, quem anima é a troca de abas (App.tsx), não esta
+    <AnimatePresence mode="wait" initial={false} custom={dir}>
+      <motion.div
+        key={playing ? `game-${runKey}` : 'menu'}
+        custom={dir}
+        variants={diveVariants}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        style={{ transformOrigin: '50% 30%' }}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  )
 }
 
 // Número que conta até o valor (e anima de novo quando o valor muda)

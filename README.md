@@ -90,7 +90,7 @@ Vozes disponíveis: **Sylvie** (mulher, padrão) e **Antoine** (homem), do Canad
 
 O script gera os áudios das páginas de estudo (partes listadas no campo `audio` de cada página) e de todos os flashcards (palavra e exemplo em francês).
 
-No `npm run dev`, **Configurações → Áudios → Lista de áudios** mostra todos os áudios. Com a **conta administradora** logada, dá para trocar a voz de um texto (salvo em `assets/audio/voices.json`) e gerar de novo; sem ela, as vozes aparecem, mas a troca fica bloqueada. **Sugestões de troca de voz** recebe as sugestões de quem usa o app (contas com acesso à nuvem, pelo menu do áudio) e aplica todas de uma vez.
+No `npm run dev`, **Configurações → Áudios → Lista de áudios** mostra todos os áudios. Com a **conta administradora** logada, dá para trocar a voz de um texto (salvo em `assets/audio/voices.json`) e gerar de novo; sem ela, as vozes aparecem, mas a troca fica bloqueada. **Áudios reportados** recebe os reportes de quem usa o app (contas com acesso à nuvem, pelo menu do áudio, com um comentário); a conta administradora marca como resolvido ou apaga, e troca a voz pelo botão direito no áudio.
 
 ## Revisão de conteúdo
 

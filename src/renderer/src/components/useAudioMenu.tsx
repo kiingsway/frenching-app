@@ -1,16 +1,15 @@
-import {
-  useRef,
-  useState,
-  type MouseEvent,
-  type PointerEvent,
-  type ReactElement
-} from 'react'
-import AudioMenu, { type SuggestOptions, type VoiceMode } from '@/components/AudioMenu'
+import { useRef, useState, type MouseEvent, type PointerEvent, type ReactElement } from 'react'
+import Box from '@mui/material/Box'
+import Snackbar from '@mui/material/Snackbar'
+import AudioMenu, { type ReportOptions, type VoiceMode } from '@/components/AudioMenu'
+import ReportDialog from '@/components/ReportDialog'
+import VoiceLabel from '@/components/VoiceLabel'
 import { isAdmin, useAccess } from '@/lib/access'
 import { getAudioKeyByUrl, getAudioUrlByKey } from '@/lib/audio'
 import { isGenerating, useAudioDev } from '@/lib/audio-dev'
-import { bundledVoiceFor } from '@/lib/audio-entries'
-import { cancelSuggestion, suggestVoiceChange, useAudioSuggestions } from '@/lib/audio-suggestions'
+import { bundledVoiceFor, getAudioEntry } from '@/lib/audio-entries'
+import { useAudioPage } from '@/lib/audio-page'
+import { reportAudio, useAudioReports } from '@/lib/audio-reports'
 import { DEFAULT_VOICE, type VoiceId } from '@/lib/audio-texts'
 import { audioTools } from '@/lib/platform'
 
@@ -56,45 +55,35 @@ export function useAudioMenu(
       ? (dev.voices[key] ?? DEFAULT_VOICE)
       : bundledVoiceFor(key)
   const generating = !!key && isGenerating(dev.status, key)
-  // O que o menu oferece sobre a voz (veja VoiceMode em AudioMenu):
-  // npm run dev → trocar só a conta admin; app compilado/site → sugerir só com acesso
-  // à nuvem (admin incluso), senão apenas mostra a voz usada
+  // O que o menu oferece sobre a voz (veja VoiceMode em AudioMenu): as vozes só aparecem
+  // para a conta administradora, liberadas no npm run dev (único lugar em que dá para
+  // gerar o áudio) e bloqueadas fora dele. Contas comuns só reportam
   const access = useAccess()
-  const suggestions = useAudioSuggestions()
-  const voiceMode: VoiceMode | undefined = !key
-    ? undefined
-    : dev.available
-      ? isAdmin(access)
-        ? 'change'
-        : 'locked'
-      : suggestions.user
-        ? 'suggest'
-        : 'show'
+  const reports = useAudioReports()
+  // Página aberta, salva com o reporte (o mesmo áudio pode estar em várias)
+  const pageId = useAudioPage()
+  const admin = isAdmin(access)
+  const voiceMode: VoiceMode | undefined =
+    !key || !admin ? undefined : dev.available ? 'change' : 'locked'
+  // Reportar: qualquer conta com acesso à nuvem, menos o administrador no npm run dev
+  // (ali ele mesmo troca a voz)
+  const canReport = !!key && !!reports.user && voiceMode !== 'change'
 
-  // App compilado/site: sugestão de troca de voz (salva na conta)
-  const [sending, setSending] = useState(false)
-  const mySuggestion = key ? suggestions.mine.find((s) => s.key === key) : undefined
-  const suggest: SuggestOptions | undefined =
-    key && voiceMode === 'suggest'
+  // Reportar o áudio com um comentário (salvo na conta)
+  const [reportOpen, setReportOpen] = useState(false)
+  const [reportSent, setReportSent] = useState(false)
+  const report: ReportOptions | undefined =
+    key && canReport
       ? {
-          status: mySuggestion?.status ?? 'none',
-          toVoice: mySuggestion?.toVoice,
-          sending,
-          onSuggest: (toVoice) => {
-            setSending(true)
-            void suggestVoiceChange(key, voice, toVoice)
-              .catch((e) => console.error('Falha ao sugerir a troca de voz', e))
-              .finally(() => {
-                setSending(false)
-                setMenuAt(null)
-              })
-          },
-          onCancel: () => {
+          open: reports.mine.filter((r) => r.key === key && !r.resolved).length,
+          onReport: () => {
             setMenuAt(null)
-            void cancelSuggestion(key)
+            actionsRef.current.stop()
+            setReportOpen(true)
           }
         }
       : undefined
+  const entry = key ? getAudioEntry(key) : undefined
 
   const changeVoice = (next: VoiceId): void => {
     setMenuAt(null)
@@ -163,20 +152,52 @@ export function useAudioMenu(
   }
 
   const menu = (
-    <AudioMenu
-      at={menuAt}
-      onClose={() => setMenuAt(null)}
-      onRestart={() => {
-        setMenuAt(null)
-        actionsRef.current.restart()
-      }}
-      voice={voice}
-      voiceMode={voiceMode}
-      onChangeVoice={changeVoice}
-      generating={generating}
-      busy={!!dev.status?.running}
-      suggest={suggest}
-    />
+    <>
+      <AudioMenu
+        at={menuAt}
+        onClose={() => setMenuAt(null)}
+        onRestart={() => {
+          setMenuAt(null)
+          actionsRef.current.restart()
+        }}
+        voice={voice}
+        voiceMode={voiceMode}
+        onChangeVoice={changeVoice}
+        generating={generating}
+        busy={!!dev.status?.running}
+        report={report}
+      />
+      {key && canReport && (
+        <ReportDialog
+          open={reportOpen}
+          onClose={() => setReportOpen(false)}
+          onSent={() => {
+            setReportOpen(false)
+            setReportSent(true)
+          }}
+          title="Reportar áudio"
+          subject={
+            <>
+              <Box component="span" lang="fr" sx={{ fontStyle: 'italic' }}>
+                “{entry?.spoken ?? key}”
+              </Box>
+              <br />
+              Voz: <VoiceLabel id={voice} />. Se quiser, descreva o que soa errado.
+            </>
+          }
+          placeholder="Ex.: a palavra “courriel” é lida em inglês"
+          commentOptional
+          onSubmit={(comment) => reportAudio({ key, voice, pageId, comment })}
+        />
+      )}
+      <Snackbar
+        open={reportSent}
+        autoHideDuration={3000}
+        onClose={() => setReportSent(false)}
+        message="Áudio reportado. Obrigado!"
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
+    </>
   )
 
   return {

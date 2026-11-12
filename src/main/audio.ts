@@ -110,7 +110,7 @@ export function setupAudioTools(): void {
     return generate([key])
   })
   // Troca a voz de vários textos de uma vez e gera todos eles numa só rodada
-  // (usado para aplicar as sugestões de troca de voz)
+  // (servia para aplicar as antigas sugestões de troca de voz; hoje o app não usa)
   ipcMain.handle('audio:set-voices', (_, changes: Record<string, VoiceId>) => {
     if (readStatus()?.running) return false
     const keys = Object.keys(changes)

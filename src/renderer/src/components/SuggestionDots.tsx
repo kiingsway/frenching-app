@@ -2,8 +2,9 @@ import type { ReactElement } from 'react'
 import { motion } from 'motion/react'
 import Box from '@mui/material/Box'
 import { usePendingAccessCount } from '@/lib/access-admin'
-import { useSuggestionDots } from '@/lib/audio-suggestions'
+import { useAudioReportDots } from '@/lib/audio-reports'
 import { useUpdateAvailable } from '@/lib/desktop-update'
+import { useOpenReportCount } from '@/lib/page-reports'
 
 // Azul da atualização: não usa a cor principal, que a pessoa pode trocar nas Configurações
 const UPDATE_COLOR = 'info.main'
@@ -41,30 +42,34 @@ export function UpdateButtonDot(): ReactElement {
 }
 
 // Bolinhas sobre um ícone (o pai precisa de position: relative).
-// Sugestões de troca de voz (audio): vermelha = sugestão pendente ainda não vista
-// (npm run dev); verde = uma sugestão sua foi aplicada. Somem ao abrir a tela de
-// sugestões. Pedidos de acesso (access, só admin): vermelha enquanto houver pedido
-// aguardando aprovação. Atualização (update): azul enquanto houver versão nova pronta.
+// Áudios reportados (audio): vermelha (só admin) enquanto houver áudio reportado sem
+// resolver; verde = um reporte seu foi resolvido (some ao abrir a lista). Pedidos de acesso (access, só admin): vermelha enquanto houver pedido
+// aguardando aprovação. Páginas reportadas (reports, só admin): vermelha enquanto houver
+// reporte não resolvido nem apagado. Atualização (update): azul enquanto houver versão nova.
 export default function SuggestionDots({
   audio = true,
   access = false,
+  reports = false,
   update = false
 }: {
   audio?: boolean
   access?: boolean
+  reports?: boolean
   update?: boolean
 }): ReactElement | null {
-  const dots = useSuggestionDots()
+  const dots = useAudioReportDots()
   const pendingAccess = usePendingAccessCount() > 0
+  const openReports = useOpenReportCount() > 0
   const updateAvailable = useUpdateAvailable()
-  const red = (audio && dots.red) || (access && pendingAccess)
+  const red = (audio && dots.red) || (access && pendingAccess) || (reports && openReports)
   const green = audio && dots.green
   const blue = update && updateAvailable
   if (!red && !green && !blue) return null
   const label = [
-    audio && dots.red && 'Há sugestões de áudio pendentes',
+    audio && dots.red && 'Há áudios reportados em aberto',
     access && pendingAccess && 'Há pedidos de acesso aguardando',
-    green && 'Uma sugestão sua foi aplicada',
+    reports && openReports && 'Há páginas reportadas em aberto',
+    green && 'Um áudio que você reportou foi resolvido',
     blue && 'Há uma versão nova do Frenching'
   ]
     .filter(Boolean)

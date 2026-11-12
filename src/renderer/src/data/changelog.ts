@@ -39,6 +39,40 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '1.4.0',
+    date: '2026-11-12',
+    changes: {
+      added: [
+        {
+          pt: 'Botão para reportar erro na barra do topo das páginas de estudo: abre uma janela para escrever o que está errado na página, para corrigir depois. O botão só aparece para quem está conectado com uma conta com acesso à nuvem.',
+          fr: 'Bouton pour signaler une erreur dans la barre du haut des fiches d’étude : il ouvre une fenêtre pour écrire ce qui ne va pas sur la page, pour la corriger plus tard. Le bouton n’apparaît que pour les personnes connectées avec un compte qui a accès au nuage.'
+        },
+        {
+          pt: 'Para a conta administradora, a lista "Páginas reportadas" em Configurações → Administração, com a página, o comentário, a data e quem reportou, e opções para abrir a página, marcar como resolvido e apagar.',
+          fr: 'Pour le compte administrateur, la liste « Pages signalées » dans Paramètres → Administration, avec la page, le commentaire, la date et l’auteur du signalement, et des options pour ouvrir la page, la marquer comme résolue et la supprimer.'
+        },
+        {
+          pt: 'Para a conta administradora, uma bolinha vermelha no botão Configurações e em "Páginas reportadas" enquanto houver página reportada que ainda não foi resolvida nem apagada.',
+          fr: 'Pour le compte administrateur, une pastille rouge sur le bouton Paramètres et sur « Pages signalées » tant qu’il reste une page signalée qui n’a pas été résolue ni supprimée.'
+        },
+        {
+          pt: 'Reportar áudio, no lugar da sugestão de troca de voz: no menu do botão direito de um áudio (ou tocando e segurando), "Reportar este áudio" abre uma janela para enviar o reporte, com um comentário opcional sobre o que soa errado, e o menu não mostra mais as vozes. Os reportes aparecem em Configurações → Áudios → Áudios reportados (para a conta administradora, em Configurações → Administração, com a troca de voz de cada áudio), com botões para ouvir o áudio e abrir a página em que ele foi reportado, e uma bolinha verde avisa quando um reporte seu é resolvido.',
+          fr: 'Signaler un audio, à la place de la suggestion de changement de voix : dans le menu du clic droit sur un audio (ou en appuyant longuement), « Signaler cet audio » ouvre une fenêtre pour envoyer le signalement, avec un commentaire facultatif sur ce qui sonne mal, et le menu n’affiche plus les voix. Les signalements apparaissent dans Paramètres → Audios → Audios signalés (pour le compte administrateur, dans Paramètres → Administration, avec le changement de voix de chaque audio), avec des boutons pour écouter l’audio et ouvrir la fiche où il a été signalé, et une pastille verte prévient quand un de vos signalements est résolu.'
+        }
+      ],
+      changed: [
+        {
+          pt: 'A barra do topo das páginas de estudo agora se ajusta ao tamanho da tela e fica sempre numa linha só: quando falta espaço, o zoom (e o botão de reportar) vão para o menu "⋯", os botões Anterior e Próximo viram só setas e o "Concluir" vira só o ícone. No celular bem estreito, o PT/FR também vai para o menu.',
+          fr: 'La barre du haut des fiches d’étude s’adapte maintenant à la taille de l’écran et tient toujours sur une seule ligne : quand la place manque, le zoom (et le bouton de signalement) passent dans le menu « ⋯ », les boutons Précédent et Suivant deviennent de simples flèches et « Terminer » n’affiche plus que son icône. Sur un téléphone très étroit, le choix PT/FR passe aussi dans le menu.'
+        },
+        {
+          pt: 'Ao começar uma rodada em Gramática ou uma sessão em Flashcards, a tela agora "mergulha" no jogo: o menu recua e desfoca, e o jogo chega do primeiro plano até ficar nítido. Ao sair, o movimento é o contrário.',
+          fr: 'Au début d’une série en Grammaire ou d’une session de Flashcards, l’écran « plonge » maintenant dans le jeu : le menu recule et devient flou, et le jeu arrive du premier plan jusqu’à devenir net. En sortant, le mouvement est inversé.'
+        }
+      ]
+    }
+  },
+  {
     version: '1.3.2',
     date: '2026-11-12',
     changes: {

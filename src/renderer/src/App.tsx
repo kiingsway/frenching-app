@@ -32,8 +32,9 @@ import Settings from './pages/Settings'
 import DocViewer from './pages/DocViewer'
 import Changelog from './pages/Changelog'
 import AudioManager from './pages/AudioManager'
-import AudioSuggestions from './pages/AudioSuggestions'
+import AudioReports from './pages/AudioReports'
 import AccessRequests from './pages/AccessRequests'
+import PageReports from './pages/PageReports'
 import GrammarReview from './pages/GrammarReview'
 import FlashcardList from './pages/FlashcardList'
 import SuggestionDots from './components/SuggestionDots'
@@ -52,10 +53,11 @@ type PageId =
   | 'settings'
   | 'doc'
   | 'audio'
-  | 'audio-suggestions'
+  | 'audio-reports'
   | 'grammar-review'
   | 'flashcard-list'
   | 'access'
+  | 'page-reports'
   | 'changelog'
 
 const DRAWER_WIDTH = 240
@@ -124,10 +126,11 @@ function renderPage(
         <Settings
           onOpenDoc={openDoc}
           onOpenAudio={() => goTo('audio')}
-          onOpenAudioSuggestions={() => goTo('audio-suggestions')}
+          onOpenAudioReports={() => goTo('audio-reports')}
           onOpenGrammarReview={() => openReview('settings')}
           onOpenFlashcardList={() => openFlashcardList('settings')}
           onOpenAccess={() => goTo('access')}
+          onOpenPageReports={() => goTo('page-reports')}
           onOpenChangelog={() => goTo('changelog')}
         />
       )
@@ -135,8 +138,10 @@ function renderPage(
       return <Changelog onBack={() => goTo('settings')} />
     case 'access':
       return <AccessRequests onBack={() => goTo('settings')} />
-    case 'audio-suggestions':
-      return <AudioSuggestions onBack={() => goTo('settings')} />
+    case 'page-reports':
+      return <PageReports onBack={() => goTo('settings')} onOpenTopic={openTopic} />
+    case 'audio-reports':
+      return <AudioReports onBack={() => goTo('settings')} onOpenTopic={openTopic} />
     case 'doc':
       return <DocViewer docId={docId ?? ''} onBack={() => goTo('settings')} />
     case 'audio':
@@ -166,7 +171,14 @@ function renderPage(
 const TOPIC_ORDER = new Map(SECTIONS.flatMap((s) => s.topics).map((t, i) => [t.id, i]))
 
 // Telas que ficam "dentro" de outra aba (abertas por um botão, com "voltar")
-const SETTINGS_SUBPAGES: PageId[] = ['doc', 'audio', 'audio-suggestions', 'access', 'changelog']
+const SETTINGS_SUBPAGES: PageId[] = [
+  'doc',
+  'audio',
+  'audio-reports',
+  'access',
+  'page-reports',
+  'changelog'
+]
 
 interface View {
   key: string
@@ -261,8 +273,7 @@ export default function App(): ReactElement {
 
   const isSelected = (id: PageId): boolean =>
     id === page ||
-    (id === 'settings' &&
-      SETTINGS_SUBPAGES.includes(page)) ||
+    (id === 'settings' && SETTINGS_SUBPAGES.includes(page)) ||
     (id === reviewBack && (page === 'grammar-review' || page === 'flashcard-list'))
 
   // Item da barra de baixo: ícone em cima, nome curto embaixo
@@ -292,7 +303,7 @@ export default function App(): ReactElement {
       >
         <Box sx={{ position: 'relative', display: 'flex' }}>
           <Icon size={20} />
-          {item.id === 'settings' && <SuggestionDots access update />}
+          {item.id === 'settings' && <SuggestionDots access reports update />}
           {item.soon && <FiLock size={10} style={{ position: 'absolute', right: -9, top: -3 }} />}
         </Box>
         <Typography
@@ -322,9 +333,9 @@ export default function App(): ReactElement {
       >
         <ListItemIcon sx={{ minWidth: 36, position: 'relative' }}>
           <Icon size={18} />
-          {/* Bolinhas das sugestões de voz, dos pedidos de acesso e da atualização,
+          {/* Bolinhas dos reportes, dos pedidos de acesso e da atualização,
               sobre o ícone de Configurações */}
-          {item.id === 'settings' && <SuggestionDots access update />}
+          {item.id === 'settings' && <SuggestionDots access reports update />}
         </ListItemIcon>
         <ListItemText
           primary={item.label}

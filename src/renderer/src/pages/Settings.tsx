@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { FaWindows } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 import {
+  FiAlertCircle,
   FiBookOpen,
   FiCheck,
   FiCheckSquare,
@@ -56,7 +57,8 @@ import { hasCloudAccess, isAdmin, useAccess } from '@/lib/access'
 import { useAccessRequests, usePendingAccessCount } from '@/lib/access-admin'
 import { cancelSignIn, signInWithGoogle, signOut, useAccount } from '@/lib/account'
 import { APP_NAME, APP_TAGLINE, APP_VERSION, GITHUB_URL } from '@/lib/about'
-import { useAudioSuggestions } from '@/lib/audio-suggestions'
+import { useAudioReports } from '@/lib/audio-reports'
+import { usePageReports } from '@/lib/page-reports'
 import { checkForDesktopUpdate, installDesktopUpdate, useDesktopUpdate } from '@/lib/desktop-update'
 import type { UpdaterStatus } from '@/lib/updater-types'
 import {
@@ -744,14 +746,32 @@ function SettingsCard({ children }: { children: ReactNode }): ReactElement {
   )
 }
 
-// Administração (só a conta administradora): pedidos de acesso à nuvem
-function AdminCard({ onOpenAccess }: { onOpenAccess: () => void }): ReactElement {
+// Administração (só a conta administradora): pedidos de acesso à nuvem e páginas e
+// áudios reportados
+function AdminCard({
+  onOpenAccess,
+  onOpenPageReports,
+  onOpenAudioReports
+}: {
+  onOpenAccess: () => void
+  onOpenPageReports: () => void
+  onOpenAudioReports: () => void
+}): ReactElement {
   const { requests } = useAccessRequests()
   const pending = usePendingAccessCount()
+  const { reports } = usePageReports()
+  const openReports = reports?.filter((r) => !r.resolved).length ?? 0
+  const audioReports = useAudioReports().all
+  const openAudioReports = audioReports?.filter((r) => !r.resolved).length ?? 0
   return (
     <SettingsCard>
       <Typography variant="subtitle1">Administração</Typography>
-      <List disablePadding component={motion.div} variants={stagger(0.1)} sx={{ mt: 2 }}>
+      <List
+        disablePadding
+        component={motion.div}
+        variants={stagger(0.1, 0.05)}
+        sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 1 }}
+      >
         <LinkButton
           icon={FiUserCheck}
           primary="Aprovar acessos"
@@ -764,6 +784,32 @@ function AdminCard({ onOpenAccess }: { onOpenAccess: () => void }): ReactElement
           }
           onClick={onOpenAccess}
           dots="access"
+        />
+        <LinkButton
+          icon={FiAlertCircle}
+          primary="Páginas reportadas"
+          secondary={
+            reports === null
+              ? 'Erros apontados nas páginas de estudo'
+              : openReports
+                ? `${openReports} reporte(s) em aberto`
+                : 'Nenhum reporte em aberto'
+          }
+          onClick={onOpenPageReports}
+          dots="reports"
+        />
+        <LinkButton
+          icon={FiFlag}
+          primary="Áudios reportados"
+          secondary={
+            audioReports === null
+              ? 'Áudios que soam errados, com a troca de voz'
+              : openAudioReports
+                ? `${openAudioReports} reporte(s) em aberto`
+                : 'Nenhum reporte em aberto'
+          }
+          onClick={onOpenAudioReports}
+          dots="audio"
         />
       </List>
     </SettingsCard>
@@ -782,8 +828,8 @@ function LinkButton({
   primary: string
   secondary: string
   onClick: () => void
-  // Bolinhas sobre o ícone: das sugestões de troca de voz ou dos pedidos de acesso
-  dots?: 'audio' | 'access'
+  // Bolinhas sobre o ícone: dos áudios reportados, dos pedidos de acesso ou das páginas reportadas
+  dots?: 'audio' | 'access' | 'reports'
 }): ReactElement {
   return (
     <motion.div
@@ -803,7 +849,13 @@ function LinkButton({
       >
         <ListItemIcon sx={{ minWidth: 36, position: 'relative' }}>
           <Icon size={18} />
-          {dots && <SuggestionDots audio={dots === 'audio'} access={dots === 'access'} />}
+          {dots && (
+            <SuggestionDots
+              audio={dots === 'audio'}
+              access={dots === 'access'}
+              reports={dots === 'reports'}
+            />
+          )}
         </ListItemIcon>
         <ListItemText primary={primary} secondary={secondary} />
       </ListItemButton>
@@ -814,29 +866,31 @@ function LinkButton({
 export default function Settings({
   onOpenDoc,
   onOpenAudio,
-  onOpenAudioSuggestions,
+  onOpenAudioReports,
   onOpenGrammarReview,
   onOpenFlashcardList,
   onOpenAccess,
+  onOpenPageReports,
   onOpenChangelog
 }: {
   onOpenDoc: (docId: string) => void
   onOpenAudio: () => void
-  onOpenAudioSuggestions: () => void
+  onOpenAudioReports: () => void
   onOpenGrammarReview: () => void
   onOpenFlashcardList: () => void
   onOpenAccess: () => void
+  onOpenPageReports: () => void
   onOpenChangelog: () => void
 }): ReactElement {
   const admin = isAdmin(useAccess())
-  const suggestions = useAudioSuggestions()
-  const suggestionList = suggestions.all ?? suggestions.mine
-  const pendingCount = suggestionList.filter((s) => s.status === 'pending').length
-  const suggestionsSummary = pendingCount
-    ? `${pendingCount} pendente(s)`
-    : suggestionList.length
-      ? 'Nenhuma pendente'
-      : 'Botão direito num áudio para sugerir'
+  const audioReports = useAudioReports()
+  const audioReportList = audioReports.all ?? audioReports.mine
+  const openAudioReports = audioReportList.filter((r) => !r.resolved).length
+  const audioReportsSummary = openAudioReports
+    ? `${openAudioReports} em aberto`
+    : audioReportList.length
+      ? 'Nenhum em aberto'
+      : 'Botão direito num áudio para reportar'
   // O tema é uma preferência sincronizada; o ThemeModeBridge (App.tsx) aplica no MUI
   const current = themeModePref.use()
   const setMode = themeModePref.set
@@ -858,8 +912,14 @@ export default function Settings({
           <AccountSection />
         </SettingsCard>
 
-        {/* Só a conta administradora: quem pode usar a nuvem */}
-        {admin && <AdminCard onOpenAccess={onOpenAccess} />}
+        {/* Só a conta administradora: quem pode usar a nuvem e as páginas reportadas */}
+        {admin && (
+          <AdminCard
+            onOpenAccess={onOpenAccess}
+            onOpenPageReports={onOpenPageReports}
+            onOpenAudioReports={onOpenAudioReports}
+          />
+        )}
 
         {/* Aparência: uma linha por opção, rótulo à esquerda e escolha à direita */}
         <SettingsCard>
@@ -929,13 +989,14 @@ export default function Settings({
             variants={stagger(0.1, 0.05)}
             sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 1 }}
           >
-            {/* Só para quem pode sugerir (conta com acesso à nuvem) */}
-            {suggestions.user && (
+            {/* Os próprios reportes, para quem pode reportar (conta com acesso à nuvem).
+                A conta administradora abre a lista pela seção Administração */}
+            {audioReports.user && !admin && (
               <LinkButton
                 icon={FiFlag}
-                primary="Sugestões de troca de voz"
-                secondary={suggestionsSummary}
-                onClick={onOpenAudioSuggestions}
+                primary="Áudios reportados"
+                secondary={audioReportsSummary}
+                onClick={onOpenAudioReports}
                 dots="audio"
               />
             )}

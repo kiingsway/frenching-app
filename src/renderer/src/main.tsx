@@ -10,7 +10,7 @@ import UpdateToast from './components/UpdateToast'
 import { initAccess } from './lib/access'
 import { useAccent } from './lib/accent'
 import { backgroundPref } from './lib/background'
-import { initAudioSuggestions } from './lib/audio-suggestions'
+import { initAudioReports } from './lib/audio-reports'
 import { initCloudSync } from './lib/cloud-sync'
 import { themeModePref } from './lib/prefs'
 import { makeTheme } from './theme'
@@ -45,8 +45,8 @@ function Root(): ReactElement {
 initAccess()
 // Com acesso à nuvem, as configurações e o progresso passam a ser salvos na conta
 initCloudSync()
-// Sugestões de troca de voz dos áudios (também dependem do login)
-initAudioSuggestions()
+// Áudios reportados (também dependem do login)
+initAudioReports()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

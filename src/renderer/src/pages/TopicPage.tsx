@@ -1,9 +1,18 @@
-import { useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react'
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactElement,
+  type ReactNode
+} from 'react'
 import {
   FiCheck,
   FiCheckCircle,
   FiChevronLeft,
   FiChevronRight,
+  FiFlag,
+  FiMoreHorizontal,
   FiX,
   FiZoomIn,
   FiZoomOut
@@ -16,7 +25,12 @@ import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Link from '@mui/material/Link'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
 import Paper from '@mui/material/Paper'
+import Snackbar from '@mui/material/Snackbar'
 import Stack from '@mui/material/Stack'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -30,13 +44,16 @@ import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import AudioSection, { type AudioSectionVariant } from '@/components/AudioSection'
 import Page from '@/components/Page'
+import ReportPageDialog from '@/components/ReportPageDialog'
 import { translatedText } from '@/components/TranslatedText'
 import { getAudioUrl } from '@/lib/audio'
+import { AudioPageContext } from '@/lib/audio-page'
 import { SECTIONS, type Topic } from '@/data/topics'
 import { readingMinutes } from '@/lib/reading-time'
 import { getTopicContent } from '@/content'
 import type { AudioPart, Block, Lang } from '@/content/types'
 import { useCompletedTopics } from '@/lib/completed'
+import { hasCloudAccess, useAccess } from '@/lib/access'
 import { onZoomShortcut } from '@/lib/platform'
 import {
   READING_FONT,
@@ -73,7 +90,11 @@ const LABELS = {
     doneHint: 'Marcar ou desmarcar como concluído (Enter)',
     doneTag: 'concluído',
     listen: 'Ouvir em francês',
-    frHasAudio: 'A versão em francês tem áudio'
+    frHasAudio: 'A versão em francês tem áudio',
+    report: 'Reportar erro nesta página',
+    more: 'Mais opções',
+    zoom: 'Zoom',
+    reported: 'Reporte enviado. Obrigado!'
   },
   fr: {
     back: 'Tableau de bord',
@@ -90,7 +111,11 @@ const LABELS = {
     doneHint: 'Marquer ou non comme terminé (Entrée)',
     doneTag: 'terminé',
     listen: 'Écouter',
-    frHasAudio: 'La version française a de l’audio'
+    frHasAudio: 'La version française a de l’audio',
+    report: 'Signaler une erreur sur cette page',
+    more: 'Plus d’options',
+    zoom: 'Zoom',
+    reported: 'Signalement envoyé. Merci !'
   }
 }
 
@@ -123,20 +148,62 @@ function BarGroup({ children }: { children: ReactNode }): ReactElement {
   )
 }
 
+// ---------- Barra responsiva ----------
+//
+// A barra nunca quebra em duas linhas: conforme a largura disponível, os controles
+// menos usados vão para o menu "⋯" e os outros encolhem. Do mais largo ao mais estreito:
+//  0 – tudo na barra
+//  1 – reportar e zoom vão para o menu
+//  2 – anterior/próximo ficam mais estreitos
+//  3 – anterior/próximo viram só a seta (o título fica na dica)
+//  4 – "Concluir" vira só o ícone
+//  5 – o seletor PT/FR também vai para o menu
+type BarLevel = 0 | 1 | 2 | 3 | 4 | 5
+
+// Larguras aproximadas de cada controle (px), para escolher o nível
+const W = {
+  icon: 36,
+  navWide: 180,
+  navNarrow: 140,
+  zoom: 124,
+  lang: 84,
+  langAudio: 106,
+  done: 130,
+  gap: 12
+}
+
+function barLevelFor(width: number, opts: { canReport: boolean; hasAudio: boolean }): BarLevel {
+  const lang = opts.hasAudio ? W.langAudio : W.lang
+  // Soma as larguras dos grupos de cada nível, com o espaço entre eles
+  const need = (groups: number[]): number =>
+    groups.reduce((a, b) => a + b, 0) + W.gap * (groups.length - 1)
+  const levels: number[][] = [
+    [W.icon + 2 * W.navWide, ...(opts.canReport ? [W.icon] : []), W.zoom, lang, W.done],
+    [W.icon + 2 * W.navWide, W.icon, lang, W.done],
+    [W.icon + 2 * W.navNarrow, W.icon, lang, W.done],
+    [3 * W.icon, W.icon, lang, W.done],
+    [3 * W.icon, W.icon, lang, W.icon]
+  ]
+  const fit = levels.findIndex((groups) => need(groups) <= width)
+  return (fit < 0 ? 5 : fit) as BarLevel
+}
+
 // Botão de tópico anterior/próximo: largura fixa, título com reticências
-// e um ✓ verde quando aquele tópico já foi concluído.
+// e um ✓ verde quando aquele tópico já foi concluído. Em "icon", só a seta.
 function TopicNavButton({
   direction,
   topic,
   lang,
   done,
-  onOpen
+  onOpen,
+  size
 }: {
   direction: 'prev' | 'next'
   topic: Topic | undefined
   lang: Lang
   done: boolean
   onOpen: (id: string) => void
+  size: 'wide' | 'narrow' | 'icon'
 }): ReactElement {
   const t = LABELS[lang]
   const isPrev = direction === 'prev'
@@ -145,6 +212,23 @@ function TopicNavButton({
   const tooltip = topic
     ? `${label}: ${title}${done ? ` · ${t.doneTag}` : ''} (${isPrev ? '←' : '→'})`
     : ''
+
+  if (size === 'icon')
+    return (
+      <Tooltip title={tooltip}>
+        <span>
+          <IconButton
+            size="small"
+            disabled={!topic}
+            onClick={() => topic && onOpen(topic.id)}
+            aria-label={topic ? `${label}: ${title}` : label}
+            sx={{ width: W.icon, color: done ? 'success.main' : undefined }}
+          >
+            {isPrev ? <FiChevronLeft size={16} /> : <FiChevronRight size={16} />}
+          </IconButton>
+        </span>
+      </Tooltip>
+    )
 
   return (
     <Tooltip title={tooltip}>
@@ -157,11 +241,13 @@ function TopicNavButton({
           startIcon={isPrev ? <FiChevronLeft /> : undefined}
           endIcon={isPrev ? undefined : <FiChevronRight />}
           sx={{
-            width: { xs: 140, md: 180 },
+            width: size === 'wide' ? W.navWide : W.navNarrow,
             px: 1.25,
             fontWeight: 400,
             justifyContent: isPrev ? 'flex-start' : 'flex-end',
-            '& .MuiButton-startIcon, & .MuiButton-endIcon': { color: 'text.secondary' }
+            '& .MuiButton-startIcon, & .MuiButton-endIcon': {
+              color: 'text.secondary'
+            }
           }}
         >
           {done && (
@@ -173,7 +259,11 @@ function TopicNavButton({
           )}
           <Box
             component="span"
-            sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}
           >
             {title}
           </Box>
@@ -425,7 +515,8 @@ function renderBlock(
                   <Box component="span" sx={{ display: 'block' }}>
                     {parts ? (
                       <>
-                        <b className="st-label">{parts.label}</b> {translatedText(parts.rest, terms)}
+                        <b className="st-label">{parts.label}</b>{' '}
+                        {translatedText(parts.rest, terms)}
                       </>
                     ) : (
                       translatedText(item, terms)
@@ -452,7 +543,10 @@ function renderBlock(
             sx={{
               tableLayout: 'fixed',
               // Telas estreitas: letra e espaçamento menores, para as palavras caberem inteiras
-              '& td, & th': { fontSize: { xs: 13, sm: 14 }, px: { xs: 1, sm: 2 } }
+              '& td, & th': {
+                fontSize: { xs: 13, sm: 14 },
+                px: { xs: 1, sm: 2 }
+              }
             }}
           >
             <TableHead>
@@ -463,7 +557,11 @@ function renderBlock(
                     <TableCell
                       key={i}
                       className={src ? undefined : 'st-cell'}
-                      sx={{ fontWeight: 600, bgcolor: 'action.hover', ...(src && CELL_WITH_AUDIO) }}
+                      sx={{
+                        fontWeight: 600,
+                        bgcolor: 'action.hover',
+                        ...(src && CELL_WITH_AUDIO)
+                      }}
                     >
                       {withAudio(src, label, translatedText(h, terms), 'cell')}
                     </TableCell>
@@ -553,6 +651,27 @@ export default function TopicPage({
   const localized = content?.[lang]
   const done = isDone(topicId)
 
+  // Reportar erro na página: janela com o comentário e aviso de enviado
+  const [reportOpen, setReportOpen] = useState(false)
+  const [reportSent, setReportSent] = useState(false)
+  // Só quem pode enviar (conta com acesso à nuvem) vê o botão
+  const canReport = hasCloudAccess(useAccess())
+
+  // Barra responsiva: mede a largura disponível e escolhe o que fica nela e o que vai
+  // para o menu "⋯" (veja barLevelFor)
+  const barRef = useRef<HTMLDivElement | null>(null)
+  const [barWidth, setBarWidth] = useState(820)
+  useLayoutEffect(() => {
+    const el = barRef.current
+    if (!el) return
+    const update = (): void => setBarWidth(el.clientWidth)
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null)
+
   // Áudio só existe na versão em francês
   const hasAudio = !!content?.audio?.length
   const audioFor: AudioFor = (part, text) =>
@@ -579,6 +698,8 @@ export default function TopicPage({
   // Zoom, Enter e setas só valem em páginas com conteúdo, como os botões do header.
   const handleKey = (e: KeyboardEvent): void => {
     if (e.ctrlKey || e.metaKey || e.altKey) return
+    // Com a janela de reporte ou o menu "⋯" abertos, as teclas são deles (o Esc só fecha)
+    if (reportOpen || menuAnchor) return
     const target = e.target as HTMLElement
     if (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) return
 
@@ -666,241 +787,406 @@ export default function TopicPage({
     }
   }, [topicId, lang, zoom, reading, content])
 
-  return (
-    <Box component="article" lang={lang}>
-      {/* Barra fixa no topo: continua visível durante o scroll */}
-      <Paper
-        square
-        elevation={0}
-        sx={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
-          px: { xs: 2, sm: 3, md: 5 },
-          py: 1.5,
-          borderBottom: 1,
-          borderColor: 'divider'
-        }}
-      >
-        {/* Progresso de leitura: acompanha o scroll, na cor principal do tema */}
-        <Box
-          ref={progressRef}
-          aria-hidden
-          sx={{
-            position: 'absolute',
-            left: 0,
-            bottom: -1,
-            height: 2,
-            width: 0,
-            bgcolor: 'primary.main',
-            pointerEvents: 'none'
-          }}
-        />
-        <Stack
-          direction="row"
-          spacing={1.5}
-          useFlexGap
-          sx={{ alignItems: 'center', flexWrap: 'wrap', maxWidth: 820 }}
-        >
-          {/* Navegação: painel + anterior/próximo */}
-          <BarGroup>
-            <Tooltip title={t.backHint}>
-              <IconButton size="small" onClick={onBack} aria-label={t.back} sx={{ width: 36 }}>
-                <FiX size={16} />
-              </IconButton>
-            </Tooltip>
-            {content && (
-              <TopicNavButton
-                direction="prev"
-                topic={prev}
-                lang={lang}
-                done={!!prev && isDone(prev.id)}
-                onOpen={onOpenTopic}
-              />
-            )}
-            {content && (
-              <TopicNavButton
-                direction="next"
-                topic={next}
-                lang={lang}
-                done={!!next && isDone(next.id)}
-                onOpen={onOpenTopic}
-              />
-            )}
-          </BarGroup>
+  const level = barLevelFor(barWidth, { canReport, hasAudio })
+  const navSize = level <= 1 ? 'wide' : level === 2 ? 'narrow' : 'icon'
+  // O que sai da barra e vai para o menu "⋯"
+  const reportInMenu = !!content && canReport && level >= 1
+  const zoomInMenu = !!content && level >= 1
+  const langInMenu = level >= 5
+  const hasMenu = reportInMenu || zoomInMenu || langInMenu
+  const closeMenu = (): void => setMenuAnchor(null)
 
-          {/* Leitura (zoom e língua) e ação principal; ml auto mantém o grupo à direita,
-              inclusive quando a janela é estreita e ele quebra para a linha de baixo */}
-          <Stack
-            direction="row"
-            spacing={{ xs: 1, sm: 1.5 }}
-            useFlexGap
-            // Em telas estreitas o botão "Terminei" desce para a linha de baixo em vez de sair da tela
-            sx={{ alignItems: 'center', ml: 'auto', flexWrap: 'wrap', justifyContent: 'flex-end' }}
+  const zoomControls = (
+    <BarGroup>
+      <Tooltip title={t.zoomOut}>
+        <span>
+          <IconButton
+            size="small"
+            disabled={zoom <= ZOOM_MIN}
+            onClick={() => changeZoom(-ZOOM_STEP)}
+            aria-label={t.zoomOut}
+            sx={{ width: 34 }}
           >
-            {content && (
-              <BarGroup>
-                <Tooltip title={t.zoomOut}>
-                  <span>
+            <FiZoomOut size={16} />
+          </IconButton>
+        </span>
+      </Tooltip>
+      <Tooltip title={t.zoomReset}>
+        <Button
+          size="small"
+          color="inherit"
+          onClick={() => setZoom(ZOOM_DEFAULT)}
+          sx={{ minWidth: 56, fontVariantNumeric: 'tabular-nums' }}
+        >
+          {zoom}%
+        </Button>
+      </Tooltip>
+      <Tooltip title={t.zoomIn}>
+        <span>
+          <IconButton
+            size="small"
+            disabled={zoom >= ZOOM_MAX}
+            onClick={() => changeZoom(ZOOM_STEP)}
+            aria-label={t.zoomIn}
+            sx={{ width: 34 }}
+          >
+            <FiZoomIn size={16} />
+          </IconButton>
+        </span>
+      </Tooltip>
+    </BarGroup>
+  )
+
+  return (
+    // Os áudios da página sabem em que página estão (sugestão de troca de voz)
+    <AudioPageContext.Provider value={topicId}>
+      <Box component="article" lang={lang}>
+        {/* Barra fixa no topo: continua visível durante o scroll */}
+        <Paper
+          square
+          elevation={0}
+          sx={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 10,
+            px: { xs: 2, sm: 3, md: 5 },
+            py: 1.5,
+            borderBottom: 1,
+            borderColor: 'divider'
+          }}
+        >
+          {/* Progresso de leitura: acompanha o scroll, na cor principal do tema */}
+          <Box
+            ref={progressRef}
+            aria-hidden
+            sx={{
+              position: 'absolute',
+              left: 0,
+              bottom: -1,
+              height: 2,
+              width: 0,
+              bgcolor: 'primary.main',
+              pointerEvents: 'none'
+            }}
+          />
+          <Stack
+            ref={barRef}
+            direction="row"
+            spacing={1.5}
+            useFlexGap
+            sx={{ alignItems: 'center', flexWrap: 'nowrap', maxWidth: 820 }}
+          >
+            {/* Navegação: painel + anterior/próximo */}
+            <BarGroup>
+              <Tooltip title={t.backHint}>
+                <IconButton size="small" onClick={onBack} aria-label={t.back} sx={{ width: 36 }}>
+                  <FiX size={16} />
+                </IconButton>
+              </Tooltip>
+              {content && (
+                <TopicNavButton
+                  direction="prev"
+                  topic={prev}
+                  lang={lang}
+                  done={!!prev && isDone(prev.id)}
+                  onOpen={onOpenTopic}
+                  size={navSize}
+                />
+              )}
+              {content && (
+                <TopicNavButton
+                  direction="next"
+                  topic={next}
+                  lang={lang}
+                  done={!!next && isDone(next.id)}
+                  onOpen={onOpenTopic}
+                  size={navSize}
+                />
+              )}
+            </BarGroup>
+
+            {/* Reportar, leitura (zoom e língua) e ação principal, à direita */}
+            <Stack
+              direction="row"
+              spacing={1.5}
+              useFlexGap
+              sx={{
+                alignItems: 'center',
+                ml: 'auto',
+                flexWrap: 'nowrap',
+                flexShrink: 0
+              }}
+            >
+              {content && canReport && !reportInMenu && (
+                <BarGroup>
+                  <Tooltip title={t.report}>
                     <IconButton
                       size="small"
-                      disabled={zoom <= ZOOM_MIN}
-                      onClick={() => changeZoom(-ZOOM_STEP)}
-                      sx={{ width: 34 }}
+                      onClick={() => setReportOpen(true)}
+                      aria-label={t.report}
+                      sx={{ width: 36 }}
                     >
-                      <FiZoomOut size={16} />
+                      <FiFlag size={16} />
                     </IconButton>
-                  </span>
-                </Tooltip>
-                <Tooltip title={t.zoomReset}>
+                  </Tooltip>
+                </BarGroup>
+              )}
+              {content && !zoomInMenu && zoomControls}
+              {hasMenu && (
+                <BarGroup>
+                  <Tooltip title={t.more}>
+                    <IconButton
+                      size="small"
+                      onClick={(e) => setMenuAnchor(e.currentTarget)}
+                      aria-label={t.more}
+                      aria-haspopup="menu"
+                      aria-expanded={!!menuAnchor}
+                      sx={{ width: 36 }}
+                    >
+                      <FiMoreHorizontal size={16} />
+                    </IconButton>
+                  </Tooltip>
+                </BarGroup>
+              )}
+              {!langInMenu && (
+                <ToggleButtonGroup
+                  exclusive
+                  size="small"
+                  color="primary"
+                  value={lang}
+                  onChange={(_, value: Lang | null) => value && setLang(value)}
+                  aria-label="Idioma / Langue"
+                  sx={{ height: BAR_HEIGHT }}
+                >
+                  <ToggleButton value="pt" sx={{ px: 1.5, fontWeight: 600 }}>
+                    PT
+                  </ToggleButton>
+                  <ToggleButton value="fr" sx={{ px: 1.5, fontWeight: 600, gap: 0.75 }}>
+                    FR
+                    {hasAudio && (
+                      <Tooltip title={t.frHasAudio}>
+                        <Box component="span" sx={{ display: 'inline-flex' }}>
+                          <RiSpeakLine size={14} />
+                        </Box>
+                      </Tooltip>
+                    )}
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              )}
+
+              {/* Ação principal da página; na barra estreita, só o ícone */}
+              {content && (
+                <Tooltip
+                  title={
+                    level >= 4 ? `${done ? t.unmarkDone : t.markDone} · ${t.doneHint}` : t.doneHint
+                  }
+                >
                   <Button
                     size="small"
-                    color="inherit"
-                    onClick={() => setZoom(ZOOM_DEFAULT)}
-                    sx={{ minWidth: 56, fontVariantNumeric: 'tabular-nums' }}
+                    variant={done ? 'outlined' : 'contained'}
+                    color={done ? 'success' : 'primary'}
+                    startIcon={level >= 4 ? undefined : done ? <FiCheckCircle /> : <FiCheck />}
+                    onClick={() => toggle(topicId)}
+                    aria-label={done ? t.unmarkDone : t.markDone}
+                    sx={{
+                      height: BAR_HEIGHT,
+                      flexShrink: 0,
+                      ...(level >= 4 ? { minWidth: W.icon, px: 0 } : { px: 1.75 })
+                    }}
                   >
-                    {zoom}%
+                    {level >= 4 ? (
+                      done ? (
+                        <FiCheckCircle size={16} />
+                      ) : (
+                        <FiCheck size={16} />
+                      )
+                    ) : done ? (
+                      t.unmarkDone
+                    ) : (
+                      t.markDone
+                    )}
                   </Button>
                 </Tooltip>
-                <Tooltip title={t.zoomIn}>
-                  <span>
-                    <IconButton
-                      size="small"
-                      disabled={zoom >= ZOOM_MAX}
-                      onClick={() => changeZoom(ZOOM_STEP)}
-                      sx={{ width: 34 }}
-                    >
-                      <FiZoomIn size={16} />
-                    </IconButton>
-                  </span>
-                </Tooltip>
-              </BarGroup>
+              )}
+            </Stack>
+          </Stack>
+
+          {/* Menu "⋯": o que não coube na barra */}
+          <Menu
+            anchorEl={menuAnchor}
+            open={!!menuAnchor}
+            onClose={closeMenu}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            slotProps={{ paper: { sx: { mt: 0.75, minWidth: 220 } } }}
+          >
+            {reportInMenu && (
+              <MenuItem
+                onClick={() => {
+                  closeMenu()
+                  setReportOpen(true)
+                }}
+              >
+                <ListItemIcon>
+                  <FiFlag size={16} />
+                </ListItemIcon>
+                <ListItemText>{t.report}</ListItemText>
+              </MenuItem>
             )}
-            <ToggleButtonGroup
-              exclusive
-              size="small"
-              color="primary"
-              value={lang}
-              onChange={(_, value: Lang | null) => value && setLang(value)}
-              aria-label="Idioma / Langue"
-              sx={{ height: BAR_HEIGHT }}
-            >
-              <ToggleButton value="pt" sx={{ px: 1.5, fontWeight: 600 }}>
-                PT
-              </ToggleButton>
-              <ToggleButton value="fr" sx={{ px: 1.5, fontWeight: 600, gap: 0.75 }}>
-                FR
-                {hasAudio && (
-                  <Tooltip title={t.frHasAudio}>
-                    <Box component="span" sx={{ display: 'inline-flex' }}>
+            {reportInMenu && (zoomInMenu || langInMenu) && <Divider />}
+            {zoomInMenu && (
+              <Box
+                sx={{
+                  px: 2,
+                  py: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 2
+                }}
+                // As teclas do zoom não devem mover a seleção do menu
+                onKeyDown={(e) => e.stopPropagation()}
+              >
+                <Typography variant="body2" sx={{ flex: 1 }}>
+                  {t.zoom}
+                </Typography>
+                {zoomControls}
+              </Box>
+            )}
+            {zoomInMenu && langInMenu && <Divider />}
+            {langInMenu &&
+              (['pt', 'fr'] as Lang[]).map((value) => (
+                <MenuItem
+                  key={value}
+                  selected={lang === value}
+                  onClick={() => {
+                    setLang(value)
+                    closeMenu()
+                  }}
+                >
+                  <ListItemIcon>{lang === value && <FiCheck size={16} />}</ListItemIcon>
+                  <ListItemText>{value === 'pt' ? 'Português' : 'Français'}</ListItemText>
+                  {value === 'fr' && hasAudio && (
+                    <Box
+                      component="span"
+                      sx={{
+                        display: 'inline-flex',
+                        ml: 1,
+                        color: 'text.secondary'
+                      }}
+                    >
                       <RiSpeakLine size={14} />
                     </Box>
-                  </Tooltip>
-                )}
-              </ToggleButton>
-            </ToggleButtonGroup>
+                  )}
+                </MenuItem>
+              ))}
+          </Menu>
+        </Paper>
 
-            {/* Ação principal da página */}
-            {content && (
-              <Tooltip title={t.doneHint}>
-                <Button
-                  size="small"
-                  variant={done ? 'outlined' : 'contained'}
-                  color={done ? 'success' : 'primary'}
-                  startIcon={done ? <FiCheckCircle /> : <FiCheck />}
-                  onClick={() => toggle(topicId)}
-                  sx={{ height: BAR_HEIGHT, px: 1.75, flexShrink: 0 }}
-                >
-                  {done ? t.unmarkDone : t.markDone}
-                </Button>
-              </Tooltip>
+        {content && canReport && (
+          <ReportPageDialog
+            open={reportOpen}
+            onClose={() => setReportOpen(false)}
+            onSent={() => {
+              setReportOpen(false)
+              setReportSent(true)
+            }}
+            topicId={topicId}
+            pageTitle={content.pt.title}
+            sectionTitle={section?.title ?? ''}
+            lang={lang}
+          />
+        )}
+        <Snackbar
+          open={reportSent}
+          autoHideDuration={3000}
+          onClose={() => setReportSent(false)}
+          message={t.reported}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        />
+
+        {/* Zoom só no conteúdo; textos longos quebram em vez de gerar scroll horizontal */}
+        <Box
+          sx={{
+            zoom: zoom / 100,
+            overflowWrap: 'anywhere',
+            hyphens: 'auto',
+            ...(reading && readingSx)
+          }}
+        >
+          <Page narrow={reading}>
+            {section && (
+              <Typography variant="body2" color="text.secondary" className="st-eyebrow">
+                {section.title}
+              </Typography>
             )}
-          </Stack>
-        </Stack>
-      </Paper>
-
-      {/* Zoom só no conteúdo; textos longos quebram em vez de gerar scroll horizontal */}
-      <Box
-        sx={{
-          zoom: zoom / 100,
-          overflowWrap: 'anywhere',
-          hyphens: 'auto',
-          ...(reading && readingSx)
-        }}
-      >
-        <Page narrow={reading}>
-          {section && (
-            <Typography variant="body2" color="text.secondary" className="st-eyebrow">
-              {section.title}
-            </Typography>
-          )}
-          {titleAudio ? (
-            <Box sx={{ mt: 0.5, mb: 2 }}>
-              <AudioSection src={titleAudio} label={t.listen}>
-                <Typography variant="h5" className="st-title">
-                  {localized?.title}
-                </Typography>
-              </AudioSection>
-            </Box>
-          ) : (
-            <Typography variant="h5" className="st-title" sx={{ mt: 0.5, mb: 2 }}>
-              {localized?.title ?? topic?.title ?? 'Tópico'}
-            </Typography>
-          )}
-
-          {localized ? (
-            <>
-              {summaryAudio ? (
-                <Box sx={{ mb: 2 }}>
-                  <AudioSection src={summaryAudio} label={t.listen}>
-                    <Typography className="st-lead" sx={{ fontSize: 17 }}>
-                      {localized.summary}
-                    </Typography>
-                  </AudioSection>
-                </Box>
-              ) : (
-                <Typography className="st-lead" sx={{ fontSize: 17, mb: 2 }}>
-                  {translatedText(localized.summary, termsAudio)}
-                </Typography>
-              )}
-              {/* Tempo de leitura calculado do texto */}
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                className="st-meta"
-                sx={{ mb: 2 }}
-              >
-                {lang === 'fr'
-                  ? `Lecture de ${readingMinutes(localized)} min`
-                  : `Leitura de ${readingMinutes(localized)} min`}
-              </Typography>
-              {localized.blocks.map((block, i) =>
-                renderBlock(block, i, audioFor, t.listen, termsAudio, reading)
-              )}
-            </>
-          ) : (
-            <Typography color="text.secondary">{t.notWritten}</Typography>
-          )}
-
-          {content && content.sources.length > 0 && (
-            <Box component="footer" className="st-footer" sx={{ mt: 5 }}>
-              <Divider sx={{ mb: 2 }} />
-              <Typography variant="subtitle2" className="st-sources-title" gutterBottom>
-                {t.sources}
-              </Typography>
-              <Box component="ul" sx={{ pl: 3, m: 0 }}>
-                {content.sources.map((source) => (
-                  <Typography key={source.url} component="li" variant="body2">
-                    <Link href={source.url} target="_blank" rel="noreferrer">
-                      {source.title}
-                    </Link>
+            {titleAudio ? (
+              <Box sx={{ mt: 0.5, mb: 2 }}>
+                <AudioSection src={titleAudio} label={t.listen}>
+                  <Typography variant="h5" className="st-title">
+                    {localized?.title}
                   </Typography>
-                ))}
+                </AudioSection>
               </Box>
-            </Box>
-          )}
-        </Page>
+            ) : (
+              <Typography variant="h5" className="st-title" sx={{ mt: 0.5, mb: 2 }}>
+                {localized?.title ?? topic?.title ?? 'Tópico'}
+              </Typography>
+            )}
+
+            {localized ? (
+              <>
+                {summaryAudio ? (
+                  <Box sx={{ mb: 2 }}>
+                    <AudioSection src={summaryAudio} label={t.listen}>
+                      <Typography className="st-lead" sx={{ fontSize: 17 }}>
+                        {localized.summary}
+                      </Typography>
+                    </AudioSection>
+                  </Box>
+                ) : (
+                  <Typography className="st-lead" sx={{ fontSize: 17, mb: 2 }}>
+                    {translatedText(localized.summary, termsAudio)}
+                  </Typography>
+                )}
+                {/* Tempo de leitura calculado do texto */}
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  className="st-meta"
+                  sx={{ mb: 2 }}
+                >
+                  {lang === 'fr'
+                    ? `Lecture de ${readingMinutes(localized)} min`
+                    : `Leitura de ${readingMinutes(localized)} min`}
+                </Typography>
+                {localized.blocks.map((block, i) =>
+                  renderBlock(block, i, audioFor, t.listen, termsAudio, reading)
+                )}
+              </>
+            ) : (
+              <Typography color="text.secondary">{t.notWritten}</Typography>
+            )}
+
+            {content && content.sources.length > 0 && (
+              <Box component="footer" className="st-footer" sx={{ mt: 5 }}>
+                <Divider sx={{ mb: 2 }} />
+                <Typography variant="subtitle2" className="st-sources-title" gutterBottom>
+                  {t.sources}
+                </Typography>
+                <Box component="ul" sx={{ pl: 3, m: 0 }}>
+                  {content.sources.map((source) => (
+                    <Typography key={source.url} component="li" variant="body2">
+                      <Link href={source.url} target="_blank" rel="noreferrer">
+                        {source.title}
+                      </Link>
+                    </Typography>
+                  ))}
+                </Box>
+              </Box>
+            )}
+          </Page>
+        </Box>
       </Box>
-    </Box>
+    </AudioPageContext.Provider>
   )
 }
