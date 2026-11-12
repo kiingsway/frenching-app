@@ -23,22 +23,25 @@ const content: TopicContent = {
         headers: ['Documento', 'O que a pergunta costuma cobrar'],
         rows: [
           [
-            'Pequeno anúncio (petite annonce)',
-            'Quem oferece, o que, por quanto, como entrar em contato'
-          ],
-          ['Folheto ou prospecto', 'Público-alvo, datas, local, se é gratuito ou pago'],
-          [
-            'Cardápio (menu, carte)',
-            'Preço do menu × à la carte, o que está incluído (boisson comprise)'
+            '[[Petite annonce|pequeno anúncio]]',
+            'Quem oferece, o quê, por quanto e como entrar em contato'
           ],
           [
-            'Horários (horaires)',
-            'Dias de funcionamento, feriados (jours fériés), horário de verão ou inverno'
+            '[[Dépliant|folheto]] ou [[prospectus|prospecto]]',
+            'Público-alvo, datas, local e se é gratuito ou pago'
           ],
-          ['Formulário', 'Que informação vai em cada campo, documentos a anexar'],
           [
-            'Placa ou aviso (panneau, affiche)',
-            'Proibição, obrigação ou recomendação; onde a placa está'
+            '[[Carte|cardápio]] e [[menu|refeição de preço fixo]]',
+            'Preço do menu e dos pratos [[à la carte|avulsos]], e o que está incluído, como em [[boisson comprise|bebida incluída]]'
+          ],
+          [
+            '[[Horaires|horários]]',
+            'Dias de funcionamento, [[jours fériés|feriados]], horário de verão ou de inverno'
+          ],
+          ['[[Formulaire|formulário]]', 'Que informação vai em cada campo e que documentos anexar'],
+          [
+            '[[Panneau|placa]] ou [[affiche|cartaz]]',
+            'Proibição, obrigação ou recomendação, e onde a placa está'
           ]
         ]
       },
@@ -46,18 +49,67 @@ const content: TopicContent = {
       { type: 'heading', text: 'Vocabulário que aparece sempre' },
       {
         type: 'table',
-        headers: ['Francês', 'Sentido'],
+        headers: ['No documento', 'O que isso diz'],
         rows: [
-          ['Fermé le lundi / sauf le dimanche', 'Fechado na segunda / exceto no domingo'],
-          ['Ouvert tous les jours de 9 h à 18 h', 'Aberto todos os dias das 9h às 18h'],
-          ['Entrée libre / gratuite', 'Entrada livre / grátis'],
-          ['Sur réservation / sur rendez-vous', 'Com reserva / com hora marcada'],
-          ['Il est interdit de… / Défense de…', 'É proibido…'],
-          ['Prière de… / Merci de…', 'Favor… (pedido educado)'],
-          ['À louer / À vendre / À donner', 'Para alugar / à venda / para doar'],
-          ['Pièce justificative', 'Comprovante, documento a anexar'],
-          ['Date limite d’inscription', 'Data limite de inscrição'],
-          ['Taxes en sus (Québec)', 'Impostos não incluídos no preço']
+          ['[[Fermé le lundi|fechado na segunda]]', 'Não abre às segundas; nos outros dias, sim.'],
+          [
+            '[[Ouvert tous les jours sauf le dimanche|aberto todos os dias, exceto domingo]]',
+            'Abre de segunda a sábado.'
+          ],
+          ['[[Entrée libre|entrada livre]]', 'Não precisa pagar para entrar.'],
+          ['[[Sur rendez-vous|com hora marcada]]', 'Precisa marcar antes; não adianta chegar sem avisar.'],
+          ['[[Il est interdit de fumer|é proibido fumar]]', 'Uma proibição.'],
+          ['[[Défense de stationner|proibido estacionar]]', 'Também uma proibição, num jeito mais curto, comum em placas.'],
+          ['[[Prière de fermer la porte|favor fechar a porta]]', 'Um pedido educado, não uma proibição.'],
+          [
+            '[[Appartement à louer|apartamento para alugar]]',
+            'Oferta de aluguel; [[à vendre|à venda]] anuncia uma venda.'
+          ],
+          ['[[Pièce justificative|comprovante]]', 'Um documento que você precisa anexar.'],
+          [
+            '[[Date limite d’inscription : le 30 octobre|data limite de inscrição: 30 de outubro]]',
+            'Depois dessa data, não aceitam mais inscrições.'
+          ],
+          [
+            '[[12,99 $, taxes en sus|12,99 dólares, mais impostos]]',
+            'No Québec, o preço da etiqueta não inclui os impostos, que são somados no caixa.'
+          ]
+        ]
+      },
+
+      { type: 'heading', text: 'Datas e horas: o mesmo dia escrito de vários jeitos' },
+      {
+        type: 'table',
+        headers: ['No documento', 'Como ler'],
+        rows: [
+          [
+            '[[le lundi 12 octobre 2026|segunda-feira, 12 de outubro de 2026]]',
+            'Por extenso, como em cartas e avisos: o dia vem antes do mês, e o mês fica em letra minúscula.'
+          ],
+          [
+            '2026-10-12',
+            'Só com números, no formato que o Québec recomenda: ano-mês-dia. É o mesmo 12 de outubro.'
+          ],
+          [
+            '12/10/2026',
+            'Dia/mês/ano, como no Brasil e na França. Não leia à moda americana (mês/dia): é 12 de outubro, e não 10 de dezembro.'
+          ],
+          [
+            '[[lun. 12 oct.|seg., 12 de out.]]',
+            'Abreviado. Cuidado: [[mar.|ter.]] é [[mardi|terça-feira]]; o mês de março, [[mars|março]], não se abrevia.'
+          ],
+          [
+            '[[jusqu’au 30 octobre inclusivement|até 30 de outubro, inclusive]]',
+            'O dia 30 ainda conta.'
+          ],
+          [
+            '[[de 9 h à 17 h 30|das 9h às 17h30]]',
+            'Relógio de 24 horas, com h entre a hora e os minutos. Em tabelas de horário também aparece 17:30.'
+          ],
+          [
+            '[[midi|meio-dia]] e [[minuit|meia-noite]]',
+            'Às vezes aparecem escritos no lugar de 12 h e de 0 h.'
+          ]
         ]
       },
 
@@ -67,9 +119,9 @@ const content: TopicContent = {
         items: [
           'Leia a pergunta primeiro: ela diz se você procura um preço, um dia, uma pessoa ou uma regra.',
           'Olhe o formato: título, logotipo e disposição já dizem se é um anúncio, um aviso ou um formulário.',
-          'Leia por escaneamento (balayage): procure só o dado pedido, sem ler tudo palavra por palavra.',
-          'Pare nas palavras de restrição: sauf, uniquement, seulement, à partir de, jusqu’à, sous réserve de.',
-          'Confira números, datas e horas duas vezes: no Canadá se escreve 18 h ou 18 h 30, e a data vem dia/mês.'
+          'Leia por escaneamento, a [[lecture en balayage|leitura por varredura]]: procure só o dado pedido, sem ler tudo palavra por palavra.',
+          'Pare nas palavras de restrição: [[sauf|exceto]], [[uniquement|unicamente]], [[seulement|somente]], [[à partir de|a partir de]], [[jusqu’à|até]], [[sous réserve de|sujeito a]].',
+          'Confira duas vezes números, datas e horas, com a tabela acima.'
         ]
       },
       {
@@ -77,7 +129,7 @@ const content: TopicContent = {
         tone: 'warning',
         title: 'Cuidado com as exceções',
         text:
-          'Uma placa que diz "Ouvert tous les jours sauf le mardi" e uma alternativa que diz "aberto todos os dias" parecem iguais à primeira vista. ' +
+          'Uma placa que diz "[[Ouvert tous les jours sauf le mardi|aberto todos os dias, exceto terça]]" e uma alternativa que diz "[[ouvert tous les jours|aberto todos os dias]]" parecem iguais à primeira vista. ' +
           'A pergunta quase sempre testa justamente o detalhe da exceção ou da condição.'
       },
       {
@@ -110,17 +162,20 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Document', 'Ce que la question demande souvent'],
         rows: [
-          ['Petite annonce', 'Qui propose, quoi, à quel prix, comment prendre contact'],
+          ['Petite annonce', 'Qui propose, quoi, à quel prix et comment prendre contact'],
           [
-            'Prospectus ou dépliant',
-            'Le public visé, les dates, le lieu, si c’est gratuit ou payant'
+            'Dépliant ou prospectus',
+            'Le public visé, les dates, le lieu, et si c’est gratuit ou payant'
           ],
-          ['Menu ou carte', 'Le prix du menu ou à la carte, ce qui est compris (boisson comprise)'],
+          [
+            'Carte et menu',
+            'Le prix du menu et des plats à la carte, et ce qui est compris, comme dans « boisson comprise »'
+          ],
           ['Horaires', 'Les jours d’ouverture, les jours fériés, les horaires d’été ou d’hiver'],
-          ['Formulaire', 'L’information à donner dans chaque case, les pièces à joindre'],
+          ['Formulaire', 'L’information à donner dans chaque case et les pièces à joindre'],
           [
             'Panneau ou affiche',
-            'Une interdiction, une obligation ou un conseil ; l’endroit où se trouve le panneau'
+            'Une interdiction, une obligation ou un conseil, et l’endroit où se trouve le panneau'
           ]
         ]
       },
@@ -128,21 +183,49 @@ const content: TopicContent = {
       { type: 'heading', text: 'Le vocabulaire qui revient toujours' },
       {
         type: 'table',
-        headers: ['Expression', 'Sens'],
+        headers: ['Sur le document', 'Ce que ça veut dire'],
+        rows: [
+          ['Fermé le lundi', 'Le commerce n’ouvre pas le lundi ; les autres jours, oui.'],
+          ['Ouvert tous les jours sauf le dimanche', 'On peut venir du lundi au samedi.'],
+          ['Entrée libre', 'On entre sans payer.'],
+          ['Sur rendez-vous', 'Il faut prendre rendez-vous avant de venir.'],
+          ['Il est interdit de fumer', 'Une interdiction.'],
+          ['Défense de stationner', 'Une interdiction aussi, sous une forme plus courte, fréquente sur les panneaux.'],
+          ['Prière de fermer la porte', 'Une demande polie, pas une interdiction.'],
+          ['Appartement à louer', 'Une offre de location ; « à vendre » annonce une vente.'],
+          ['Pièce justificative', 'Un document à joindre pour prouver une information.'],
+          ['Date limite d’inscription : le 30 octobre', 'Après cette date, on n’accepte plus d’inscriptions.'],
+          ['12,99 $, taxes en sus', 'Au Québec, le prix affiché ne comprend pas les taxes, qui s’ajoutent à la caisse.']
+        ]
+      },
+
+      { type: 'heading', text: 'Dates et heures : le même jour écrit de plusieurs façons' },
+      {
+        type: 'table',
+        headers: ['Sur le document', 'Comment le lire'],
         rows: [
           [
-            'Fermé le lundi / sauf le dimanche',
-            'Le commerce ne travaille pas le lundi / tous les jours, mais pas le dimanche'
+            'le lundi 12 octobre 2026',
+            'En toutes lettres, comme dans les lettres et les avis : le jour vient avant le mois, et le mois s’écrit en minuscule.'
           ],
-          ['Ouvert tous les jours de 9 h à 18 h', 'On peut venir chaque jour entre 9 h et 18 h'],
-          ['Entrée libre / gratuite', 'On entre sans payer'],
-          ['Sur réservation / sur rendez-vous', 'Il faut réserver ou prendre rendez-vous avant'],
-          ['Il est interdit de… / Défense de…', 'Ce n’est pas permis'],
-          ['Prière de… / Merci de…', 'Une demande polie'],
-          ['À louer / À vendre / À donner', 'Pour la location / pour la vente / gratuitement'],
-          ['Pièce justificative', 'Un document qui prouve une information'],
-          ['Date limite d’inscription', 'Le dernier jour pour s’inscrire'],
-          ['Taxes en sus (Québec)', 'Les taxes s’ajoutent au prix affiché']
+          [
+            '2026-10-12',
+            'En chiffres seulement, dans le format recommandé au Québec : année-mois-jour. C’est le même 12 octobre.'
+          ],
+          [
+            '12/10/2026',
+            'Jour/mois/année, comme en France. Ne lisez pas à l’américaine (mois/jour) : c’est le 12 octobre, et non le 10 décembre.'
+          ],
+          [
+            'lun. 12 oct.',
+            'En abrégé. Attention : « mar. », c’est mardi ; le mois de mars ne s’abrège pas.'
+          ],
+          ['jusqu’au 30 octobre inclusivement', 'Le 30 octobre compte encore.'],
+          [
+            'de 9 h à 17 h 30',
+            'L’heure sur 24 heures, avec « h » entre les heures et les minutes. Dans les tableaux d’horaires, on voit aussi 17:30.'
+          ],
+          ['midi et minuit', 'On les trouve parfois à la place de 12 h et de 0 h.']
         ]
       },
 
@@ -154,7 +237,7 @@ const content: TopicContent = {
           'Regardez la forme : le titre, le logo et la mise en page indiquent déjà s’il s’agit d’une annonce, d’un avis ou d’un formulaire.',
           'Lisez en balayage : cherchez seulement l’information demandée, sans tout lire mot à mot.',
           'Arrêtez-vous sur les mots de restriction : sauf, uniquement, seulement, à partir de, jusqu’à, sous réserve de.',
-          'Vérifiez deux fois les nombres, les dates et les heures : au Canada, on écrit 18 h ou 18 h 30, et la date se lit jour puis mois.'
+          'Vérifiez deux fois les nombres, les dates et les heures, à l’aide du tableau ci-dessus.'
         ]
       },
       {
@@ -176,7 +259,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {
@@ -190,6 +273,22 @@ const content: TopicContent = {
     {
       title: 'Open Exam Prep – TEF Canada Reading: structure and question types',
       url: 'https://open-exam-prep.com/study-guides/tef-canada/reading-comprehension/reading-overview'
+    },
+    {
+      title: 'OQLF, Banque de dépannage linguistique – Écriture des dates et des heures dans les textes courants',
+      url: 'https://vitrinelinguistique.oqlf.gouv.qc.ca/21242/la-typographie/nombres/ecriture-des-dates-et-des-heures-dans-les-lettres-et-les-textes-courants'
+    },
+    {
+      title: 'OQLF, Banque de dépannage linguistique – Écriture des dates et des heures dans certains contextes techniques',
+      url: 'https://vitrinelinguistique.oqlf.gouv.qc.ca/21241/la-typographie/nombres/ecriture-des-dates-et-des-heures-dans-certains-contextes-techniques'
+    },
+    {
+      title: 'OQLF, Banque de dépannage linguistique – Abréviation du nom des jours de la semaine',
+      url: 'https://vitrinelinguistique.oqlf.gouv.qc.ca/23617/les-abreviations-et-les-symboles/les-abreviations/listes-dabreviations/abreviation-du-nom-des-jours-de-la-semaine'
+    },
+    {
+      title: 'OQLF, Banque de dépannage linguistique – Abréviation des noms de mois',
+      url: 'https://vitrinelinguistique.oqlf.gouv.qc.ca/23619/les-abreviations-et-les-symboles/les-abreviations/listes-dabreviations/abreviation-des-noms-de-mois'
     }
   ]
 }

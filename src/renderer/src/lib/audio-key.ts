@@ -6,6 +6,8 @@
 export function speechText(text: string): string {
   return (
     text
+      // Datas ano-mês-dia não são faixas: 2026-10-12 → 2026 10 12
+      .replace(/\b(\d{4})-(\d{2})-(\d{2})\b/g, '$1 $2 $3')
       // Faixas: 549–699 → 549 à 699 · C1–C2 → C1 à C2
       .replace(/(\d)\s*[–-]\s*(\d)/g, '$1 à $2')
       .replace(/\b([ABC][12])\s*–\s*([ABC][12])\b/g, '$1 à $2')

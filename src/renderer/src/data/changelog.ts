@@ -39,6 +39,24 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '1.3.2',
+    date: '2026-11-12',
+    changes: {
+      added: [
+        {
+          pt: 'Na página "Documentos do cotidiano", uma tabela nova mostra o mesmo dia escrito de vários jeitos (por extenso, ano-mês-dia como no Québec, dia/mês/ano e abreviado), além de prazos e horários, explicando como ler cada um.',
+          fr: 'Dans la fiche « Documents de la vie quotidienne », un nouveau tableau montre le même jour écrit de plusieurs façons (en toutes lettres, année-mois-jour comme au Québec, jour/mois/année et en abrégé), ainsi que des délais et des horaires, en expliquant comment les lire.'
+        }
+      ],
+      changed: [
+        {
+          pt: 'Na mesma página, o francês da versão em português agora tem a tradução numa dica e áudio ao clicar, e cada expressão do vocabulário aparece numa linha própria, com o que ela diz na prática.',
+          fr: 'Dans la même fiche, le français de la version portugaise a maintenant sa traduction dans une bulle et un audio au clic, et chaque expression du vocabulaire a sa propre ligne, avec ce qu’elle veut dire en pratique.'
+        }
+      ]
+    }
+  },
+  {
     version: '1.3.1',
     date: '2026-11-12',
     changes: {
