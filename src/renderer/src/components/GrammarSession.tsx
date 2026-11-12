@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import GrammarPrompt from '@/components/GrammarPrompt'
 import Page from '@/components/Page'
+import { Kbd } from '@/components/ShortcutTip'
 import { AnimatedNumber, ProgressBar, riseIn, stagger } from '@/components/motion'
 import { getGrammarTopic, type GrammarQuestion } from '@/data/grammar'
 import { recordAnswer, shuffle } from '@/lib/grammar-progress'
@@ -298,8 +299,12 @@ export default function GrammarSession({
                   <Button variant="contained" endIcon={<FiArrowRight />} onClick={next}>
                     {index + 1 < questions.length ? 'Próxima' : 'Ver resultado'}
                   </Button>
-                  <Typography variant="caption" color="text.secondary">
-                    ou Enter
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75 }}
+                  >
+                    ou <Kbd>Enter</Kbd>
                   </Typography>
                 </Box>
               </motion.div>
@@ -309,8 +314,16 @@ export default function GrammarSession({
       </AnimatePresence>
 
       {!answered && (
-        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 2 }}>
-          Dica: use as teclas 1 a {orders[index].length} para responder.
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 0.5, mt: 2 }}
+        >
+          Dica: use as teclas
+          {orders[index].map((_, n) => (
+            <Kbd key={n}>{String(n + 1)}</Kbd>
+          ))}
+          para responder.
         </Typography>
       )}
     </Page>

@@ -9,7 +9,8 @@ export type Block =
   | { type: 'paragraph'; text: string }
   | { type: 'list'; items: string[] }
   | { type: 'table'; headers: string[]; rows: string[][] }
-  | { type: 'callout'; tone: 'tip' | 'warning'; title?: string; text: string }
+  // 'unverified' = caixa vermelha que avisa o que a página afirma sem fonte (vai por último)
+  | { type: 'callout'; tone: 'tip' | 'warning' | 'unverified'; title?: string; text: string }
 
 export interface Source {
   title: string

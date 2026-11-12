@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import { CardDetails, FrenchAudio } from '@/components/FlashcardParts'
 import Page from '@/components/Page'
+import { Kbd } from '@/components/ShortcutTip'
 import { AnimatedNumber, ProgressBar, riseIn, stagger } from '@/components/motion'
 import { ALL_FLASHCARDS, getDeck, type Flashcard } from '@/data/flashcards'
 import { getAudioUrl } from '@/lib/audio'
@@ -404,8 +405,19 @@ export default function FlashcardSession({
               <Button variant="contained" size="large" onClick={flip} sx={{ minWidth: 220 }}>
                 Mostrar resposta
               </Button>
-              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
-                ou Espaço · clique no cartão também vira
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 0.75,
+                  mt: 1
+                }}
+              >
+                ou <Kbd>Espaço</Kbd> · clique no cartão também vira
               </Typography>
             </Box>
           ) : (
@@ -438,14 +450,9 @@ export default function FlashcardSession({
                         <Box component="span" sx={{ fontWeight: 700, fontSize: 15 }}>
                           {info.label}
                         </Box>
-                        <Typography
-                          component="span"
-                          variant="caption"
-                          color="text.secondary"
-                          sx={{ display: { xs: 'none', sm: 'block' } }}
-                        >
-                          {i + 1}
-                        </Typography>
+                        <Box component="span" sx={{ mt: 0.5 }}>
+                          <Kbd>{String(i + 1)}</Kbd>
+                        </Box>
                       </Button>
                     </motion.div>
                   )
@@ -454,9 +461,28 @@ export default function FlashcardSession({
               <Typography
                 variant="caption"
                 color="text.secondary"
-                sx={{ display: 'block', mt: 1, textAlign: 'center' }}
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 0.5,
+                  mt: 1
+                }}
               >
-                Teclas 1 a 4 (Espaço = Bom){getAudioUrl(card.fr) ? ' · A toca o áudio' : ''}
+                <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
+                  <Kbd>Espaço</Kbd>
+                  Bom
+                </Box>
+                {getAudioUrl(card.fr) && (
+                  <Box
+                    component="span"
+                    sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, ml: 1 }}
+                  >
+                    <Kbd>A</Kbd>
+                    Toca o áudio
+                  </Box>
+                )}
               </Typography>
             </motion.div>
           )}

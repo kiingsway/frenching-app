@@ -7,17 +7,17 @@ const content: TopicContent = {
     title: 'Artigos definidos, indefinidos e partitivos',
     summary:
       'Em francês quase todo substantivo vem com um artigo, mesmo quando em português não usamos nenhum. ' +
-      'Há três famílias: o definido (le, la, les), o indefinido (un, une, des) e o partitivo (du, de la, des), que não existe em português. ' +
-      'Saber qual usar, e quando ele vira "de", é uma das coisas mais cobradas nas questões de gramática.',
+      'Há três famílias: o definido ([[le|o]], [[la|a]], [[les|os / as]]), o indefinido ([[un|um]], [[une|uma]], [[des|uns / umas]]) e o partitivo ([[du|um pouco de]], [[de la|um pouco de]], [[des|uns / umas]]), que não existe em português. ' +
+      'Saber qual usar, e quando ele vira [[de|de]], é uma das coisas mais cobradas nas questões de gramática.',
     blocks: [
       { type: 'heading', text: 'As três famílias' },
       {
         type: 'table',
         headers: ['Artigo', 'Masculino', 'Feminino', 'Antes de vogal ou h mudo', 'Plural'],
         rows: [
-          ['Definido', 'le', 'la', "l'", 'les'],
-          ['Indefinido', 'un', 'une', 'un / une', 'des'],
-          ['Partitivo', 'du', 'de la', "de l'", 'des']
+          ['Definido', '[[le|o]]', '[[la|a]]', '[[l’|o / a]]', '[[les|os / as]]'],
+          ['Indefinido', '[[un|um]]', '[[une|uma]]', '[[un|um]] / [[une|uma]]', '[[des|uns / umas]]'],
+          ['Partitivo', '[[du|um pouco de]]', '[[de la|um pouco de]]', '[[de l’|um pouco de]]', '[[des|uns / umas]]']
         ]
       },
 
@@ -25,11 +25,11 @@ const content: TopicContent = {
       {
         type: 'list',
         items: [
-          'Algo específico, que os dois já conhecem: Le train de 8 h est en retard. (O trem das 8 h está atrasado.)',
-          'Algo em geral, uma categoria inteira: Les Canadiens aiment le hockey. (Os canadenses gostam de hóquei.)',
-          'Depois de verbos de gosto (aimer, adorer, préférer, détester): J’aime le café. (Gosto de café.)',
-          'Com dias da semana, indica hábito: Le lundi, je travaille à la maison. (Às segundas, trabalho em casa.)',
-          'Com países, regiões e línguas: la France, le Québec, le français.'
+          'Algo específico, que os dois já conhecem: [[Le train de 8 h est en retard.|O trem das 8 h está atrasado.]]',
+          'Algo em geral, uma categoria inteira: [[Les Canadiens aiment le hockey.|Os canadenses gostam de hóquei.]]',
+          'Depois de verbos de gosto ([[aimer|gostar]], [[adorer|adorar]], [[préférer|preferir]], [[détester|detestar]]): [[J’aime le café.|Gosto de café.]]',
+          'Com dias da semana, indica hábito: [[Le lundi, je travaille à la maison.|Às segundas, trabalho em casa.]]',
+          'Com países, regiões e línguas: [[la France|a França]], [[le Québec|o Québec]], [[le français|o francês]].'
         ]
       },
 
@@ -37,8 +37,8 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Un e une apresentam algo novo na conversa ou uma unidade entre várias: J’ai un rendez-vous à 15 h. ' +
-          'No plural, des é obrigatório, enquanto o português simplesmente omite o artigo: J’ai des amis à Montréal. (Tenho amigos em Montreal.)'
+          '[[Un|um]] e [[une|uma]] apresentam algo novo na conversa ou uma unidade entre várias: [[J’ai un rendez-vous à 15 h.|Tenho um compromisso às 15 h.]] ' +
+          'No plural, [[des|uns / umas]] é obrigatório, enquanto o português simplesmente omite o artigo: [[J’ai des amis à Montréal.|Tenho amigos em Montreal.]]'
       },
 
       { type: 'heading', text: 'Partitivo: uma parte de algo que não se conta' },
@@ -46,30 +46,30 @@ const content: TopicContent = {
         type: 'paragraph',
         text:
           'O partitivo indica uma quantidade indeterminada de algo que não se conta (comida, bebida, matéria, qualidades). ' +
-          'Em português não usamos artigo nenhum, mas em francês ele é obrigatório: Je bois du café le matin. (Bebo café de manhã.) ' +
-          'Il faut de la patience. (É preciso paciência.) On a acheté de l’eau. (Compramos água.)'
+          'Em português não usamos artigo nenhum, mas em francês ele é obrigatório: [[Je bois du café le matin.|Bebo café de manhã.]] ' +
+          '[[Il faut de la patience.|É preciso paciência.]] [[On a acheté de l’eau.|Compramos água.]]'
       },
       {
         type: 'table',
         headers: ['Frase', 'Sentido'],
         rows: [
-          ['J’aime le fromage.', 'Gosto de queijo (em geral)'],
-          ['Je mange du fromage.', 'Como queijo (um pouco, uma quantidade qualquer)'],
-          ['J’ai acheté un fromage.', 'Comprei um queijo (uma peça inteira)'],
-          ['Le fromage est sur la table.', 'O queijo (aquele que já conhecemos) está na mesa']
+          ['[[J’aime le fromage.|Gosto de queijo.]]', 'Gosto de queijo (em geral)'],
+          ['[[Je mange du fromage.|Como queijo.]]', 'Como queijo (um pouco, uma quantidade qualquer)'],
+          ['[[J’ai acheté un fromage.|Comprei um queijo.]]', 'Comprei um queijo (uma peça inteira)'],
+          ['[[Le fromage est sur la table.|O queijo está na mesa.]]', 'O queijo (aquele que já conhecemos) está na mesa']
         ]
       },
 
-      { type: 'heading', text: 'Quando o artigo vira "de"' },
+      { type: 'heading', text: 'Quando o artigo vira [[de|de]]' },
       {
         type: 'list',
         items: [
-          'Depois da negação, un, une, des, du, de la e de l’ viram de (ou d’): Je n’ai pas de voiture. Il ne boit pas d’alcool.',
-          'O definido não muda na negação: Je n’aime pas le café. (Continua le, porque é gosto em geral.)',
-          'Com être, o artigo também não muda: Ce n’est pas un problème. Ce n’est pas du sucre, c’est du sel.',
-          'Depois de expressões de quantidade, usa-se só de: beaucoup de travail, un peu de sucre, trop de bruit, assez de temps, un kilo de pommes, une bouteille d’eau.',
-          'Exceções a decorar: la plupart des gens, bien des fois (aqui fica des).',
-          'Na escrita formal, des vira de antes de um adjetivo que vem antes do substantivo: de bonnes idées, de nouveaux collègues.'
+          'Depois da negação, [[un|um]], [[une|uma]], [[des|uns / umas]], [[du|um pouco de]], [[de la|um pouco de]] e [[de l’|um pouco de]] viram [[de|de]] (ou [[d’|de]]): [[Je n’ai pas de voiture.|Não tenho carro.]] [[Il ne boit pas d’alcool.|Ele não bebe álcool.]]',
+          'O definido não muda na negação: [[Je n’aime pas le café.|Não gosto de café.]] Continua [[le|o]], porque é gosto em geral.',
+          'Com [[être|ser / estar]], o artigo também não muda: [[Ce n’est pas un problème.|Não é um problema.]] [[Ce n’est pas du sucre, c’est du sel.|Não é açúcar, é sal.]]',
+          'Depois de expressões de quantidade, usa-se só [[de|de]]: [[beaucoup de travail|muito trabalho]], [[un peu de sucre|um pouco de açúcar]], [[trop de bruit|barulho demais]], [[assez de temps|tempo suficiente]], [[un kilo de pommes|um quilo de maçãs]], [[une bouteille d’eau|uma garrafa de água]].',
+          'Exceções a decorar: [[la plupart des gens|a maioria das pessoas]] e [[bien des fois|muitas vezes]] (aqui fica [[des|des]]).',
+          'Na escrita formal, [[des|des]] vira [[de|de]] antes de um adjetivo que vem antes do substantivo: [[de bonnes idées|boas ideias]], [[de nouveaux collègues|novos colegas]].'
         ]
       },
 
@@ -78,16 +78,17 @@ const content: TopicContent = {
         tone: 'warning',
         title: 'O erro mais comum de quem fala português',
         text:
-          'Esquecer o artigo onde o português não usa: "Je bois café" ou "J’ai amis" estão errados. ' +
-          'O certo é Je bois du café e J’ai des amis. Outro erro frequente é manter o partitivo na negação: o certo é Je n’ai pas d’argent, nunca "pas de l’argent".'
+          'Esquecer o artigo onde o português não usa: [[Je bois café|Bebo café (errado)]] ou [[J’ai amis|Tenho amigos (errado)]] estão errados. ' +
+          'O certo é [[Je bois du café|Bebo café]] e [[J’ai des amis|Tenho amigos]]. Outro erro frequente é manter o partitivo na negação: o certo é [[Je n’ai pas d’argent.|Não tenho dinheiro.]] ' +
+          'nunca [[pas de l’argent|não do dinheiro (errado)]].'
       },
       {
         type: 'callout',
         tone: 'tip',
         title: 'Na prova',
         text:
-          'As questões de múltipla escolha adoram três armadilhas: negação + de (pas de), quantidade + de (beaucoup de) e gosto × consumo ' +
-          '(J’adore le chocolat, mas Je mange du chocolat). Quando aparecerem du, de la, des e de como alternativas, procure primeiro uma negação ou uma palavra de quantidade na frase.'
+          'As questões de múltipla escolha adoram três armadilhas: negação + [[de|de]] ([[pas de|nenhum]]), quantidade + [[de|de]] ([[beaucoup de|muito]]) e gosto × consumo ' +
+          '([[J’adore le chocolat.|Adoro chocolate.]] mas [[Je mange du chocolat.|Como chocolate.]]) Quando aparecerem [[du|um pouco de]], [[de la|um pouco de]], [[des|uns / umas]] e [[de|de]] como alternativas, procure primeiro uma negação ou uma palavra de quantidade na frase.'
       }
     ]
   },
@@ -104,9 +105,9 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Article', 'Masculin', 'Féminin', 'Devant une voyelle ou un h muet', 'Pluriel'],
         rows: [
-          ['Défini', 'le', 'la', "l'", 'les'],
+          ['Défini', 'le', 'la', 'l’', 'les'],
           ['Indéfini', 'un', 'une', 'un / une', 'des'],
-          ['Partitif', 'du', 'de la', "de l'", 'des']
+          ['Partitif', 'du', 'de la', 'de l’', 'des']
         ]
       },
 
@@ -181,7 +182,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

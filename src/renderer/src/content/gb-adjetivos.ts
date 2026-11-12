@@ -13,23 +13,23 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'O adjetivo assume o gênero e o número do substantivo: un appartement moderne, une maison moderne, des quartiers modernes. ' +
-          'Quando qualifica um substantivo masculino e um feminino ao mesmo tempo, fica no masculino plural: un pantalon et une chemise blancs.'
+          'O adjetivo assume o gênero e o número do substantivo: [[un appartement moderne|um apartamento moderno]], [[une maison moderne|uma casa moderna]], [[des quartiers modernes|bairros modernos]]. ' +
+          'Quando qualifica um substantivo masculino e um feminino ao mesmo tempo, fica no masculino plural: [[un pantalon et une chemise blancs|uma calça e uma camisa brancas]].'
       },
       {
         type: 'paragraph',
-        text: 'As regras para formar o feminino e o plural (heureux → heureuse, national → nationaux) estão na página "Gênero e número de substantivos e adjetivos".'
+        text: 'As regras para formar o feminino e o plural ([[heureux|feliz]] → [[heureuse|feliz]], [[national|nacional]] → [[nationaux|nacionais]]) estão na página "Gênero e número de substantivos e adjetivos".'
       },
 
       { type: 'heading', text: 'Depois do substantivo: a regra geral' },
       {
         type: 'list',
         items: [
-          'Cores: une voiture rouge, des yeux bleus.',
-          'Nacionalidades e religiões: un étudiant brésilien, la cuisine québécoise.',
-          'Formas e características físicas: une table ronde, un ton sec.',
-          'Particípios usados como adjetivo: une porte fermée, un document signé.',
-          'Adjetivos longos ou técnicos: un projet important, une solution économique.'
+          'Cores: [[une voiture rouge|um carro vermelho]], [[des yeux bleus|olhos azuis]].',
+          'Nacionalidades e religiões: [[un étudiant brésilien|um estudante brasileiro]], [[la cuisine québécoise|a culinária québécoise]].',
+          'Formas e características físicas: [[une table ronde|uma mesa redonda]], [[un ton sec|um tom seco]].',
+          'Particípios usados como adjetivo: [[une porte fermée|uma porta fechada]], [[un document signé|um documento assinado]].',
+          'Adjetivos longos ou técnicos: [[un projet important|um projeto importante]], [[une solution économique|uma solução econômica]].'
         ]
       },
 
@@ -38,18 +38,18 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Grupo', 'Adjetivos', 'Exemplo'],
         rows: [
-          ['Beleza', 'beau, joli', 'un joli quartier'],
-          ['Idade', 'jeune, vieux, nouveau', 'une nouvelle voiture'],
-          ['Bondade', 'bon, mauvais, gentil', 'une bonne idée'],
-          ['Tamanho', 'grand, petit, gros, long', 'un petit appartement'],
-          ['Outros comuns', 'autre, même, premier, dernier', 'une autre fois']
+          ['Beleza', '[[beau|bonito]], [[joli|bonito]]', '[[un joli quartier|um bairro bonito]]'],
+          ['Idade', '[[jeune|jovem]], [[vieux|velho]], [[nouveau|novo]]', '[[une nouvelle voiture|um carro novo]]'],
+          ['Bondade', '[[bon|bom]], [[mauvais|ruim]], [[gentil|gentil]]', '[[une bonne idée|uma boa ideia]]'],
+          ['Tamanho', '[[grand|grande]], [[petit|pequeno]], [[gros|grosso]], [[long|longo]]', '[[un petit appartement|um apartamento pequeno]]'],
+          ['Outros comuns', '[[autre|outro]], [[même|mesmo]], [[premier|primeiro]], [[dernier|último]]', '[[une autre fois|outra vez]]']
         ]
       },
       {
         type: 'paragraph',
         text:
-          'Antes de um substantivo masculino que começa por vogal ou h mudo, beau, nouveau e vieux viram bel, nouvel e vieil: ' +
-          'un bel homme, un nouvel appartement, un vieil ami.'
+          'Antes de um substantivo masculino que começa por vogal ou h mudo, [[beau|bonito]], [[nouveau|novo]] e [[vieux|velho]] viram [[bel|bonito]], [[nouvel|novo]] e [[vieil|velho]]: ' +
+          '[[un bel homme|um homem bonito]], [[un nouvel appartement|um apartamento novo]], [[un vieil ami|um velho amigo]].'
       },
 
       { type: 'heading', text: 'Adjetivos que mudam de sentido' },
@@ -57,15 +57,12 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Antes', 'Depois'],
         rows: [
-          ['un ancien collègue (um ex-colega)', 'une maison ancienne (uma casa antiga)'],
-          ['un grand homme (um grande homem)', 'un homme grand (um homem alto)'],
-          ['mon cher ami (meu querido amigo)', 'un loyer cher (um aluguel caro)'],
-          ['ma propre voiture (meu próprio carro)', 'une voiture propre (um carro limpo)'],
-          ['un seul enfant (um único filho)', 'un enfant seul (uma criança sozinha)'],
-          [
-            'la dernière semaine (a última semana de uma série)',
-            'la semaine dernière (a semana passada)'
-          ]
+          ['[[un ancien collègue|um ex-colega]]', '[[une maison ancienne|uma casa antiga]]'],
+          ['[[un grand homme|um grande homem]]', '[[un homme grand|um homem alto]]'],
+          ['[[mon cher ami|meu querido amigo]]', '[[un loyer cher|um aluguel caro]]'],
+          ['[[ma propre voiture|meu próprio carro]]', '[[une voiture propre|um carro limpo]]'],
+          ['[[un seul enfant|um único filho]]', '[[un enfant seul|uma criança sozinha]]'],
+          ['[[la dernière semaine|a última semana de uma série]]', '[[la semaine dernière|a semana passada]]']
         ]
       },
 
@@ -74,8 +71,8 @@ const content: TopicContent = {
         tone: 'warning',
         title: 'Cuidado com o plural antes do substantivo',
         text:
-          'Na escrita cuidada, des vira de quando o adjetivo vem antes do substantivo: de nouveaux collègues, de bonnes nouvelles. ' +
-          'Na fala, muita gente diz des, mas na produção escrita da prova prefira de.'
+          'Na escrita cuidada, [[des|des]] vira [[de|de]] quando o adjetivo vem antes do substantivo: [[de nouveaux collègues|novos colegas]], [[de bonnes nouvelles|boas notícias]]. ' +
+          'Na fala, muita gente diz [[des|des]], mas na produção escrita da prova prefira [[de|de]].'
       },
       {
         type: 'callout',
@@ -179,7 +176,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

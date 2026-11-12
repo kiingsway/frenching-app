@@ -1,0 +1,16 @@
+{
+  "genre-different-1": {
+    "status": "ok",
+    "hash": "af7bad95",
+    "prompt": "la voiture",
+    "answer": "O carro.",
+    "at": "2026-11-10T15:55:37.913Z"
+  },
+  "genre-different-2": {
+    "status": "ok",
+    "hash": "edf4932e",
+    "prompt": "le vélo",
+    "answer": "A bicicleta.",
+    "at": "2026-11-10T15:55:45.679Z"
+  }
+}

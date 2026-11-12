@@ -13,6 +13,7 @@ import Page from '@/components/Page'
 import { AnimatedNumber, ProgressBar, riseIn, stagger } from '@/components/motion'
 import { SECTIONS, type Section } from '@/data/topics'
 import { getTopicContent } from '@/content'
+import { pendingReturnSection, rememberDashboardReturn } from '@/lib/dashboard-return'
 import { useCompletedTopics } from '@/lib/completed'
 
 const written = (topicId: string): boolean => !!getTopicContent(topicId)
@@ -98,10 +99,11 @@ function SectionCard({
   onOpenTopic: (id: string) => void
 }): ReactElement {
   const reduce = useReducedMotion()
-  const sectionDone = section.topics.filter((t) => isDone(t.id)).length
+  // Só tópicos com conteúdo contam: não dá para concluir o que ainda não foi escrito
   const available = section.topics.filter((t) => written(t.id))
+  const sectionDone = available.filter((t) => isDone(t.id)).length
   const complete = available.length > 0 && available.every((t) => isDone(t.id))
-  const progress = section.topics.length ? sectionDone / section.topics.length : 0
+  const progress = available.length ? sectionDone / available.length : 0
   const bodyId = `section-${section.id}`
 
   return (
@@ -136,8 +138,14 @@ function SectionCard({
               {section.title}
             </Typography>
             <Typography variant="caption" color={complete ? 'success.main' : 'text.secondary'}>
-              <AnimatedNumber value={sectionDone} /> de {section.topics.length} concluídos
-              {complete && available.length < section.topics.length ? ' · o resto ainda vem' : ''}
+              {available.length > 0 && (
+                <>
+                  <AnimatedNumber value={sectionDone} /> de {available.length} concluídos
+                </>
+              )}
+              {available.length > 0 && available.length < section.topics.length && ' · '}
+              {available.length < section.topics.length &&
+                `${section.topics.length - available.length} em breve`}
             </Typography>
           </Box>
           <Box
@@ -171,21 +179,17 @@ function SectionCard({
               style={{ overflow: 'hidden' }}
             >
               <Box sx={{ px: 2, pb: 2 }}>
-                <ProgressBar
-                  value={progress * 100}
-                  height={4}
-                  color={
-                    complete ? 'var(--mui-palette-success-main)' : 'var(--mui-palette-primary-main)'
-                  }
-                />
                 <Box
                   component={motion.div}
                   variants={stagger(0.05, 0.025)}
                   initial="hidden"
                   animate="show"
-                  sx={{ mt: 1.5 }}
                 >
-                  {section.topics.map((topic) => {
+                  {/* Disponíveis primeiro, "em breve" no fim; a ordem de cada grupo é a original */}
+                  {[
+                    ...section.topics.filter((topic) => written(topic.id)),
+                    ...section.topics.filter((topic) => !written(topic.id))
+                  ].map((topic) => {
                     const isWritten = written(topic.id)
                     return (
                       <Stack
@@ -241,8 +245,10 @@ export default function Dashboard({
 }): ReactElement {
   const { done, isDone, toggle } = useCompletedTopics()
 
-  const total = SECTIONS.reduce((n, s) => n + s.topics.length, 0)
-  const percent = total ? Math.round((done.length / total) * 100) : 0
+  // Só tópicos com conteúdo entram na conta
+  const total = SECTIONS.reduce((n, s) => n + s.topics.filter((t) => written(t.id)).length, 0)
+  const doneCount = SECTIONS.reduce((n, s) => n + s.topics.filter((t) => written(t.id) && isDone(t.id)).length, 0)
+  const percent = total ? Math.round((doneCount / total) * 100) : 0
 
   // Seção "da vez": a primeira, de cima para baixo, que ainda tem tópico para marcar.
   // Só contam os tópicos que já têm página (os "em breve" não podem ser marcados)
@@ -251,7 +257,13 @@ export default function Dashboard({
 
   // Começa só com a seção da vez aberta; as outras abrem e fecham com um clique.
   // Ao concluir a seção da vez, ela fecha e a próxima abre sozinha
-  const [open, setOpen] = useState<Set<string>>(() => new Set(current ? [current] : []))
+  // Ao voltar de uma página de estudo aberta por aqui, também reabre a seção dela
+  const [open, setOpen] = useState<Set<string>>(() => {
+    const ids = new Set(current ? [current] : [])
+    const back = pendingReturnSection()
+    if (back) ids.add(back)
+    return ids
+  })
   const previous = useRef(current)
   useEffect(() => {
     if (previous.current === current) return
@@ -284,7 +296,7 @@ export default function Dashboard({
           <Box sx={{ my: 3 }}>
             <ProgressBar value={percent} />
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              <AnimatedNumber value={done.length} /> de {total} tópicos concluídos (
+              <AnimatedNumber value={doneCount} /> de {total} tópicos concluídos (
               <AnimatedNumber value={percent} />
               %)
             </Typography>
@@ -300,7 +312,11 @@ export default function Dashboard({
               onToggle={() => toggleOpen(section.id)}
               isDone={isDone}
               toggleDone={toggle}
-              onOpenTopic={onOpenTopic}
+              onOpenTopic={(id) => {
+                // Guarda a seção e a altura da tela para a volta (veja lib/dashboard-return.ts)
+                rememberDashboardReturn(section.id)
+                onOpenTopic(id)
+              }}
             />
           ))}
         </Stack>

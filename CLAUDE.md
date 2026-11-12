@@ -4,6 +4,18 @@
 
 - **Armazenamento dos áudios (direção definida, detalhes em aberto, nada construído):** o usuário vai colocar cerca de 5x mais áudio, com áudios longos e várias vozes para o mesmo texto, e prefere um `.exe` bem leve. Parte dos áudios vem no app, e o resto é baixado quando for preciso e fica guardado. O serviço na nuvem fica para depois. As decisões e o que falta decidir estão em [docs/armazenamento-de-audios.md](docs/armazenamento-de-audios.md). Ao retomar o assunto, comece por esse documento; não construa nada sem o usuário pedir.
 
+## "Adicionar o próximo conteúdo" (caixa de entrada)
+
+O usuário coloca os JSONs de páginas de estudo em `content-inbox/` (fora do Git; no `npm run dev`, o administrador também pode colar o JSON pelo botão "Colar JSON" das páginas sem conteúdo, que salva o arquivo lá) e, em qualquer sessão, diz **"adicionar o próximo conteúdo"**. Fluxo:
+
+1. Pegue o `.json` mais antigo de `content-inbox/` (se não houver, diga isso e pare).
+2. Rode `node scripts/importar-json.mts content-inbox/<arquivo>.json`. Ele acha o tópico pelo campo `topic`, corrige apóstrofos, divide o francês da versão `pt` por frase, grava `src/renderer/src/content/<id>.ts`, registra em `content/index.ts` e lista avisos. Se o tópico não for achado, mostre os títulos parecidos de `data/topics.ts` e pergunte.
+3. **Revise** pela lista de [docs/revisao-de-conteudo.md](docs/revisao-de-conteudo.md): abra as fontes (o script não confere endereços), confira fatos da prova, falsos cognatos, exemplos e tabelas, e corrija no arquivo gerado. Sugestões que não vêm de fonte oficial saem ou são marcadas como sugestão.
+4. `npm run typecheck` e `npm run audio` (repita se der EPERM; sem `--force`).
+5. Mova o JSON para `content-inbox/feitos/` e relate o que corrigiu e o que não conferiu. Não faça commit nem push sem o usuário pedir.
+
+Um arquivo por vez. Se o usuário pedir "todos", repita o fluxo para cada um.
+
 ## Regras de conteúdo
 
 Valem ao escrever ou integrar conteúdo, inclusive o gerado por outras IAs. Os modelos de pedido e os formatos em JSON estão em [docs/pedidos-para-outras-ias.md](docs/pedidos-para-outras-ias.md): ao mudar uma regra aqui, atualize lá também.
@@ -22,14 +34,17 @@ Valem ao escrever ou integrar conteúdo, inclusive o gerado por outras IAs. Os m
 - **Na versão `pt`, todo francês é marcado com a tradução:** `[[francês|tradução]]`, por exemplo `[[la voie|a linha]]`. O app mostra o termo destacado, com a tradução numa dica e o áudio ao clicar (`components/TranslatedText.tsx`). Vale também para palavras "fáceis" e para títulos de seção, tabelas e avisos. Só nomes próprios ficam sem marcação. Não traduza entre parênteses.
 - Página com termos marcados leva `'terms'` no campo `audio`; depois rode `npm run audio` para gerar os áudios dos termos.
 - As seções "Conhecendo a prova" e "Compreensão oral" já usam a marcação. As outras páginas ainda têm a tradução entre parênteses (ou nenhuma) e serão convertidas aos poucos.
+- **Textos longos em francês na versão `pt` são divididos por ponto final:** uma marcação `[[frase|tradução]]` por frase, no mesmo bloco, para cada frase ter a sua dica e um áudio curto (pedido do usuário). Se o conteúdo vier com várias frases numa marcação só, divida ao integrar.
 - **Só texto simples nos blocos:** sem Markdown (`**negrito**`), sem quebras de linha (`\n`) dentro de um texto e sem numeração dentro dos itens de lista; o app mostra os símbolos como estão. Ao integrar conteúdo que venha assim, separe em blocos `paragraph` (um texto de exemplo em francês vai marcado inteiro num bloco só dele; o rótulo "Interpretação literal:" abre um parágrafo novo) e tire o negrito. Isso já está pedido em [docs/pedidos-para-outras-ias.md](docs/pedidos-para-outras-ias.md).
 - **Confira o conteúdo recebido antes de integrar:** abra as fontes (têm de existir), confira se os falsos cognatos são reais (palavra igual nas duas línguas, como `actuellement`, não é) e se os exemplos fictícios fazem sentido. Corrija ou avise o usuário do que mudou.
 - **A versão `fr` fica toda em francês**, porque também é treino de leitura e vira áudio.
 - De 6 a 12 blocos por versão, na ordem explicação → exemplos → armadilhas → dica para a prova, com pelo menos um aviso (`warning`) do erro típico de quem fala português e uma dica (`tip`) do que a prova cobra. Tabelas sem célula vazia.
+- **Caixa vermelha "Sem fonte oficial" (`tone: 'unverified'`, pedido do usuário):** quando a página tiver conteúdo que as fontes de `sources` não confirmam, principalmente se parecer regra, dado ou exigência da prova, acrescente uma caixa `unverified` **por último, abaixo das outras caixas**, nas duas versões (título "Sem fonte oficial" / "Sans source officielle"). Ela diz o que tem fonte e o que não tem, e que o que não tem fonte é conselho de preparação, não regra da prova. O conteúdo sem fonte pode continuar no corpo da página, mas tem de estar listado na caixa. Se tudo tem fonte, não use. Ao integrar, confira as fontes (veja a lista de revisão) e acrescente a caixa onde faltar. Exemplo: [eo-tef-b.ts](src/renderer/src/content/eo-tef-b.ts). Nada na primeira pessoa na caixa ("abri", "li", "não consegui"): só o que tem e o que não tem fonte, em voz impessoal (pedido do usuário). Essa caixa não conta nos 6 a 12 blocos e não substitui o `warning` nem o `tip`.
 
 ### Flashcards
 
 - Cada cartão tem `fr` (só o que se fala, com artigo nos substantivos), `pt` e `example` com `fr` e `pt`. Notas de gramática e a forma da França vão em `note`; a armadilha dos falsos cognatos vai em `trap`.
+- Padrão dos cartões (detalhes em [docs/pedidos-para-outras-ias.md](docs/pedidos-para-outras-ias.md)): `pt` em minúsculas, sem ponto final e com artigo (`o carro`); substantivo que começa com vogal usa `un/une` em vez de `l’`; apóstrofo sempre `’`; exemplo neutro, sem afirmação sobre fatos reais; `description` com o número certo de cartões. Ao integrar, normalize o que vier fora desse padrão.
 - Os ids dependem da posição: cartões novos entram **no fim** do baralho, sem mudar a ordem dos outros.
 
 ### Questões de gramática

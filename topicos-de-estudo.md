@@ -49,20 +49,20 @@
 - [ ] **TCF – Tâche 3:** comparar dois documentos e dar sua opinião
 
 ### Competências
-- [ ] Estrutura de texto: introdução, desenvolvimento, conclusão
-- [ ] Registro formal × informal (tu/vous, fórmulas de abertura e fechamento)
-- [ ] Carta formal e e-mail profissional
+- [x] Estrutura de texto: introdução, desenvolvimento, conclusão
+- [x] Registro formal × informal (tu/vous, fórmulas de abertura e fechamento)
+- [x] Carta formal e e-mail profissional
 - [ ] Narrar fatos no passado (*récit*)
-- [ ] Argumentar: tese, argumentos, exemplos, contra-argumento, concessão
-- [ ] Conectores lógicos (causa, consequência, oposição, concessão, adição, conclusão)
-- [ ] Respeitar contagem de palavras
-- [ ] Revisão: concordância, acentos, ortografia
+- [x] Argumentar: tese, argumentos, exemplos, contra-argumento, concessão
+- [x] Conectores lógicos (causa, consequência, oposição, concessão, adição, conclusão)
+- [x] Respeitar contagem de palavras
+- [x] Revisão: concordância, acentos, ortografia
 
 ## 4. Expression orale (produção oral)
 
 ### Tipos de tarefa
-- [ ] **TEF – Seção A:** obter informações (ligação telefônica sobre um anúncio, fazer perguntas)
-- [ ] **TEF – Seção B:** convencer/persuadir um amigo sobre algo de um anúncio
+- [x] **TEF – Seção A:** obter informações (ligação telefônica sobre um anúncio, fazer perguntas)
+- [x] **TEF – Seção B:** convencer/persuadir um amigo sobre algo de um anúncio
 - [ ] **TCF – Tâche 1:** entrevista dirigida (falar de si, rotina, trabalho, projetos)
 - [ ] **TCF – Tâche 2:** interação/role-play (obter informações, fazer perguntas)
 - [ ] **TCF – Tâche 3:** expressar e defender um ponto de vista

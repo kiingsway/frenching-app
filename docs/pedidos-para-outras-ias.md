@@ -23,10 +23,12 @@ Você vai gerar conteúdo para um app de estudos de francês para brasileiros qu
 
 Regras:
 - Francês correto e natural, com a ortografia padrão (acentos, apóstrofo tipográfico ’ e espaço antes de : ; ? ! no texto em francês).
+- Apóstrofo: use SEMPRE o tipográfico ’ (J’utilise, l’argent, s’il vous plaît), nunca o reto ' (errado: J'utilise). Vale para todo texto em francês, inclusive exemplos, notas, títulos e nomes de fontes (ex.: "L’accord dans le groupe nominal").
+- Não afirme o que você não tem certeza: se não souber ao certo uma diferença regional, um dado ou um endereço, deixe de fora em vez de arriscar. Uma afirmação errada é pior do que uma ausente.
 - Priorize o francês canadense (Québec): vocabulário, expressões e exemplos do Canadá são a forma principal (ex.: courriel, fin de semaine, magasiner). Quando a forma da França for diferente, mostre-a ao lado como alternativa, porque ela também pode aparecer na prova.
 - Explicações em português do Brasil, curtas e diretas, pensando nos erros típicos de quem fala português.
 - Fontes: use só páginas que existem de verdade, com o endereço completo, e prefira fontes oficiais (IRCC, France Éducation international, Le français des affaires) e de referência (Le Robert, Larousse, Usito, Lawless French, Kwiziq, TV5Monde, RFI). Se não tiver certeza de um endereço, não invente: deixe de fora.
-- Responda SÓ com o JSON pedido, sem comentários antes ou depois.
+- Responda com o JSON pedido (use code snippet e código minificado se disponível) e no final mandar "Tópico pronto: [tópico] (seção: [seção])", nenhum comentário a mais.
 ```
 
 ---
@@ -37,11 +39,16 @@ Regras:
 Crie um baralho de [20] flashcards sobre [tema, ex.: "vocabulário de saúde e consultas médicas"], nível [A2–B1 / B1–B2 / B2].
 
 Cada cartão tem:
-- "fr": a palavra ou expressão em francês, só o que se fala (com artigo nos substantivos: "le loyer"). Notas de gramática vão em "note".
-- "pt": a tradução em português.
-- "example": uma frase de exemplo útil para a prova, em francês ("fr") e a tradução ("pt").
-- "note" (opcional): observação de uso (preposição que acompanha, registro formal/informal, auxiliar do passé composé, forma usada na França quando for diferente da canadense).
+- "fr": a palavra ou expressão em francês, só o que se fala (com artigo nos substantivos: "le loyer"). Notas de gramática vão em "note". Substantivo que começa com vogal ou h mudo: use "un/une" (não "l’"), porque o "l’" esconde o gênero (ex.: "un arbre", "une adresse").
+- "pt": a tradução em português, em minúsculas, sem ponto final, e com artigo nos substantivos ("o carro", "a bicicleta"), igual em todos os cartões. Só tradução de verdade: se a palavra francesa significa X, o "pt" é X (não use outra palavra parecida; ex.: "faute" é "culpa" ou "falta", não "erro").
+- "example": uma frase de exemplo útil para a prova, em francês ("fr") e a tradução ("pt"). Frase neutra e natural, sem afirmações sobre fatos reais (estatísticas, situação econômica de um lugar, regras de órgãos públicos). Boas frases falam do cotidiano, do trabalho, da moradia, da imigração.
+- "note" (opcional): observação de uso (preposição que acompanha, registro formal/informal, auxiliar do passé composé, forma usada na França quando for diferente da canadense). Escreva uma ideia clara e verdadeira; sem frases sem sentido ("même au singulier") e sem repetir o óbvio.
 - "trap" (opcional, só para falsos cognatos): a armadilha explicada, ex.: "Não é atender. Atender = répondre, servir."
+
+Antes de responder, confira cada cartão:
+- O cartão mostra o que o baralho promete. Num baralho de gênero, o gênero precisa ser DIFERENTE nas duas línguas (ex.: "la pause" e "a pausa" são os dois femininos: não serve). Num baralho de falsos cognatos, a palavra precisa ser mesmo um falso cognato.
+- Diferenças entre Québec e França estão certas. Exemplo famoso: "déjeuner" é o café da manhã no Québec e o almoço na França; "dîner" é o almoço no Québec e o jantar na França. Se não tiver certeza, não escreva.
+- Não repita cartão que já existe no baralho, e o número dito na "description" (ex.: "50 substantivos") é igual ao número de cartões.
 
 Formato:
 {
@@ -100,11 +107,14 @@ Cada versão tem:
   { "type": "paragraph", "text": "..." }
   { "type": "list", "items": ["...", "..."] }
   { "type": "table", "headers": ["...", "..."], "rows": [["...", "..."]] }   (nenhuma célula vazia)
-  { "type": "callout", "tone": "tip" ou "warning", "title": "...", "text": "..." }
+  { "type": "callout", "tone": "tip" ou "warning" ou "unverified", "title": "...", "text": "..." }
 - Inclua pelo menos um "warning" com o erro típico de quem fala português e um "tip" com o que a prova cobra.
+- Caixa vermelha "unverified" (título "Sem fonte oficial" em "pt" e "Sans source officielle" em "fr"): quando a página tiver conteúdo que as fontes listadas não confirmam (principalmente algo que pareça regra, dado ou exigência da prova), acrescente UMA caixa assim, por último, depois da dica. Ela diz o que tem fonte e o que não tem, e que o que não tem fonte é conselho de preparação, não regra da prova. Se tudo na página tem fonte, não use.
 - Tradução obrigatória na versão "pt": toda palavra, expressão ou frase em francês é marcada assim: [[francês|tradução em português]]. Exemplos: [[la voie|a linha]], [[Je peux vous aider ?|Posso ajudar?]], [[soixante-dix|70]]. Vale para títulos de seção, parágrafos, listas, tabelas, avisos e exemplos citados, sem exceção para palavras "fáceis". Só nomes próprios ficam sem marcação (RFI, Radio-Canada).
   - Não use parênteses para traduzir: o app mostra o francês destacado, com a tradução numa dica e o áudio ao clicar.
-  - Cada marcação tem um trecho só em francês e não leva outra marcação dentro. Uma frase longa pode ser marcada inteira.
+  - Cada marcação tem um trecho só em francês e não leva outra marcação dentro.
+  - Texto longo em francês (dois ou mais pontos finais) é dividido por frase: uma marcação para cada frase, com a tradução da própria frase, uma depois da outra no mesmo bloco, separadas por um espaço. Assim cada frase tem a sua dica e o seu áudio curto, em vez de um áudio longo. Ex.: "[[Samedi dernier, j’ai participé à une opération.|No último sábado, participei de uma operação.]] [[Une vingtaine de résidents se sont retrouvés à 9 h.|Cerca de vinte moradores se reuniram às 9h.]]". Uma frase isolada, mesmo longa, fica numa marcação só.
+  - O número de frases em francês e na tradução tem de ser o mesmo, na mesma ordem. Pontuação no meio da frase (: ; ,) não divide.
   - Dentro da marcação, não use os caracteres | e ] além dos da própria marcação.
   - O texto em volta continua em português: "a resposta certa é [[à l’heure|no horário]]".
   - Uma tabela pode ter colunas separadas para o francês e o português; nesse caso, as células em francês também levam a marcação.
@@ -129,6 +139,8 @@ Formato:
   "sources": [{ "title": "...", "url": "https://..." }]
 }
 ```
+
+No app, o administrador vê o botão "Copiar pedido para a IA" nas páginas sem conteúdo: ele copia o **contexto geral** e este modelo, já com o nome do tópico e da seção. O botão lê este arquivo, então basta mantê-lo em dia (o contexto e este modelo continuam sendo o primeiro bloco de código de cada seção, e os trechos `[nome do tópico…]` e `[nome da seção]` são os que o app troca).
 
 Os tópicos que faltam aparecem como "em breve" no Painel e estão listados em [topicos-de-estudo.md](../topicos-de-estudo.md).
 

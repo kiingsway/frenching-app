@@ -672,7 +672,7 @@ const rowLabelSx = {
 
 // Estilo da página de estudo. Por enquanto, o Leitura só troca a fonte
 const STUDY_STYLE_OPTIONS: { value: StudyStyle; label: string; icon: IconType }[] = [
-  { value: 'current', label: 'Atual', icon: FiLayout },
+  { value: 'current', label: 'Padrão', icon: FiLayout },
   { value: 'reading', label: 'Leitura', icon: FiBookOpen }
 ]
 

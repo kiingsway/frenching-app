@@ -123,7 +123,12 @@ export const desktopUpdates = electronApi?.updates
 export const audioTools = electronApi?.audio
 export const reviewTools = electronApi?.review
 
-export const audioToolsAvailable = (): Promise<boolean> =>
+export const inboxTools = electronApi?.inbox
+
+export const inboxToolsAvailable = (): Promise<boolean> =>
+  inboxTools ? inboxTools.available() : Promise.resolve(false)
+
+export const audioToolsAvailable =(): Promise<boolean> =>
   audioTools ? audioTools.available() : Promise.resolve(false)
 
 export const reviewToolsAvailable = (): Promise<boolean> =>

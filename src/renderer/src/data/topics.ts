@@ -162,7 +162,7 @@ export const SECTIONS: Section[] = [
         id: 'gb-contracoes',
         title: 'Contrações (au, du, aux, des) e artigos com países e continentes'
       },
-      { id: 'gb-cest-il-est', title: "C'est × il/elle est" },
+      { id: 'gb-cest-il-est', title: 'C’est × il/elle est' },
       { id: 'gb-tonicos', title: 'Pronomes tônicos (moi, toi, lui…) e on × nous' },
       { id: 'gb-numeros', title: 'Números, horas e datas' },
       {

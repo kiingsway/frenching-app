@@ -6,44 +6,44 @@ const content: TopicContent = {
   pt: {
     title: 'Passé composé: avoir ou être e a concordância do particípio',
     summary:
-      'O passé composé é o passado das ações concluídas, o equivalente do nosso pretérito perfeito ("fiz", "cheguei"). ' +
-      'Forma-se com avoir ou être no présent mais o particípio. A escolha do auxiliar e a concordância do particípio são os pontos mais cobrados.',
+      'O [[passé composé|pretérito perfeito composto]] é o passado das ações concluídas, o equivalente do nosso pretérito perfeito ("fiz", "cheguei"). ' +
+      'Forma-se com [[avoir|ter]] ou [[être|ser]] no [[présent|presente]] mais o particípio. A escolha do auxiliar e a concordância do particípio são os pontos mais cobrados.',
     blocks: [
       { type: 'heading', text: 'A formação' },
       {
         type: 'paragraph',
         text:
-          'Auxiliar no présent + particípio passado: J’ai travaillé. Elle est partie. ' +
-          'Os particípios regulares terminam em -é para os verbos em -er (parler → parlé), -i para os em -ir (finir → fini) e -u para os em -re (attendre → attendu).'
+          'Auxiliar no [[présent|presente]] + particípio passado: [[J’ai travaillé.|Eu trabalhei.]] [[Elle est partie.|Ela partiu.]] ' +
+          'Os particípios regulares terminam em -é para os verbos em -er ([[parler|falar]] → [[parlé|falado]]), -i para os em -ir ([[finir|terminar]] → [[fini|terminado]]) e -u para os em -re ([[attendre|esperar]] → [[attendu|esperado]]).'
       },
       {
         type: 'table',
         headers: ['Infinitivo', 'Particípio', 'Infinitivo', 'Particípio'],
         rows: [
-          ['être', 'été', 'avoir', 'eu'],
-          ['faire', 'fait', 'prendre', 'pris'],
-          ['mettre', 'mis', 'dire', 'dit'],
-          ['écrire', 'écrit', 'voir', 'vu'],
-          ['pouvoir', 'pu', 'vouloir', 'voulu'],
-          ['devoir', 'dû', 'savoir', 'su'],
-          ['lire', 'lu', 'boire', 'bu'],
-          ['venir', 'venu', 'ouvrir', 'ouvert'],
-          ['recevoir', 'reçu', 'connaître', 'connu'],
-          ['naître', 'né', 'mourir', 'mort']
+          ['[[être|ser]]', '[[été|sido]]', '[[avoir|ter]]', '[[eu|tido]]'],
+          ['[[faire|fazer]]', '[[fait|feito]]', '[[prendre|pegar]]', '[[pris|pegado]]'],
+          ['[[mettre|colocar]]', '[[mis|colocado]]', '[[dire|dizer]]', '[[dit|dito]]'],
+          ['[[écrire|escrever]]', '[[écrit|escrito]]', '[[voir|ver]]', '[[vu|visto]]'],
+          ['[[pouvoir|poder]]', '[[pu|podido]]', '[[vouloir|querer]]', '[[voulu|querido]]'],
+          ['[[devoir|dever]]', '[[dû|devido]]', '[[savoir|saber]]', '[[su|sabido]]'],
+          ['[[lire|ler]]', '[[lu|lido]]', '[[boire|beber]]', '[[bu|bebido]]'],
+          ['[[venir|vir]]', '[[venu|vindo]]', '[[ouvrir|abrir]]', '[[ouvert|aberto]]'],
+          ['[[recevoir|receber]]', '[[reçu|recebido]]', '[[connaître|conhecer]]', '[[connu|conhecido]]'],
+          ['[[naître|nascer]]', '[[né|nascido]]', '[[mourir|morrer]]', '[[mort|morto]]']
         ]
       },
 
-      { type: 'heading', text: 'Avoir ou être?' },
+      { type: 'heading', text: '[[Avoir ou être ?|Ter ou ser?]]' },
       {
         type: 'paragraph',
-        text: 'A grande maioria dos verbos usa avoir. Usam être cerca de quinze verbos de movimento ou mudança de estado e todos os verbos pronominais.'
+        text: 'A grande maioria dos verbos usa [[avoir|ter]]. Usam [[être|ser]] cerca de dezessete verbos de movimento ou mudança de estado e todos os verbos pronominais.'
       },
       {
         type: 'list',
         items: [
-          'Movimento e mudança: aller, venir, arriver, partir, entrer, sortir, monter, descendre, tomber, rester, retourner, passer, naître, mourir, devenir, revenir, rentrer.',
-          'Todos os pronominais: je me suis levé, elle s’est inscrite, nous nous sommes rencontrés.',
-          'Sortir, monter, descendre, rentrer, retourner e passer usam avoir quando têm complemento direto: Je suis sorti hier soir, mas J’ai sorti les poubelles.'
+          'Movimento e mudança: [[aller|ir]], [[venir|vir]], [[arriver|chegar]], [[partir|partir]], [[entrer|entrar]], [[sortir|sair]], [[monter|subir]], [[descendre|descer]], [[tomber|cair]], [[rester|ficar]], [[retourner|voltar]], [[passer|passar]], [[naître|nascer]], [[mourir|morrer]], [[devenir|tornar-se]], [[revenir|voltar]], [[rentrer|voltar para casa]].',
+          'Todos os pronominais: [[je me suis levé|eu me levantei]], [[elle s’est inscrite|ela se inscreveu]], [[nous nous sommes rencontrés|nós nos encontramos]].',
+          '[[Sortir|sair]], [[monter|subir]], [[descendre|descer]], [[rentrer|voltar para casa]], [[retourner|voltar]] e [[passer|passar]] usam [[avoir|ter]] quando têm complemento direto: [[Je suis sorti hier soir.|Saí ontem à noite.]] mas [[J’ai sorti les poubelles.|Levei o lixo para fora.]]'
         ]
       },
 
@@ -51,16 +51,18 @@ const content: TopicContent = {
       {
         type: 'list',
         items: [
-          'Com être, o particípio concorda com o sujeito, como um adjetivo: Elle est arrivée. Ils sont partis. Nous (duas mulheres) sommes allées.',
-          'Com avoir, o particípio não concorda com o sujeito: Elles ont travaillé.',
-          'Com avoir, ele concorda com o complemento direto quando este vem antes do verbo: La lettre que j’ai écrite. Ces photos, je les ai prises hier.'
+          'Com [[être|ser]], o particípio concorda com o sujeito, como um adjetivo: [[Elle est arrivée.|Ela chegou.]] [[Ils sont partis.|Eles partiram.]] [[Nous sommes allées.|Nós fomos.]] (nós, duas mulheres)',
+          'Com [[avoir|ter]], o particípio não concorda com o sujeito: [[Elles ont travaillé.|Elas trabalharam.]]',
+          'Com [[avoir|ter]], ele concorda com o complemento direto quando este vem antes do verbo: [[La lettre que j’ai écrite.|A carta que escrevi.]] [[Ces photos, je les ai prises hier.|Essas fotos, tirei ontem.]]'
         ]
       },
 
       { type: 'heading', text: 'Negação e advérbios' },
       {
         type: 'paragraph',
-        text: 'A negação cerca o auxiliar: Je n’ai pas fini. Advérbios curtos ficam entre o auxiliar e o particípio: J’ai déjà mangé, Il a bien dormi, Nous avons beaucoup travaillé.'
+        text:
+          'A negação cerca o auxiliar: [[Je n’ai pas fini.|Não terminei.]] ' +
+          'Advérbios curtos ficam entre o auxiliar e o particípio: [[J’ai déjà mangé.|Já comi.]] [[Il a bien dormi.|Ele dormiu bem.]] [[Nous avons beaucoup travaillé.|Trabalhamos muito.]]'
       },
 
       {
@@ -68,16 +70,16 @@ const content: TopicContent = {
         tone: 'warning',
         title: 'Não é o "tenho feito" do português',
         text:
-          'J’ai fait quer dizer "fiz", uma ação concluída, e não "tenho feito". E uma ação que continua até hoje não vai para o passé composé: ' +
-          '"trabalho aqui há três anos" é Je travaille ici depuis trois ans.'
+          '[[J’ai fait|Fiz]] quer dizer "fiz", uma ação concluída, e não "tenho feito". E uma ação que continua até hoje não vai para o [[passé composé|pretérito perfeito composto]]: ' +
+          '"trabalho aqui há três anos" é [[Je travaille ici depuis trois ans.|Trabalho aqui há três anos.]]'
       },
       {
         type: 'callout',
         tone: 'tip',
         title: 'Na prova',
         text:
-          'Na produção escrita e oral você vai contar experiências. Alterne o passé composé (o que aconteceu) com o imparfait (o cenário, as descrições), ' +
-          'que tem uma página própria. E confira a concordância com être: elle est venue, elles sont restées.'
+          'Na produção escrita e oral você vai contar experiências. Alterne o [[passé composé|pretérito perfeito composto]] (o que aconteceu) com o [[imparfait|pretérito imperfeito]] (o cenário, as descrições), ' +
+          'que tem uma página própria. E confira a concordância com [[être|ser]]: [[elle est venue|ela veio]], [[elles sont restées|elas ficaram]].'
       }
     ]
   },
@@ -115,7 +117,7 @@ const content: TopicContent = {
       { type: 'heading', text: 'Avoir ou être ?' },
       {
         type: 'paragraph',
-        text: 'La grande majorité des verbes se conjuguent avec avoir. Une quinzaine de verbes de mouvement ou de changement d’état et tous les verbes pronominaux se conjuguent avec être.'
+        text: 'La grande majorité des verbes se conjuguent avec avoir. Dix-sept verbes de mouvement ou de changement d’état et tous les verbes pronominaux se conjuguent avec être.'
       },
       {
         type: 'list',
@@ -161,7 +163,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

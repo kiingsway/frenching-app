@@ -13,8 +13,8 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'As mensagens pessoais (amigos, família, vizinhos) usam tu, frases curtas e linguagem informal; aparecem nas questões mais fáceis. ' +
-          'As cartas administrativas e profissionais (banco, prefeitura, empregador, proprietário) usam vous, fórmulas fixas e frases longas; ' +
+          'As mensagens pessoais (amigos, família, vizinhos) usam [[tu|você]], frases curtas e linguagem informal; aparecem nas questões mais fáceis. ' +
+          'As cartas administrativas e profissionais (banco, prefeitura, empregador, proprietário) usam [[vous|o senhor / a senhora]], fórmulas fixas e frases longas; ' +
           'aparecem no meio da prova, perto do nível B1–B2 que corresponde ao NCLC 7.'
       },
 
@@ -25,19 +25,19 @@ const content: TopicContent = {
         rows: [
           [
             'Quem escreve e para quem?',
-            'Assinatura, cabeçalho, fórmula de saudação (Chère Julie × Madame, Monsieur)'
+            'Assinatura, cabeçalho, fórmula de saudação ([[Chère Julie|Querida Julie]] × [[Madame, Monsieur|Senhora, Senhor]])'
           ],
           [
             'Por que a pessoa escreve?',
-            'Primeiro parágrafo: Je vous écris pour… / Suite à votre demande…'
+            'Primeiro parágrafo: [[Je vous écris pour…|Escrevo para…]] / [[Suite à votre demande…|Em resposta ao seu pedido…]]'
           ],
           [
             'O que se pede ao leitor?',
-            'Verbos de pedido e o último parágrafo: Merci de nous retourner…'
+            'Verbos de pedido e o último parágrafo: [[Merci de nous retourner…|Favor nos devolver…]]'
           ],
           [
             'Qual é o prazo ou a condição?',
-            'Datas e expressões como avant le, au plus tard, à défaut de'
+            'Datas e expressões como [[avant le|antes do dia]], [[au plus tard|o mais tardar]], [[à défaut de|na falta de]]'
           ],
           ['Qual é o tom?', 'Agradecimento, reclamação, desculpa, convite, recusa']
         ]
@@ -48,21 +48,36 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Fórmula', 'Intenção'],
         rows: [
-          ['Je me permets de vous contacter au sujet de…', 'Abrir um assunto formal'],
-          ['Suite à notre entretien téléphonique…', 'Dar continuidade a um contato anterior'],
           [
-            'Nous avons le regret de vous informer que…',
+            '[[Je me permets de vous contacter au sujet de…|Permito-me contatá-lo a respeito de…]]',
+            'Abrir um assunto formal'
+          ],
+          [
+            '[[Suite à notre entretien téléphonique…|Após nossa conversa telefônica…]]',
+            'Dar continuidade a um contato anterior'
+          ],
+          [
+            '[[Nous avons le regret de vous informer que…|Lamentamos informar que…]]',
             'Dar uma má notícia (recusa, cancelamento)'
           ],
-          ['Nous avons le plaisir de vous annoncer que…', 'Dar uma boa notícia (aceitação)'],
-          ['Je vous serais reconnaissant(e) de…', 'Pedir algo com cortesia'],
-          ['Veuillez trouver ci-joint…', 'Anunciar um anexo'],
-          ['Je tiens à vous faire part de mon mécontentement', 'Reclamar'],
           [
-            'Veuillez agréer, Madame, Monsieur, mes salutations distinguées',
+            '[[Nous avons le plaisir de vous annoncer que…|Temos o prazer de anunciar que…]]',
+            'Dar uma boa notícia (aceitação)'
+          ],
+          ['[[Je vous serais reconnaissant(e) de…|Ficaria grato(a) se…]]', 'Pedir algo com cortesia'],
+          ['[[Veuillez trouver ci-joint…|Segue em anexo…]]', 'Anunciar um anexo'],
+          [
+            '[[Je tiens à vous faire part de mon mécontentement|Faço questão de manifestar meu descontentamento]]',
+            'Reclamar'
+          ],
+          [
+            '[[Veuillez agréer, Madame, Monsieur, mes salutations distinguées|Atenciosamente]]',
             'Encerrar uma carta formal'
           ],
-          ['Bisous / À plus / Grosses bises', 'Encerrar uma mensagem entre amigos']
+          [
+            '[[Bisous|Beijos]] / [[À plus|Até mais]] / [[Grosses bises|Beijões]]',
+            'Encerrar uma mensagem entre amigos'
+          ]
         ]
       },
 
@@ -73,7 +88,7 @@ const content: TopicContent = {
           'Leia a pergunta, depois o cabeçalho, a saudação e a assinatura: em poucos segundos você sabe quem fala com quem.',
           'Leia com atenção o primeiro parágrafo (o motivo) e o último (o pedido ou a próxima etapa).',
           'Sublinhe mentalmente datas, valores e documentos pedidos.',
-          'Repare nos conectores de oposição (cependant, toutefois, en revanche): depois deles costuma vir a informação decisiva.',
+          'Repare nos conectores de oposição ([[cependant|entretanto]], [[toutefois|no entanto]], [[en revanche|por outro lado]]): depois deles costuma vir a informação decisiva.',
           'Em cartas de recusa, a má notícia vem muitas vezes cercada de agradecimentos: não se deixe enganar pelo tom gentil.'
         ]
       },
@@ -82,7 +97,7 @@ const content: TopicContent = {
         tone: 'warning',
         title: 'Pedido explícito × pedido educado',
         text:
-          'Na carta formal, uma obrigação raramente aparece como ordem. "Nous vous invitons à vous présenter muni de vos pièces d’identité" ' +
+          'Na carta formal, uma obrigação raramente aparece como ordem. [[Nous vous invitons à vous présenter muni de vos pièces d’identité.|Convidamos o senhor a comparecer com seus documentos de identidade.]] ' +
           'não é um convite opcional: quer dizer que você deve comparecer com seus documentos.'
       },
       {
@@ -92,6 +107,15 @@ const content: TopicContent = {
         text:
           'Leia e-mails e cartas reais em francês: avisos da Revenu Québec, cartas de bancos, newsletters de associações. ' +
           'Para cada um, resuma em uma frase: quem escreve, por que e o que espera do leitor. Isso também prepara a expressão escrita.'
+      },
+      {
+        type: 'callout',
+        tone: 'unverified',
+        title: 'Sem fonte oficial',
+        text:
+          'A página da Université de Sherbrooke listada confirma que a compreensão escrita do TCF inclui mensagens e cartas, amigáveis ou administrativas, e que as questões têm dificuldade progressiva. ' +
+          'Nenhuma fonte confirma: que as mensagens pessoais aparecem nas questões mais fáceis e as cartas administrativas no meio da prova; a correspondência com B1–B2 e NCLC 7; ' +
+          'e a estratégia de leitura sugerida. As fórmulas, os exemplos e a dica de treino são conselhos de preparação, não regras da prova.'
       }
     ]
   },
@@ -188,11 +212,20 @@ const content: TopicContent = {
         text:
           'Lisez de vrais courriels et de vraies lettres en français : les avis de Revenu Québec, les lettres de banques, les infolettres d’associations. ' +
           'Pour chacun, résumez en une phrase : qui écrit, pourquoi et ce qu’on attend du lecteur. Cela prépare aussi l’expression écrite.'
+      },
+      {
+        type: 'callout',
+        tone: 'unverified',
+        title: 'Sans source officielle',
+        text:
+          'La page de l’Université de Sherbrooke indiquée confirme que la compréhension écrite du TCF comprend des messages et des lettres, amicales ou administratives, et que les questions suivent une difficulté progressive. ' +
+          'Aucune source ne confirme ceci : les messages personnels dans les questions les plus faciles et les lettres administratives au milieu de l’épreuve ; la correspondance avec B1–B2 et le NCLC 7 ; ' +
+          'et la stratégie de lecture proposée. Les formules, les exemples et le conseil d’entraînement sont des conseils de préparation, pas des règles de l’épreuve.'
       }
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

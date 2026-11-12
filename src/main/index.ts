@@ -2,6 +2,7 @@ import { app, BrowserWindow, shell } from 'electron'
 import { join } from 'path'
 import { setupAudioTools } from './audio'
 import { setupReviewTools } from './review'
+import { setupInboxTools } from './inbox'
 import { setupGoogleAuth } from './google-auth'
 import { setupUpdater } from './updater'
 
@@ -79,6 +80,7 @@ app.whenReady().then(() => {
   if (!isFirstInstance) return
   setupAudioTools()
   setupReviewTools()
+  setupInboxTools()
   setupGoogleAuth()
   setupUpdater()
   createWindow()

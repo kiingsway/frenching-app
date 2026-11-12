@@ -6,34 +6,34 @@ const content: TopicContent = {
   pt: {
     title: 'Futur proche e passé récent',
     summary:
-      'Duas construções simples e muito usadas na fala: aller + infinitivo para o que vai acontecer ("vou viajar") e venir de + infinitivo para o que acabou de acontecer ("acabei de chegar"). ' +
-      'Basta conjugar aller ou venir no présent.',
+      'Duas construções simples e muito usadas na fala: [[aller|ir]] + infinitivo para o que vai acontecer ("vou viajar") e [[venir de|vir de]] + infinitivo para o que acabou de acontecer ("acabei de chegar"). ' +
+      'Basta conjugar [[aller|ir]] ou [[venir|vir]] no [[présent|presente]].',
     blocks: [
       { type: 'heading', text: 'Futur proche: aller + infinitivo' },
       {
         type: 'paragraph',
         text:
-          'Aller no présent seguido do verbo no infinitivo: Je vais partir. Tu vas adorer. Ils vont déménager en juillet. ' +
+          '[[Aller|ir]] no [[présent|presente]] seguido do verbo no infinitivo: [[Je vais partir.|Vou partir.]] [[Tu vas adorer.|Você vai adorar.]] [[Ils vont déménager en juillet.|Eles vão se mudar em julho.]] ' +
           'É a forma mais comum de falar do futuro no dia a dia, como o nosso "vou fazer".'
       },
       {
         type: 'table',
         headers: ['Pessoa', 'Futur proche', 'Passé récent'],
         rows: [
-          ['je', 'je vais travailler', 'je viens de travailler'],
-          ['tu', 'tu vas travailler', 'tu viens de travailler'],
-          ['il, elle, on', 'il va travailler', 'il vient de travailler'],
-          ['nous', 'nous allons travailler', 'nous venons de travailler'],
-          ['vous', 'vous allez travailler', 'vous venez de travailler'],
-          ['ils, elles', 'ils vont travailler', 'ils viennent de travailler']
+          ['[[je|eu]]', '[[je vais travailler|vou trabalhar]]', '[[je viens de travailler|acabei de trabalhar]]'],
+          ['[[tu|você]]', '[[tu vas travailler|você vai trabalhar]]', '[[tu viens de travailler|você acabou de trabalhar]]'],
+          ['[[il|ele]], [[elle|ela]], [[on|a gente]]', '[[il va travailler|ele vai trabalhar]]', '[[il vient de travailler|ele acabou de trabalhar]]'],
+          ['[[nous|nós]]', '[[nous allons travailler|vamos trabalhar]]', '[[nous venons de travailler|acabamos de trabalhar]]'],
+          ['[[vous|vocês]]', '[[vous allez travailler|vocês vão trabalhar]]', '[[vous venez de travailler|vocês acabaram de trabalhar]]'],
+          ['[[ils|eles]], [[elles|elas]]', '[[ils vont travailler|eles vão trabalhar]]', '[[ils viennent de travailler|eles acabaram de trabalhar]]']
         ]
       },
       {
         type: 'list',
         items: [
-          'A negação cerca aller: Je ne vais pas partir.',
-          'Os pronomes ficam antes do infinitivo: Je vais le faire. Nous allons vous appeler.',
-          'Futur proche × futur simple: os dois falam do futuro, mas o futur proche soa mais próximo e certo (Il va pleuvoir), e o futur simple é mais neutro e frequente na escrita (Il pleuvra demain).'
+          'A negação cerca [[aller|ir]]: [[Je ne vais pas partir.|Não vou partir.]]',
+          'Os pronomes ficam antes do infinitivo: [[Je vais le faire.|Vou fazer isso.]] [[Nous allons vous appeler.|Vamos ligar para vocês.]]',
+          'Futur proche × futur simple: os dois falam do futuro, mas o [[futur proche|futuro próximo]] soa mais próximo e certo ([[Il va pleuvoir.|Vai chover.]]), e o [[futur simple|futuro simples]] é mais neutro e frequente na escrita ([[Il pleuvra demain.|Choverá amanhã.]]).'
         ]
       },
 
@@ -41,16 +41,16 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Venir no présent + de + infinitivo indica uma ação que acabou de acontecer: Je viens d’arriver. (Acabei de chegar.) Elle vient de signer le contrat. ' +
-          'Antes de vogal, de vira d’. Os pronomes ficam antes do infinitivo: Je viens de le voir.'
+          '[[Venir|vir]] no [[présent|presente]] + [[de|de]] + infinitivo indica uma ação que acabou de acontecer: [[Je viens d’arriver.|Acabei de chegar.]] [[Elle vient de signer le contrat.|Ela acabou de assinar o contrato.]] ' +
+          'Antes de vogal, [[de|de]] vira [[d’|de]]. Os pronomes ficam antes do infinitivo: [[Je viens de le voir.|Acabei de vê-lo.]]'
       },
 
       { type: 'heading', text: 'As mesmas construções no passado' },
       {
         type: 'list',
         items: [
-          'Aller no imparfait = "ia fazer": J’allais sortir quand il a appelé.',
-          'Venir de no imparfait = "tinha acabado de": Nous venions d’arriver quand le cours a commencé.'
+          '[[Aller|ir]] no [[imparfait|pretérito imperfeito]] = "ia fazer": [[J’allais sortir quand il a appelé.|Eu ia sair quando ele ligou.]]',
+          '[[Venir de|vir de]] no [[imparfait|pretérito imperfeito]] = "tinha acabado de": [[Nous venions d’arriver quand le cours a commencé.|Tínhamos acabado de chegar quando a aula começou.]]'
         ]
       },
 
@@ -59,16 +59,17 @@ const content: TopicContent = {
         tone: 'warning',
         title: 'Venir de nem sempre é passé récent',
         text:
-          'Je viens de Montréal (venho de Montreal) fala de origem, com um lugar depois de de. Je viens de manger (acabei de comer) tem um infinitivo depois de de. ' +
-          'E não use "Je vais aller" quando basta Je vais: Je vais au bureau já quer dizer "vou ao escritório".'
+          '[[Je viens de Montréal|Venho de Montreal]] fala de origem, com um lugar depois de [[de|de]]. [[Je viens de manger|Acabei de comer]] tem um infinitivo depois de [[de|de]]. ' +
+          'Cuidado também com [[aller|ir]] como verbo principal: [[Je vais au bureau.|Vou ao escritório.]] já fala de um deslocamento. ' +
+          'O futur proche com o mesmo verbo ([[Je vais aller au bureau.|Vou ir ao escritório.]]) é correto, mas só vale a pena quando você quer marcar o futuro.'
       },
       {
         type: 'callout',
         tone: 'tip',
         title: 'Na prova',
         text:
-          'Na produção oral, o futur proche é perfeito para falar de planos (Je vais m’installer au Québec), e o passé récent para situar acontecimentos recentes. ' +
-          'Na compreensão oral, atenção a vient de: indica que algo já aconteceu, não que vai acontecer.'
+          'Na produção oral, o [[futur proche|futuro próximo]] é perfeito para falar de planos ([[Je vais m’installer au Québec.|Vou me instalar no Québec.]]), e o [[passé récent|passado recente]] para situar acontecimentos recentes. ' +
+          'Na compreensão oral, atenção a [[vient de|acabou de]]: indica que algo já aconteceu, não que vai acontecer.'
       }
     ]
   },
@@ -130,7 +131,8 @@ const content: TopicContent = {
         title: 'Venir de n’est pas toujours le passé récent',
         text:
           'Je viens de Montréal parle de l’origine, avec un lieu après de. Je viens de manger a un infinitif après de. ' +
-          'Et n’utilisez pas « Je vais aller » quand Je vais suffit : Je vais au bureau veut déjà dire qu’on s’y rend.'
+          'Attention aussi à aller comme verbe principal : Je vais au bureau indique déjà un déplacement. ' +
+          'Le futur proche avec le même verbe (Je vais aller au bureau) est correct, mais il ne vaut la peine que si l’on veut marquer le futur.'
       },
       {
         type: 'callout',
@@ -143,7 +145,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

@@ -10,6 +10,10 @@ import {
   FiCheck,
   FiCheckCircle,
   FiChevronLeft,
+  FiBookOpen,
+  FiCopy,
+  FiInbox,
+  FiLayout,
   FiChevronRight,
   FiFlag,
   FiMoreHorizontal,
@@ -53,12 +57,17 @@ import { readingMinutes } from '@/lib/reading-time'
 import { getTopicContent } from '@/content'
 import type { AudioPart, Block, Lang } from '@/content/types'
 import { useCompletedTopics } from '@/lib/completed'
-import { hasCloudAccess, useAccess } from '@/lib/access'
+import { hasCloudAccess, isAdmin, useAccess } from '@/lib/access'
+import { studyPagePrompt } from '@/lib/ai-prompt'
+import { inboxToolsAvailable } from '@/lib/platform'
+import ContentInboxDialog from '@/components/ContentInboxDialog'
+import { shortcutTip } from '@/components/ShortcutTip'
 import { onZoomShortcut } from '@/lib/platform'
 import {
   READING_FONT,
   READING_SANS_FONT,
   studyStylePref,
+  type StudyStyle,
   topicLangPref,
   topicZoomPref,
   ZOOM_DEFAULT,
@@ -94,6 +103,9 @@ const LABELS = {
     report: 'Reportar erro nesta página',
     more: 'Mais opções',
     zoom: 'Zoom',
+    style: 'Estilo da página',
+    styleCurrent: 'Padrão',
+    styleReading: 'Leitura',
     reported: 'Reporte enviado. Obrigado!'
   },
   fr: {
@@ -115,6 +127,9 @@ const LABELS = {
     report: 'Signaler une erreur sur cette page',
     more: 'Plus d’options',
     zoom: 'Zoom',
+    style: 'Style de la page',
+    styleCurrent: 'Standard',
+    styleReading: 'Lecture',
     reported: 'Signalement envoyé. Merci !'
   }
 }
@@ -150,17 +165,39 @@ function BarGroup({ children }: { children: ReactNode }): ReactElement {
 
 // ---------- Barra responsiva ----------
 //
-// A barra nunca quebra em duas linhas: conforme a largura disponível, os controles
-// menos usados vão para o menu "⋯" e os outros encolhem. Do mais largo ao mais estreito:
+// A barra nunca quebra em duas linhas. O botão "⋯" fica à esquerda dos controles da
+// direita e vai "comendo" os itens que estão à direita dele, um por vez, da esquerda para
+// a direita: primeiro o estilo da página, depois o zoom, depois o idioma. O botão de
+// reportar mora sempre no menu "⋯". O botão "Concluir" nunca entra no menu: só encolhe
+// para o ícone no último caso. Antes disso, anterior/próximo também encolhem.
+// Do mais largo ao mais estreito:
 //  0 – tudo na barra
-//  1 – reportar e zoom vão para o menu
-//  2 – anterior/próximo ficam mais estreitos
-//  3 – anterior/próximo viram só a seta (o título fica na dica)
-//  4 – "Concluir" vira só o ícone
-//  5 – o seletor PT/FR também vai para o menu
-type BarLevel = 0 | 1 | 2 | 3 | 4 | 5
+//  1 – estilo no menu
+//  2 – estilo e zoom no menu
+//  3 – estilo, zoom e idioma no menu
+//  4 – anterior/próximo mais estreitos
+//  5 – anterior/próximo viram só a seta (o título fica na dica)
+//  6 – "Concluir" vira só o ícone
+interface BarConfig {
+  nav: 'wide' | 'narrow' | 'icon'
+  doneIcon: boolean
+  // O que está no menu "⋯" (além do reportar, que sempre está)
+  lang: boolean
+  zoom: boolean
+  style: boolean
+}
 
-// Larguras aproximadas de cada controle (px), para escolher o nível
+const BAR_CONFIGS: BarConfig[] = [
+  { nav: 'wide', doneIcon: false, lang: false, zoom: false, style: false },
+  { nav: 'wide', doneIcon: false, lang: false, zoom: false, style: true },
+  { nav: 'wide', doneIcon: false, lang: false, zoom: true, style: true },
+  { nav: 'wide', doneIcon: false, lang: true, zoom: true, style: true },
+  { nav: 'narrow', doneIcon: false, lang: true, zoom: true, style: true },
+  { nav: 'icon', doneIcon: false, lang: true, zoom: true, style: true },
+  { nav: 'icon', doneIcon: true, lang: true, zoom: true, style: true }
+]
+
+// Larguras aproximadas de cada controle (px), para escolher a configuração
 const W = {
   icon: 36,
   navWide: 180,
@@ -172,20 +209,26 @@ const W = {
   gap: 12
 }
 
-function barLevelFor(width: number, opts: { canReport: boolean; hasAudio: boolean }): BarLevel {
-  const lang = opts.hasAudio ? W.langAudio : W.lang
-  // Soma as larguras dos grupos de cada nível, com o espaço entre eles
-  const need = (groups: number[]): number =>
-    groups.reduce((a, b) => a + b, 0) + W.gap * (groups.length - 1)
-  const levels: number[][] = [
-    [W.icon + 2 * W.navWide, ...(opts.canReport ? [W.icon] : []), W.zoom, lang, W.done],
-    [W.icon + 2 * W.navWide, W.icon, lang, W.done],
-    [W.icon + 2 * W.navNarrow, W.icon, lang, W.done],
-    [3 * W.icon, W.icon, lang, W.done],
-    [3 * W.icon, W.icon, lang, W.icon]
-  ]
-  const fit = levels.findIndex((groups) => need(groups) <= width)
-  return (fit < 0 ? 5 : fit) as BarLevel
+function barConfigFor(
+  width: number,
+  opts: { canReport: boolean; hasAudio: boolean; hasContent: boolean }
+): BarConfig {
+  const langW = opts.hasAudio ? W.langAudio : W.lang
+  const navW = (nav: BarConfig['nav']): number =>
+    W.icon + (opts.hasContent ? 2 * (nav === 'wide' ? W.navWide : nav === 'narrow' ? W.navNarrow : W.icon) : 0)
+  const fits = (c: BarConfig): boolean => {
+    const groups = [navW(c.nav)]
+    // O "⋯" aparece sempre que há reportar ou algo que foi para o menu
+    if (opts.canReport || c.lang || c.zoom || c.style) groups.push(W.icon)
+    if (opts.hasContent) {
+      if (!c.style) groups.push(W.icon)
+      if (!c.zoom) groups.push(W.zoom)
+      if (!c.lang) groups.push(langW)
+      groups.push(c.doneIcon ? W.icon : W.done)
+    } else if (!c.lang) groups.push(langW)
+    return groups.reduce((a, b) => a + b, 0) + W.gap * (groups.length - 1) <= width
+  }
+  return BAR_CONFIGS.find(fits) ?? BAR_CONFIGS[BAR_CONFIGS.length - 1]
 }
 
 // Botão de tópico anterior/próximo: largura fixa, título com reticências
@@ -210,7 +253,7 @@ function TopicNavButton({
   const label = isPrev ? t.prev : t.next
   const title = topic ? topicTitle(topic, lang) : label
   const tooltip = topic
-    ? `${label}: ${title}${done ? ` · ${t.doneTag}` : ''} (${isPrev ? '←' : '→'})`
+    ? shortcutTip(`${label}: ${title}${done ? ` · ${t.doneTag}` : ''} (${isPrev ? '←' : '→'})`)
     : ''
 
   if (size === 'icon')
@@ -278,8 +321,14 @@ function TopicNavButton({
 // contêiner. O "&&" dá peso para ganhar dos estilos que o MUI põe em cada elemento.
 // Cores: acento = cor principal; cinza = text.secondary; linhas = divider
 const accentSoft = (a: number): string => `rgba(var(--mui-palette-primary-mainChannel) / ${a})`
-const toneSoft = (tone: 'success' | 'warning', a: number): string =>
+const toneSoft = (tone: 'success' | 'warning' | 'error', a: number): string =>
   `rgba(var(--mui-palette-${tone}-mainChannel) / ${a})`
+// Tipo da caixa -> cor do Alert do MUI e classe "st-*" que a estiliza (veja abaixo)
+const CALLOUT_STYLE = {
+  tip: { severity: 'success', className: 'st-tip' },
+  warning: { severity: 'warning', className: 'st-warn' },
+  unverified: { severity: 'error', className: 'st-unverified' }
+} as const
 const muted = 'var(--mui-palette-text-secondary)'
 const line = 'var(--mui-palette-divider)'
 
@@ -418,6 +467,13 @@ const readingSx = {
     bgcolor: toneSoft('success', 0.08),
     '& .MuiAlert-icon': { color: 'var(--mui-palette-success-main)' },
     '& .MuiAlertTitle-root': { color: 'var(--mui-palette-success-main)' }
+  },
+  // Sem fonte: vermelho, para se destacar dos avisos amarelos e das dicas verdes
+  '&& .st-callout.st-unverified': {
+    borderColor: 'var(--mui-palette-error-main)',
+    bgcolor: toneSoft('error', 0.09),
+    '& .MuiAlert-icon': { color: 'var(--mui-palette-error-main)' },
+    '& .MuiAlertTitle-root': { color: 'var(--mui-palette-error-main)' }
   },
 
   // Fontes no fim: menores e discretas
@@ -598,9 +654,9 @@ function renderBlock(
       return (
         <Alert
           key={key}
-          severity={block.tone === 'tip' ? 'success' : 'warning'}
+          severity={CALLOUT_STYLE[block.tone].severity}
           variant="outlined"
-          className={`st-callout ${block.tone === 'tip' ? 'st-tip' : 'st-warn'}`}
+          className={`st-callout ${CALLOUT_STYLE[block.tone].className}`}
           sx={{ my: 2, '& .MuiAlert-message': { flex: 1 } }}
         >
           {/* Título e texto da caixa têm áudios separados */}
@@ -655,10 +711,30 @@ export default function TopicPage({
   const [reportOpen, setReportOpen] = useState(false)
   const [reportSent, setReportSent] = useState(false)
   // Só quem pode enviar (conta com acesso à nuvem) vê o botão
-  const canReport = hasCloudAccess(useAccess())
+  const access = useAccess()
+  const canReport = hasCloudAccess(access)
+
+  // Administrador, em página sem conteúdo: copia o pedido pronto para outra IA escrever a página
+  const canCopyPrompt = isAdmin(access) && !content
+  const [promptCopied, setPromptCopied] = useState<'ok' | 'error' | null>(null)
+  // "Colar JSON": grava em content-inbox/. Só no Electron em modo de desenvolvimento
+  const [inboxAvailable, setInboxAvailable] = useState(false)
+  useEffect(() => {
+    if (canCopyPrompt) void inboxToolsAvailable().then(setInboxAvailable)
+  }, [canCopyPrompt])
+  const canPasteJson = canCopyPrompt && inboxAvailable
+  const [inboxOpen, setInboxOpen] = useState(false)
+  const [inboxSaved, setInboxSaved] = useState<string | null>(null)
+  const copyPrompt = (): void => {
+    const text = studyPagePrompt(topic?.title ?? topicId, section?.title ?? '')
+    navigator.clipboard.writeText(text).then(
+      () => setPromptCopied('ok'),
+      () => setPromptCopied('error')
+    )
+  }
 
   // Barra responsiva: mede a largura disponível e escolhe o que fica nela e o que vai
-  // para o menu "⋯" (veja barLevelFor)
+  // para o menu "⋯" (veja barConfigFor)
   const barRef = useRef<HTMLDivElement | null>(null)
   const [barWidth, setBarWidth] = useState(820)
   useLayoutEffect(() => {
@@ -787,18 +863,66 @@ export default function TopicPage({
     }
   }, [topicId, lang, zoom, reading, content])
 
-  const level = barLevelFor(barWidth, { canReport, hasAudio })
-  const navSize = level <= 1 ? 'wide' : level === 2 ? 'narrow' : 'icon'
-  // O que sai da barra e vai para o menu "⋯"
-  const reportInMenu = !!content && canReport && level >= 1
-  const zoomInMenu = !!content && level >= 1
-  const langInMenu = level >= 5
-  const hasMenu = reportInMenu || zoomInMenu || langInMenu
+  const hasContent = !!content
+  const bar = barConfigFor(barWidth, { canReport: canReport && hasContent, hasAudio, hasContent })
+  const navSize = bar.nav
+  // O que está no menu "⋯": reportar sempre; o resto, conforme a largura da barra
+  const reportInMenu = hasContent && canReport
+  const zoomInMenu = hasContent && bar.zoom
+  const styleInMenu = hasContent && bar.style
+  const langInMenu = bar.lang
+  const hasMenu = reportInMenu || zoomInMenu || styleInMenu || langInMenu
   const closeMenu = (): void => setMenuAnchor(null)
+
+  // Idioma da página: BR | FR (com o ícone de áudio no FR). O mesmo seletor vai na barra
+  // ou, quando a barra é estreita, no menu "⋯"
+  const langSwitch = (
+    <ToggleButtonGroup
+      exclusive
+      size="small"
+      color="primary"
+      value={lang}
+      onChange={(_, value: Lang | null) => value && setLang(value)}
+      aria-label="Idioma / Langue"
+      sx={{ height: BAR_HEIGHT, flexShrink: 0 }}
+    >
+      <ToggleButton value="pt" sx={{ px: 1.5, fontWeight: 600 }}>
+        BR
+      </ToggleButton>
+      <ToggleButton value="fr" sx={{ px: 1.5, fontWeight: 600, gap: 0.75 }}>
+        FR
+        {hasAudio && (
+          <Tooltip title={t.frHasAudio}>
+            <Box component="span" sx={{ display: 'inline-flex' }}>
+              <RiSpeakLine size={14} />
+            </Box>
+          </Tooltip>
+        )}
+      </ToggleButton>
+    </ToggleButtonGroup>
+  )
+
+  // Estilo da página (Padrão / Leitura), o mesmo de Configurações → Aparência
+  const styleLabel = (s: StudyStyle): string => (s === 'reading' ? t.styleReading : t.styleCurrent)
+  const otherStyle: StudyStyle = reading ? 'current' : 'reading'
+  const styleButton = (
+    <BarGroup>
+      <Tooltip title={`${t.style}: ${styleLabel(reading ? 'reading' : 'current')} → ${styleLabel(otherStyle)}`}>
+        <IconButton
+          size="small"
+          onClick={() => studyStylePref.set(otherStyle)}
+          aria-label={`${t.style}: ${styleLabel(otherStyle)}`}
+          sx={{ width: 36 }}
+        >
+          {reading ? <FiBookOpen size={16} /> : <FiLayout size={16} />}
+        </IconButton>
+      </Tooltip>
+    </BarGroup>
+  )
 
   const zoomControls = (
     <BarGroup>
-      <Tooltip title={t.zoomOut}>
+      <Tooltip title={shortcutTip(t.zoomOut)}>
         <span>
           <IconButton
             size="small"
@@ -811,7 +935,7 @@ export default function TopicPage({
           </IconButton>
         </span>
       </Tooltip>
-      <Tooltip title={t.zoomReset}>
+      <Tooltip title={shortcutTip(t.zoomReset)}>
         <Button
           size="small"
           color="inherit"
@@ -821,7 +945,7 @@ export default function TopicPage({
           {zoom}%
         </Button>
       </Tooltip>
-      <Tooltip title={t.zoomIn}>
+      <Tooltip title={shortcutTip(t.zoomIn)}>
         <span>
           <IconButton
             size="small"
@@ -874,11 +998,11 @@ export default function TopicPage({
             direction="row"
             spacing={1.5}
             useFlexGap
-            sx={{ alignItems: 'center', flexWrap: 'nowrap', maxWidth: 820 }}
+            sx={{ alignItems: 'center', flexWrap: 'nowrap', maxWidth: 900 }}
           >
             {/* Navegação: painel + anterior/próximo */}
             <BarGroup>
-              <Tooltip title={t.backHint}>
+              <Tooltip title={shortcutTip(t.backHint)}>
                 <IconButton size="small" onClick={onBack} aria-label={t.back} sx={{ width: 36 }}>
                   <FiX size={16} />
                 </IconButton>
@@ -905,7 +1029,7 @@ export default function TopicPage({
               )}
             </BarGroup>
 
-            {/* Reportar, leitura (zoom e língua) e ação principal, à direita */}
+            {/* Menu "⋯", leitura (estilo, zoom e língua) e ação principal, à direita */}
             <Stack
               direction="row"
               spacing={1.5}
@@ -917,21 +1041,6 @@ export default function TopicPage({
                 flexShrink: 0
               }}
             >
-              {content && canReport && !reportInMenu && (
-                <BarGroup>
-                  <Tooltip title={t.report}>
-                    <IconButton
-                      size="small"
-                      onClick={() => setReportOpen(true)}
-                      aria-label={t.report}
-                      sx={{ width: 36 }}
-                    >
-                      <FiFlag size={16} />
-                    </IconButton>
-                  </Tooltip>
-                </BarGroup>
-              )}
-              {content && !zoomInMenu && zoomControls}
               {hasMenu && (
                 <BarGroup>
                   <Tooltip title={t.more}>
@@ -948,53 +1057,31 @@ export default function TopicPage({
                   </Tooltip>
                 </BarGroup>
               )}
-              {!langInMenu && (
-                <ToggleButtonGroup
-                  exclusive
-                  size="small"
-                  color="primary"
-                  value={lang}
-                  onChange={(_, value: Lang | null) => value && setLang(value)}
-                  aria-label="Idioma / Langue"
-                  sx={{ height: BAR_HEIGHT }}
-                >
-                  <ToggleButton value="pt" sx={{ px: 1.5, fontWeight: 600 }}>
-                    PT
-                  </ToggleButton>
-                  <ToggleButton value="fr" sx={{ px: 1.5, fontWeight: 600, gap: 0.75 }}>
-                    FR
-                    {hasAudio && (
-                      <Tooltip title={t.frHasAudio}>
-                        <Box component="span" sx={{ display: 'inline-flex' }}>
-                          <RiSpeakLine size={14} />
-                        </Box>
-                      </Tooltip>
-                    )}
-                  </ToggleButton>
-                </ToggleButtonGroup>
-              )}
+              {content && !styleInMenu && styleButton}
+              {content && !zoomInMenu && zoomControls}
+              {!langInMenu && langSwitch}
 
               {/* Ação principal da página; na barra estreita, só o ícone */}
               {content && (
                 <Tooltip
-                  title={
-                    level >= 4 ? `${done ? t.unmarkDone : t.markDone} · ${t.doneHint}` : t.doneHint
-                  }
+                  title={shortcutTip(
+                    bar.doneIcon ? `${done ? t.unmarkDone : t.markDone} · ${t.doneHint}` : t.doneHint
+                  )}
                 >
                   <Button
                     size="small"
                     variant={done ? 'outlined' : 'contained'}
                     color={done ? 'success' : 'primary'}
-                    startIcon={level >= 4 ? undefined : done ? <FiCheckCircle /> : <FiCheck />}
+                    startIcon={bar.doneIcon ? undefined : done ? <FiCheckCircle /> : <FiCheck />}
                     onClick={() => toggle(topicId)}
                     aria-label={done ? t.unmarkDone : t.markDone}
                     sx={{
                       height: BAR_HEIGHT,
                       flexShrink: 0,
-                      ...(level >= 4 ? { minWidth: W.icon, px: 0 } : { px: 1.75 })
+                      ...(bar.doneIcon ? { minWidth: W.icon, px: 0 } : { px: 1.75 })
                     }}
                   >
-                    {level >= 4 ? (
+                    {bar.doneIcon ? (
                       done ? (
                         <FiCheckCircle size={16} />
                       ) : (
@@ -1016,24 +1103,36 @@ export default function TopicPage({
             anchorEl={menuAnchor}
             open={!!menuAnchor}
             onClose={closeMenu}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
             slotProps={{ paper: { sx: { mt: 0.75, minWidth: 220 } } }}
           >
-            {reportInMenu && (
-              <MenuItem
-                onClick={() => {
-                  closeMenu()
-                  setReportOpen(true)
-                }}
-              >
-                <ListItemIcon>
-                  <FiFlag size={16} />
-                </ListItemIcon>
-                <ListItemText>{t.report}</ListItemText>
-              </MenuItem>
+            {styleInMenu && (
+              <Box sx={{ px: 2, py: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Typography variant="body2" sx={{ flex: 1 }}>
+                  {t.style}
+                </Typography>
+                <ToggleButtonGroup
+                  exclusive
+                  size="small"
+                  color="primary"
+                  value={reading ? 'reading' : 'current'}
+                  onChange={(_, value: StudyStyle | null) => value && studyStylePref.set(value)}
+                  aria-label={t.style}
+                  sx={{ height: BAR_HEIGHT }}
+                >
+                  <ToggleButton value="current" sx={{ px: 1.5, gap: 0.75 }}>
+                    <FiLayout size={14} />
+                    {t.styleCurrent}
+                  </ToggleButton>
+                  <ToggleButton value="reading" sx={{ px: 1.5, gap: 0.75 }}>
+                    <FiBookOpen size={14} />
+                    {t.styleReading}
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </Box>
             )}
-            {reportInMenu && (zoomInMenu || langInMenu) && <Divider />}
+            {styleInMenu && (zoomInMenu || langInMenu) && <Divider />}
             {zoomInMenu && (
               <Box
                 sx={{
@@ -1053,32 +1152,28 @@ export default function TopicPage({
               </Box>
             )}
             {zoomInMenu && langInMenu && <Divider />}
-            {langInMenu &&
-              (['pt', 'fr'] as Lang[]).map((value) => (
-                <MenuItem
-                  key={value}
-                  selected={lang === value}
-                  onClick={() => {
-                    setLang(value)
-                    closeMenu()
-                  }}
-                >
-                  <ListItemIcon>{lang === value && <FiCheck size={16} />}</ListItemIcon>
-                  <ListItemText>{value === 'pt' ? 'Português' : 'Français'}</ListItemText>
-                  {value === 'fr' && hasAudio && (
-                    <Box
-                      component="span"
-                      sx={{
-                        display: 'inline-flex',
-                        ml: 1,
-                        color: 'text.secondary'
-                      }}
-                    >
-                      <RiSpeakLine size={14} />
-                    </Box>
-                  )}
-                </MenuItem>
-              ))}
+            {langInMenu && (
+              <Box sx={{ px: 2, py: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Typography variant="body2" sx={{ flex: 1 }}>
+                  Idioma / Langue
+                </Typography>
+                {langSwitch}
+              </Box>
+            )}
+            {reportInMenu && (styleInMenu || zoomInMenu || langInMenu) && <Divider />}
+            {reportInMenu && (
+              <MenuItem
+                onClick={() => {
+                  closeMenu()
+                  setReportOpen(true)
+                }}
+              >
+                <ListItemIcon>
+                  <FiFlag size={16} />
+                </ListItemIcon>
+                <ListItemText>{t.report}</ListItemText>
+              </MenuItem>
+            )}
           </Menu>
         </Paper>
 
@@ -1096,6 +1191,34 @@ export default function TopicPage({
             lang={lang}
           />
         )}
+        {canPasteJson && (
+          <ContentInboxDialog
+            open={inboxOpen}
+            onClose={() => setInboxOpen(false)}
+            onSaved={(name) => {
+              setInboxOpen(false)
+              setInboxSaved(name)
+            }}
+          />
+        )}
+        <Snackbar
+          open={inboxSaved !== null}
+          autoHideDuration={5000}
+          onClose={() => setInboxSaved(null)}
+          message={`JSON salvo em content-inbox/${inboxSaved ?? ''}`}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        />
+        <Snackbar
+          open={promptCopied !== null}
+          autoHideDuration={3000}
+          onClose={() => setPromptCopied(null)}
+          message={
+            promptCopied === 'ok'
+              ? 'Pedido copiado. Cole na outra IA.'
+              : 'Não deu para copiar o pedido.'
+          }
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        />
         <Snackbar
           open={reportSent}
           autoHideDuration={3000}
@@ -1164,7 +1287,25 @@ export default function TopicPage({
                 )}
               </>
             ) : (
-              <Typography color="text.secondary">{t.notWritten}</Typography>
+              <>
+                <Typography color="text.secondary">{t.notWritten}</Typography>
+                {canCopyPrompt && (
+                  <Stack direction="row" spacing={1.5} useFlexGap sx={{ mt: 2, flexWrap: 'wrap' }}>
+                    <Button variant="outlined" startIcon={<FiCopy />} onClick={copyPrompt}>
+                      Copiar pedido para a IA
+                    </Button>
+                    {canPasteJson && (
+                      <Button
+                        variant="outlined"
+                        startIcon={<FiInbox />}
+                        onClick={() => setInboxOpen(true)}
+                      >
+                        Colar JSON
+                      </Button>
+                    )}
+                  </Stack>
+                )}
+              </>
             )}
 
             {content && content.sources.length > 0 && (

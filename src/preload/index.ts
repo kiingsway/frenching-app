@@ -76,6 +76,14 @@ const api = {
       entry: ReviewEntry | null,
       kind: ReviewKind = 'grammar'
     ): Promise<ReviewMap> => ipcRenderer.invoke('review:set', id, entry, kind)
+  },
+  // Caixa de entrada de conteúdo: salva o JSON de uma página em content-inbox/ (só no
+  // modo de desenvolvimento; veja src/main/inbox.ts)
+  inbox: {
+    available: (): Promise<boolean> => ipcRenderer.invoke('inbox:available'),
+    // ok = false traz a mensagem de erro; ok = true traz o nome do arquivo salvo
+    save: (text: string): Promise<{ ok: boolean; message: string }> =>
+      ipcRenderer.invoke('inbox:save', text)
   }
 }
 

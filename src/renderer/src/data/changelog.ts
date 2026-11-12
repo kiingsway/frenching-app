@@ -44,6 +44,14 @@ export const CHANGELOG: ChangelogEntry[] = [
     changes: {
       added: [
         {
+          pt: 'Nas páginas de estudo, uma caixa vermelha “Sem fonte oficial” no fim avisa o que a página afirma sem uma fonte que o confirme, para você saber o que é regra da prova e o que é só conselho de preparação.',
+          fr: 'Dans les fiches d’étude, une boîte rouge « Sans source officielle » en fin de page signale ce que la fiche affirme sans source qui le confirme, pour distinguer ce qui est une règle de l’examen de ce qui n’est qu’un conseil de préparation.'
+        },
+        {
+          pt: 'Novas páginas de estudo em Expressão escrita → Competências: “Estrutura de texto: introdução, desenvolvimento, conclusão”, “Registro formal × informal (tu/vous, fórmulas de abertura e fechamento)”, “Carta formal e e-mail profissional”, “Narrar fatos no passado (récit)” e “Argumentar: tese, argumentos, exemplos, contra-argumento, concessão”, “Conectores lógicos”, “Respeitar contagem de palavras”, “Revisão: concordância, acentos, ortografia” e, em Expressão oral, “TEF – Seção A: obter informações” e “TEF – Seção B: convencer um amigo”, com exemplos, armadilhas e dicas para o TEF e o TCF Canada.',
+          fr: 'Nouvelles fiches d’étude dans Expression écrite → Compétences : « Structure d’un texte : introduction, développement, conclusion », « Registre formel × informel (tu/vous, formules d’ouverture et de clôture) », « Lettre formelle et courriel professionnel », « Raconter des faits au passé (récit) » et « Argumenter : thèse, arguments, exemples, contre-argument, concession », « Connecteurs logiques », « Le décompte des mots », « Révision : accords, accents et orthographe » et, en Expression orale, « TEF – Section A : obtenir des renseignements » et « TEF – Section B : convaincre un ami », avec des exemples, des pièges et des conseils pour le TEF et le TCF Canada.'
+        },
+        {
           pt: 'Botão para reportar erro na barra do topo das páginas de estudo: abre uma janela para escrever o que está errado na página, para corrigir depois. O botão só aparece para quem está conectado com uma conta com acesso à nuvem.',
           fr: 'Bouton pour signaler une erreur dans la barre du haut des fiches d’étude : il ouvre une fenêtre pour écrire ce qui ne va pas sur la page, pour la corriger plus tard. Le bouton n’apparaît que pour les personnes connectées avec un compte qui a accès au nuage.'
         },
@@ -58,16 +66,46 @@ export const CHANGELOG: ChangelogEntry[] = [
         {
           pt: 'Reportar áudio, no lugar da sugestão de troca de voz: no menu do botão direito de um áudio (ou tocando e segurando), "Reportar este áudio" abre uma janela para enviar o reporte, com um comentário opcional sobre o que soa errado, e o menu não mostra mais as vozes. Os reportes aparecem em Configurações → Áudios → Áudios reportados (para a conta administradora, em Configurações → Administração, com a troca de voz de cada áudio), com botões para ouvir o áudio e abrir a página em que ele foi reportado, e uma bolinha verde avisa quando um reporte seu é resolvido.',
           fr: 'Signaler un audio, à la place de la suggestion de changement de voix : dans le menu du clic droit sur un audio (ou en appuyant longuement), « Signaler cet audio » ouvre une fenêtre pour envoyer le signalement, avec un commentaire facultatif sur ce qui sonne mal, et le menu n’affiche plus les voix. Les signalements apparaissent dans Paramètres → Audios → Audios signalés (pour le compte administrateur, dans Paramètres → Administration, avec le changement de voix de chaque audio), avec des boutons pour écouter l’audio et ouvrir la fiche où il a été signalé, et une pastille verte prévient quand un de vos signalements est résolu.'
+        },
+        {
+          pt: 'Muitas páginas de estudo novas: em Expressão escrita → Tipos de tarefa, o TEF (Seções A e B) e o TCF (Tarefas 1, 2 e 3); em Expressão oral, o TCF (Tarefas 1, 2 e 3); em Gramática, imperativo, verbos pronominais, contrações, “c’est × il est”, pronomes tônicos, números, horas e datas, expressões, advérbios, verbos com mudança de grafia, “savoir × connaître”, “imparfait × passé composé”, voz passiva e gérondif; e, em Vocabulário, Canadá e Economia e finanças pessoais.',
+          fr: 'De nombreuses nouvelles fiches d’étude : dans Expression écrite → Types de tâche, le TEF (Sections A et B) et le TCF (Tâches 1, 2 et 3) ; dans Expression orale, le TCF (Tâches 1, 2 et 3) ; en Grammaire, l’impératif, les verbes pronominaux, les contractions, « c’est × il est », les pronoms toniques, les nombres, les heures et les dates, les expressions, les adverbes, les verbes à changement d’orthographe, « savoir × connaître », « imparfait × passé composé », la voix passive et le gérondif ; et, en Vocabulaire, le Canada et l’économie et les finances personnelles.'
+        },
+        {
+          pt: 'Na barra das páginas de estudo, um botão para trocar o estilo da página (Padrão ou Leitura) sem sair dela. O seletor de idioma agora mostra BR e FR, com o ícone de áudio no FR, e as dicas dos botões com atalho (Esc, setas, +, −, Enter, Ctrl 0) mostram a tecla desenhada.',
+          fr: 'Dans la barre des fiches d’étude, un bouton pour changer le style de la page (Standard ou Lecture) sans la quitter. Le sélecteur de langue affiche maintenant BR et FR, avec l’icône audio sur FR, et les info-bulles des boutons avec raccourci (Échap, flèches, +, −, Entrée, Ctrl 0) montrent la touche dessinée.'
+        },
+        {
+          pt: 'No Painel, ao voltar de uma página de estudo, a tela volta à altura onde você clicou e deixa abertas a seção desse tópico e a seção que ainda tem item para concluir.',
+          fr: 'Dans le tableau de bord, en revenant d’une fiche d’étude, l’écran retrouve la hauteur où vous aviez cliqué et laisse ouvertes la section de ce sujet et celle qui a encore un sujet à terminer.'
         }
       ],
       changed: [
         {
-          pt: 'A barra do topo das páginas de estudo agora se ajusta ao tamanho da tela e fica sempre numa linha só: quando falta espaço, o zoom (e o botão de reportar) vão para o menu "⋯", os botões Anterior e Próximo viram só setas e o "Concluir" vira só o ícone. No celular bem estreito, o PT/FR também vai para o menu.',
-          fr: 'La barre du haut des fiches d’étude s’adapte maintenant à la taille de l’écran et tient toujours sur une seule ligne : quand la place manque, le zoom (et le bouton de signalement) passent dans le menu « ⋯ », les boutons Précédent et Suivant deviennent de simples flèches et « Terminer » n’affiche plus que son icône. Sur un téléphone très étroit, le choix PT/FR passe aussi dans le menu.'
+          pt: 'A barra do topo das páginas de estudo agora se ajusta ao tamanho da tela e fica sempre numa linha só. O botão "⋯" fica à esquerda dos controles da direita e vai levando os itens para o menu, da esquerda para a direita: primeiro o estilo da página, depois o zoom e por último o idioma. O botão de reportar fica sempre no menu, por último, e o "Concluir" nunca sai da barra (só vira o ícone). Os botões Anterior e Próximo também encolhem e viram setas.',
+          fr: 'La barre du haut des fiches d’étude s’adapte maintenant à la taille de l’écran et tient toujours sur une seule ligne. Le bouton « ⋯ » se place à gauche des contrôles de droite et y fait passer les éléments, de gauche à droite : d’abord le style de la page, puis le zoom et enfin la langue. Le bouton de signalement reste toujours dans le menu, en dernier, et « Terminer » ne quitte jamais la barre (il n’affiche plus que son icône). Les boutons Précédent et Suivant rétrécissent aussi et deviennent des flèches.'
+        },
+        {
+          pt: 'No Painel, o subtítulo de cada seção mostra quantos tópicos ainda estão "em breve", só os tópicos já escritos entram na conta dos concluídos (e no total geral), a barra de progresso dentro da seção saiu (a bolinha já mostra o progresso) e, em cada seção, os tópicos disponíveis vêm primeiro e os "em breve" no fim.',
+          fr: 'Dans le tableau de bord, le sous-titre de chaque section indique combien de sujets sont encore « bientôt disponibles », seuls les sujets déjà rédigés comptent pour les terminés (et pour le total), la barre de progression à l’intérieur de la section a disparu (la pastille montre déjà la progression) et, dans chaque section, les sujets disponibles viennent d’abord, puis ceux « bientôt disponibles ».'
+        },
+        {
+          pt: 'O estilo "Atual" das páginas de estudo agora se chama "Padrão" (em Configurações → Aparência e na própria página).',
+          fr: 'Le style « Actuel » des fiches d’étude s’appelle maintenant « Standard » (dans Paramètres → Apparence et sur la page elle-même).'
+        },
+        {
+          pt: 'Mais páginas de Compreensão escrita e de Gramática (base) agora mostram a tradução do francês numa dica, com áudio ao clicar.',
+          fr: 'D’autres fiches de Compréhension écrite et de Grammaire (base) affichent maintenant la traduction du français dans une info-bulle, avec l’audio au clic.'
         },
         {
           pt: 'Ao começar uma rodada em Gramática ou uma sessão em Flashcards, a tela agora "mergulha" no jogo: o menu recua e desfoca, e o jogo chega do primeiro plano até ficar nítido. Ao sair, o movimento é o contrário.',
           fr: 'Au début d’une série en Grammaire ou d’une session de Flashcards, l’écran « plonge » maintenant dans le jeu : le menu recule et devient flou, et le jeu arrive du premier plan jusqu’à devenir net. En sortant, le mouvement est inversé.'
+        }
+      ],
+      fixed: [
+        {
+          pt: 'No Safari do iPhone, a barra de baixo do app não fica mais escondida atrás da barra do navegador.',
+          fr: 'Sur Safari pour iPhone, la barre du bas de l’application n’est plus cachée derrière la barre du navigateur.'
         }
       ]
     }

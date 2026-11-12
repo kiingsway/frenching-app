@@ -9,6 +9,7 @@ Lista de conferência para todo conteúdo novo ou vindo de outra IA (páginas de
 - **Só texto simples** dentro dos blocos: sem Markdown (`**negrito**`, `#`), sem quebras de linha (`\n`) no meio de um texto e sem numeração dentro dos itens de lista. O app mostra esses símbolos como estão.
 - Texto longo com mais de um parágrafo vira **vários blocos** `paragraph`. Um exemplo em francês (anúncio, notícia, trecho literário) vai marcado inteiro, num bloco só dele; o título do exemplo e os rótulos ("Interpretação literal:") ficam em blocos à parte.
 - **Ortografia:** apóstrofo tipográfico `’` (não `'`) e espaço antes de `: ; ? !` no francês. Atenção também aos títulos das fontes.
+- **Textos longos na versão `pt`:** francês com duas ou mais frases é dividido por ponto final, uma marcação por frase (cada uma com a sua tradução e o seu áudio curto). Se a outra IA entregou o trecho inteiro numa marcação só, divida ao integrar, conferindo que as frases em francês e em português têm o mesmo número.
 - **Versão `pt`:** todo francês marcado como `[[francês|tradução]]`, sem parênteses. Sem `|` ou `]` soltos dentro da marcação, exceto as variantes por região (veja abaixo).
 - **Versão `fr`:** toda em francês, sem marcações.
 - **Variantes por região:** quando a mesma palavra muda de sentido conforme o país, use `[[déjeuner|Québec: café da manhã|França: almoço]]`. A dica mostra uma linha por região.
@@ -19,6 +20,7 @@ Lista de conferência para todo conteúdo novo ou vindo de outra IA (páginas de
 - **Abra cada endereço** (precisa responder 200). Um endereço que não abre sai da lista.
 - A fonte precisa tratar do assunto da página. Prefira as oficiais e as de referência (veja o CLAUDE.md).
 - Dados da prova (número de questões, tempo, notas) só entram se estiverem na fonte oficial. Na dúvida, fora.
+- **Caixa vermelha "Sem fonte oficial":** depois de abrir as fontes, compare com a página. O que as fontes não confirmam (principalmente o que parecer regra ou exigência da prova, como "o examinador vai…", "a prova exige…", "o avaliador espera…") deve estar listado numa caixa `unverified`, por último, nas duas versões. Se a página já tem a caixa, confira se a lista ainda bate com o texto. Fonte que bloqueia robôs e que você não conseguiu abrir não vale como confirmação: o que dependia dela entra na caixa.
 
 ## 3. Francês e português
 
@@ -26,6 +28,16 @@ Lista de conferência para todo conteúdo novo ou vindo de outra IA (páginas de
 - **Explicações em geral:** leia como alguém que fala português. Se a frase for confusa ("não significa X no sentido de Y"), reescreva.
 - **Gênero e artigos:** nos substantivos, confira o gênero e o artigo em francês (`le/la/l’/un/une`) e, nos baralhos de gênero, o gênero do equivalente em português.
 - **Francês canadense primeiro:** a forma do Québec vem em primeiro lugar, com a da França ao lado quando diferir.
+
+## 3b. Flashcards
+
+- **O cartão cumpre o baralho:** num baralho de gênero, o gênero tem de ser diferente nas duas línguas; num de falsos cognatos, a palavra tem de ser mesmo um falso cognato. (Encontrado: `la pause`/`a pausa` e `la faute`/`o erro` não serviam.)
+- **Tradução de verdade:** o `pt` é a tradução do `fr`, não de outra palavra próxima.
+- **Diferenças regionais:** confira nas fontes. (Encontrado: `déjeuner` e `dîner` estavam invertidos entre Québec e França.)
+- **Padrão de escrita:** `pt` em minúsculas, sem ponto final e com artigo; `un/une` no lugar de `l’`; apóstrofo `’` (inclusive nos títulos das fontes).
+- **Notas e exemplos:** sem frases sem sentido e sem afirmações sobre fatos reais (estatísticas, situação de um lugar, prazos de órgãos públicos).
+- **Descrição:** o número que ela cita bate com a quantidade de cartões.
+- **Fontes de baralho:** páginas iniciais de sites de referência são aceitas; endereços profundos só se abrirem. Sites que bloqueiam robôs (erro 403) não dá para conferir sem ajuda: na dúvida, deixe de fora o endereço profundo.
 
 ## 4. Exemplos fictícios
 

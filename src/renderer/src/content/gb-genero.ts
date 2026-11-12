@@ -14,22 +14,22 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Aprenda cada substantivo junto com o artigo (le ou la), e não a palavra sozinha. ' +
+          'Aprenda cada substantivo junto com o artigo ([[le|o]] ou [[la|a]]), e não a palavra sozinha. ' +
           'Muitos substantivos têm gênero diferente do português, e esses são os que mais causam erro.'
       },
       {
         type: 'table',
         headers: ['Francês', 'Português', 'Gênero em francês'],
         rows: [
-          ['le voyage', 'a viagem', 'masculino'],
-          ['le message', 'a mensagem', 'masculino'],
-          ['le choix', 'a escolha', 'masculino'],
-          ['l’arbre', 'a árvore', 'masculino'],
-          ['le pont', 'a ponte', 'masculino'],
-          ['la dent', 'o dente', 'feminino'],
-          ['la mer', 'o mar', 'feminino'],
-          ['la méthode', 'o método', 'feminino'],
-          ['la planète', 'o planeta', 'feminino']
+          ['[[le voyage|a viagem]]', 'a viagem', 'masculino'],
+          ['[[le message|a mensagem]]', 'a mensagem', 'masculino'],
+          ['[[le choix|a escolha]]', 'a escolha', 'masculino'],
+          ['[[l’arbre|a árvore]]', 'a árvore', 'masculino'],
+          ['[[le pont|a ponte]]', 'a ponte', 'masculino'],
+          ['[[la dent|o dente]]', 'o dente', 'feminino'],
+          ['[[la mer|o mar]]', 'o mar', 'feminino'],
+          ['[[la méthode|o método]]', 'o método', 'feminino'],
+          ['[[la planète|o planeta]]', 'o planeta', 'feminino']
         ]
       },
 
@@ -38,15 +38,50 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Terminação', 'Gênero', 'Exemplos', 'Exceções comuns'],
         rows: [
-          ['-age', 'masculino', 'le fromage, le garage', 'la page, la plage, l’image, la cage'],
-          ['-ment', 'masculino', 'le logement, le gouvernement', 'nenhuma'],
-          ['-eau', 'masculino', 'le bureau, le bateau', 'l’eau, la peau'],
-          ['-isme', 'masculino', 'le tourisme, le racisme', 'nenhuma'],
-          ['-tion, -sion', 'feminino', 'la nation, la décision', 'nenhuma'],
-          ['-té', 'feminino', 'la société, la santé', 'l’été, le côté'],
-          ['-ure', 'feminino', 'la voiture, la culture', 'nenhuma'],
-          ['-ence, -ance', 'feminino', 'la confiance, la différence', 'le silence'],
-          ['-ée', 'feminino', 'l’année, la journée', 'le musée, le lycée']
+          [
+            '-age',
+            'masculino',
+            '[[le fromage|o queijo]], [[le garage|a garagem]]',
+            '[[la page|a página]], [[la plage|a praia]], [[l’image|a imagem]], [[la cage|a gaiola]]'
+          ],
+          [
+            '-ment',
+            'masculino',
+            '[[le logement|a moradia]], [[le gouvernement|o governo]]',
+            '[[la jument|a égua]]'
+          ],
+          [
+            '-eau',
+            'masculino',
+            '[[le bureau|o escritório]], [[le bateau|o barco]]',
+            '[[l’eau|a água]], [[la peau|a pele]]'
+          ],
+          ['-isme', 'masculino', '[[le tourisme|o turismo]], [[le racisme|o racismo]]', 'nenhuma'],
+          ['-tion, -sion', 'feminino', '[[la nation|a nação]], [[la décision|a decisão]]', 'nenhuma'],
+          [
+            '-té',
+            'feminino',
+            '[[la société|a sociedade]], [[la santé|a saúde]]',
+            '[[l’été|o verão]], [[le côté|o lado]]'
+          ],
+          [
+            '-ure',
+            'feminino',
+            '[[la voiture|o carro]], [[la culture|a cultura]]',
+            '[[le murmure|o murmúrio]], [[le mercure|o mercúrio]]'
+          ],
+          [
+            '-ence, -ance',
+            'feminino',
+            '[[la confiance|a confiança]], [[la différence|a diferença]]',
+            '[[le silence|o silêncio]]'
+          ],
+          [
+            '-ée',
+            'feminino',
+            '[[l’année|o ano]], [[la journée|o dia]]',
+            '[[le musée|o museu]], [[le lycée|o liceu]]'
+          ]
         ]
       },
 
@@ -54,26 +89,27 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'A regra geral é acrescentar -e: un ami, une amie; grand, grande. Quando a palavra já termina em -e, ela não muda: jeune, facile, un ou une collègue. ' +
+          'A regra geral é acrescentar -e: [[un ami|um amigo]], [[une amie|uma amiga]]; [[grand|grande]], [[grande|grande]]. ' +
+          'Quando a palavra já termina em -e, ela não muda: [[jeune|jovem]], [[facile|fácil]], [[un collègue|um colega]] ou [[une collègue|uma colega]]. ' +
           'Muitas terminações mudam de forma no feminino.'
       },
       {
         type: 'table',
         headers: ['Masculino', 'Feminino', 'Exemplos'],
         rows: [
-          ['-er', '-ère', 'boulanger → boulangère, cher → chère'],
-          ['-eux', '-euse', 'heureux → heureuse, sérieux → sérieuse'],
-          ['-if', '-ive', 'sportif → sportive, actif → active'],
-          ['-en, -on', '-enne, -onne', 'canadien → canadienne, bon → bonne'],
-          ['-teur', '-trice ou -teuse', 'acteur → actrice, menteur → menteuse'],
-          ['-el, -et', '-elle, -ette', 'naturel → naturelle, muet → muette']
+          ['-er', '-ère', '[[boulanger|padeiro]] → [[boulangère|padeira]], [[cher|caro]] → [[chère|cara]]'],
+          ['-eux', '-euse', '[[heureux|feliz]] → [[heureuse|feliz]], [[sérieux|sério]] → [[sérieuse|séria]]'],
+          ['-if', '-ive', '[[sportif|esportista]] → [[sportive|esportista]], [[actif|ativo]] → [[active|ativa]]'],
+          ['-en, -on', '-enne, -onne', '[[canadien|canadense]] → [[canadienne|canadense]], [[bon|bom]] → [[bonne|boa]]'],
+          ['-teur', '-trice ou -teuse', '[[acteur|ator]] → [[actrice|atriz]], [[menteur|mentiroso]] → [[menteuse|mentirosa]]'],
+          ['-el, -et', '-elle, -ette', '[[naturel|natural]] → [[naturelle|natural]], [[muet|mudo]] → [[muette|muda]]']
         ]
       },
       {
         type: 'list',
         items: [
-          'Femininos irregulares a decorar: beau → belle, nouveau → nouvelle, vieux → vieille, blanc → blanche, long → longue, frais → fraîche, fou → folle.',
-          'Na fala, o -e do feminino costuma fazer a consoante final aparecer: petit (sem t) e petite (com t), grand e grande.'
+          'Femininos irregulares a decorar: [[beau|bonito]] → [[belle|bonita]], [[nouveau|novo]] → [[nouvelle|nova]], [[vieux|velho]] → [[vieille|velha]], [[blanc|branco]] → [[blanche|branca]], [[long|longo]] → [[longue|longa]], [[frais|fresco]] → [[fraîche|fresca]], [[fou|louco]] → [[folle|louca]].',
+          'Na fala, o -e do feminino costuma fazer a consoante final aparecer: [[petit|pequeno]] (sem t) e [[petite|pequena]] (com t), [[grand|grande]] e [[grande|grande]].'
         ]
       },
 
@@ -82,25 +118,34 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Regra', 'Exemplos'],
         rows: [
-          ['Regra geral: + s', 'un livre → des livres, intéressant → intéressants'],
+          [
+            'Regra geral: + s',
+            '[[un livre|um livro]] → [[des livres|livros]], [[intéressant|interessante]] → [[intéressants|interessantes]]'
+          ],
           [
             'Terminado em -s, -x ou -z: não muda',
-            'le prix → les prix, le nez → les nez, heureux → heureux'
+            '[[le prix|o preço]] → [[les prix|os preços]], [[le nez|o nariz]] → [[les nez|os narizes]], [[heureux|feliz]] → [[heureux|felizes]]'
           ],
-          ['-eau, -eu: + x', 'le bateau → les bateaux, le jeu → les jeux (exceções: pneus, bleus)'],
+          [
+            '-eau, -eu: + x',
+            '[[le bateau|o barco]] → [[les bateaux|os barcos]], [[le jeu|o jogo]] → [[les jeux|os jogos]] (exceções: [[pneus|pneus]], [[bleus|azuis]])'
+          ],
           [
             '-al: -aux',
-            'le journal → les journaux, national → nationaux (exceções: festivals, finals)'
+            '[[le journal|o jornal]] → [[les journaux|os jornais]], [[national|nacional]] → [[nationaux|nacionais]] (exceções: [[festivals|festivais]], [[finals|finais]])'
           ],
           [
             '-ail: -aux em algumas palavras',
-            'le travail → les travaux (mas le détail → les détails)'
+            '[[le travail|o trabalho]] → [[les travaux|os trabalhos]] (mas [[le détail|o detalhe]] → [[les détails|os detalhes]])'
           ],
           [
             '-ou: + s, menos sete palavras em -oux',
-            'bijou, caillou, chou, genou, hibou, joujou, pou → bijoux, genoux…'
+            '[[bijou|joia]], [[caillou|pedra]], [[chou|repolho]], [[genou|joelho]], [[hibou|coruja]], [[joujou|brinquedo]], [[pou|piolho]] → [[bijoux|joias]], [[genoux|joelhos]]…'
           ],
-          ['Irregulares', 'l’œil → les yeux, monsieur → messieurs, madame → mesdames']
+          [
+            'Irregulares',
+            '[[l’œil|o olho]] → [[les yeux|os olhos]], [[monsieur|senhor]] → [[messieurs|senhores]], [[madame|senhora]] → [[mesdames|senhoras]]'
+          ]
         ]
       },
 
@@ -109,16 +154,16 @@ const content: TopicContent = {
         tone: 'tip',
         title: 'Na prova: o plural se ouve no artigo',
         text:
-          'O -s e o -x do plural não se pronunciam: livre e livres soam iguais. Na compreensão oral, quem indica o número é o artigo ou o determinante ' +
-          '(le livre × les livres, son ami × ses amis) e a liaison (les‿enfants). Preste atenção nessas palavras pequenas.'
+          'O -s e o -x do plural não se pronunciam: [[livre|livro]] e [[livres|livros]] soam iguais. Na compreensão oral, quem indica o número é o artigo ou o determinante ' +
+          '([[le livre|o livro]] × [[les livres|os livros]], [[son ami|o amigo dele]] × [[ses amis|os amigos dele]]) e a [[liaison|ligação]] entre as palavras, como em [[les enfants|as crianças]]. Preste atenção nessas palavras pequenas.'
       },
       {
         type: 'callout',
         tone: 'warning',
         title: 'Não confie no gênero do português',
         text:
-          'Escrever "la voyage" ou "le mer" é um erro típico de quem pensa em português. Na dúvida, procure no dicionário e anote o substantivo sempre com o artigo. ' +
-          'Lembre que o adjetivo também muda: une décision importante, des voyages intéressants.'
+          'Escrever [[la voyage|a viagem (errado)]] ou [[le mer|o mar (errado)]] é um erro típico de quem pensa em português. Na dúvida, procure no dicionário e anote o substantivo sempre com o artigo. ' +
+          'Lembre que o adjetivo também muda: [[une décision importante|uma decisão importante]], [[des voyages intéressants|viagens interessantes]].'
       }
     ]
   },
@@ -159,12 +204,12 @@ const content: TopicContent = {
         headers: ['Terminaison', 'Genre', 'Exemples', 'Exceptions courantes'],
         rows: [
           ['-age', 'masculin', 'le fromage, le garage', 'la page, la plage, l’image, la cage'],
-          ['-ment', 'masculin', 'le logement, le gouvernement', 'aucune'],
+          ['-ment', 'masculin', 'le logement, le gouvernement', 'la jument'],
           ['-eau', 'masculin', 'le bureau, le bateau', 'l’eau, la peau'],
           ['-isme', 'masculin', 'le tourisme, le racisme', 'aucune'],
           ['-tion, -sion', 'féminin', 'la nation, la décision', 'aucune'],
           ['-té', 'féminin', 'la société, la santé', 'l’été, le côté'],
-          ['-ure', 'féminin', 'la voiture, la culture', 'aucune'],
+          ['-ure', 'féminin', 'la voiture, la culture', 'le murmure, le mercure'],
           ['-ence, -ance', 'féminin', 'la confiance, la différence', 'le silence'],
           ['-ée', 'féminin', 'l’année, la journée', 'le musée, le lycée']
         ]
@@ -246,7 +291,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

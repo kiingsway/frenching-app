@@ -40,6 +40,7 @@ import FlashcardList from './pages/FlashcardList'
 import SuggestionDots from './components/SuggestionDots'
 import TopicPage from './pages/TopicPage'
 import { SECTIONS } from './data/topics'
+import { clearDashboardReturn, takeDashboardReturnScroll } from './lib/dashboard-return'
 
 type PageId =
   | 'dashboard'
@@ -249,6 +250,8 @@ export default function App(): ReactElement {
   const [docId, setDocId] = useState<string | null>(null)
 
   const goTo = (id: PageId): void => {
+    // Só quem volta direto ao Painel reaproveita o ponto onde estava
+    if (id !== 'dashboard') clearDashboardReturn()
     setTopicId(null)
     setPage(id)
   }
@@ -377,9 +380,12 @@ export default function App(): ReactElement {
           y: { type: 'spring', stiffness: 420, damping: 38 },
           opacity: { duration: 0.16 }
         }}
-        // A página nova começa do topo (só na entrada, não durante a saída da anterior)
+        // A página nova começa do topo (só na entrada, não durante a saída da anterior).
+        // Exceção: ao voltar de uma página de estudo ao Painel, volta à altura de onde saiu
         onAnimationStart={(definition) => {
-          if (definition === 'center') document.getElementById('main-content')?.scrollTo({ top: 0 })
+          if (definition !== 'center') return
+          const top = !topicId && page === 'dashboard' ? takeDashboardReturnScroll() : null
+          document.getElementById('main-content')?.scrollTo({ top: top ?? 0 })
         }}
       >
         {topicId ? (
@@ -403,7 +409,17 @@ export default function App(): ReactElement {
   if (isMobile)
     return (
       <MotionConfig reducedMotion="user">
-        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100vh',
+            // iOS Safari: 100vh conta a tela com as barras do navegador recolhidas, então a barra de
+            // baixo do app ficava por trás da barra flutuante do Safari. 100dvh acompanha a área
+            // realmente visível (e o 100vh acima continua valendo onde não há suporte)
+            '@supports (height: 100dvh)': { height: '100dvh' }
+          }}
+        >
           <Box
             component="main"
             id="main-content"
@@ -465,7 +481,9 @@ export default function App(): ReactElement {
   return (
     // reducedMotion="user": se o Windows pede menos animações, elas ficam desligadas
     <MotionConfig reducedMotion="user">
-      <Box sx={{ display: 'flex', height: '100vh' }}>
+      <Box
+        sx={{ display: 'flex', height: '100vh', '@supports (height: 100dvh)': { height: '100dvh' } }}
+      >
         <Drawer
           variant="permanent"
           sx={{

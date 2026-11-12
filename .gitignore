@@ -30,3 +30,7 @@ npm-debug.log*
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Caixa de entrada de conteúdo (JSONs ainda não integrados)
+content-inbox/*.json
+content-inbox/feitos/

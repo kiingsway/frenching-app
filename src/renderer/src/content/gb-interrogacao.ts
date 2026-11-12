@@ -6,7 +6,7 @@ const content: TopicContent = {
   pt: {
     title: 'Interrogação',
     summary:
-      'Há três jeitos de fazer uma pergunta em francês, do mais informal ao mais formal: a entonação, est-ce que e a inversão. ' +
+      'Há três jeitos de fazer uma pergunta em francês, do mais informal ao mais formal: a entonação, [[est-ce que|marca de pergunta]] e a inversão. ' +
       'Saber escolher o registro certo conta pontos na produção oral, principalmente quando a tarefa é pedir informações.',
     blocks: [
       { type: 'heading', text: 'Os três registros' },
@@ -17,17 +17,17 @@ const content: TopicContent = {
           [
             'Informal (fala)',
             'Frase afirmativa com a voz subindo no fim',
-            'Vous avez des places ?'
+            '[[Vous avez des places ?|Vocês têm lugares?]]'
           ],
           [
             'Neutro (fala e escrita)',
-            'Est-ce que + frase afirmativa',
-            'Est-ce que vous avez des places ?'
+            '[[Est-ce que|marca de pergunta]] + frase afirmativa',
+            '[[Est-ce que vous avez des places ?|Vocês têm lugares?]]'
           ],
           [
             'Formal (escrita, pedidos educados)',
             'Verbo e pronome invertidos, com hífen',
-            'Avez-vous des places ?'
+            '[[Avez-vous des places ?|Vocês têm lugares?]]'
           ]
         ]
       },
@@ -36,11 +36,11 @@ const content: TopicContent = {
       {
         type: 'list',
         items: [
-          'O pronome sujeito vai depois do verbo, ligado por hífen: Parlez-vous français ?',
-          'Se o verbo termina em vogal e o pronome é il, elle ou on, entra um -t- para facilitar a pronúncia: Parle-t-il anglais ? A-t-elle fini ?',
-          'Com um substantivo como sujeito, ele fica na frente e o pronome é repetido depois do verbo: Votre fils parle-t-il français ?',
-          'Nos tempos compostos, inverte-se o auxiliar: Avez-vous reçu mon courriel ?',
-          'Com je, a inversão quase não se usa (só em formas fixas como Puis-je… ?). Prefira est-ce que.'
+          'O pronome sujeito vai depois do verbo, ligado por hífen: [[Parlez-vous français ?|Você fala francês?]]',
+          'Se o verbo termina em vogal e o pronome é [[il|ele]], [[elle|ela]] ou [[on|a gente]], entra um -t- para facilitar a pronúncia: [[Parle-t-il anglais ?|Ele fala inglês?]] [[A-t-elle fini ?|Ela terminou?]]',
+          'Com um substantivo como sujeito, ele fica na frente e o pronome é repetido depois do verbo: [[Votre fils parle-t-il français ?|Seu filho fala francês?]]',
+          'Nos tempos compostos, inverte-se o auxiliar: [[Avez-vous reçu mon courriel ?|Você recebeu meu e-mail?]]',
+          'Com [[je|eu]], a inversão quase não se usa (só em formas fixas como [[Puis-je… ?|Posso…?]]). Prefira [[est-ce que|marca de pergunta]].'
         ]
       },
 
@@ -49,24 +49,26 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Palavra', 'Sentido', 'Exemplo'],
         rows: [
-          ['qui', 'quem', 'Qui est le responsable ?'],
-          ['que, qu’est-ce que', 'o que (objeto)', 'Qu’est-ce que vous cherchez ?'],
-          ['qu’est-ce qui', 'o que (sujeito)', 'Qu’est-ce qui se passe ?'],
-          ['où', 'onde', 'Où est la gare ?'],
-          ['quand', 'quando', 'Quand commence le cours ?'],
-          ['comment', 'como', 'Comment est-ce qu’on s’inscrit ?'],
-          ['pourquoi', 'por que', 'Pourquoi le magasin est-il fermé ?'],
-          ['combien (de)', 'quanto, quantos', 'Combien de temps faut-il ?'],
+          ['[[qui|quem]]', 'quem', '[[Qui est le responsable ?|Quem é o responsável?]]'],
+          ['[[que|o que]], [[qu’est-ce que|o que]]', 'o que (objeto)', '[[Qu’est-ce que vous cherchez ?|O que você procura?]]'],
+          ['[[qu’est-ce qui|o que]]', 'o que (sujeito)', '[[Qu’est-ce qui se passe ?|O que está acontecendo?]]'],
+          ['[[où|onde]]', 'onde', '[[Où est la gare ?|Onde fica a estação?]]'],
+          ['[[quand|quando]]', 'quando', '[[Quand commence le cours ?|Quando começa a aula?]]'],
+          ['[[comment|como]]', 'como', '[[Comment est-ce qu’on s’inscrit ?|Como a gente se inscreve?]]'],
+          ['[[pourquoi|por que]]', 'por que', '[[Pourquoi le magasin est-il fermé ?|Por que a loja está fechada?]]'],
+          ['[[combien (de)|quanto(s)]]', 'quanto, quantos', '[[Combien de temps faut-il ?|Quanto tempo é preciso?]]'],
           [
-            'quel, quelle, quels, quelles',
+            '[[quel|qual]], [[quelle|qual]], [[quels|quais]], [[quelles|quais]]',
             'qual, quais (concorda com o substantivo)',
-            'Quelle est votre adresse ?'
+            '[[Quelle est votre adresse ?|Qual é o seu endereço?]]'
           ]
         ]
       },
       {
         type: 'paragraph',
-        text: 'No registro informal, a palavra interrogativa pode ficar no fim: Tu vas où ? C’est combien ? Na escrita, use est-ce que ou a inversão: Où est-ce que tu vas ? Où vas-tu ?'
+        text:
+          'No registro informal, a palavra interrogativa pode ficar no fim: [[Tu vas où ?|Você vai aonde?]] [[C’est combien ?|Quanto custa?]] ' +
+          'Na escrita, use [[est-ce que|marca de pergunta]] ou a inversão: [[Où est-ce que tu vas ?|Aonde você vai?]] [[Où vas-tu ?|Aonde você vai?]]'
       },
 
       {
@@ -74,16 +76,26 @@ const content: TopicContent = {
         tone: 'tip',
         title: 'Na prova: a tarefa de pedir informações',
         text:
-          'Na produção oral do TEF, uma das tarefas é ligar para alguém e fazer perguntas sobre um anúncio. Trate a pessoa por vous, ' +
-          'varie as estruturas (est-ce que, inversão, quel, combien) e comece com uma fórmula educada: Je voudrais savoir si…, Pourriez-vous me dire… ?'
+          'Na produção oral do TEF, uma das tarefas é ligar para alguém e fazer perguntas sobre um anúncio. Trate a pessoa por [[vous|o senhor / a senhora / vocês]], ' +
+          'varie as estruturas ([[est-ce que|marca de pergunta]], inversão, [[quel|qual]], [[combien|quanto]]) e comece com uma fórmula educada: [[Je voudrais savoir si…|Gostaria de saber se…]], [[Pourriez-vous me dire… ?|Poderia me dizer…?]]'
       },
       {
         type: 'callout',
         tone: 'warning',
-        title: 'Quel concorda; qu’est-ce que não',
+        title: '[[Quel|qual]] concorda; [[qu’est-ce que|o que]] não',
         text:
-          'Quel muda com o substantivo: Quel jour ?, Quelle heure ?, Quels documents ?, Quelles options ? ' +
-          'E não traduza "o que é" por "quoi est": diga Qu’est-ce que c’est ? (o que é isso?).'
+          '[[Quel|qual]] muda com o substantivo: [[Quel jour ?|Que dia?]] [[Quelle heure ?|Que horas?]] [[Quels documents ?|Quais documentos?]] [[Quelles options ?|Quais opções?]] ' +
+          'E não traduza "o que é" por [[quoi est|o que é (errado)]]: diga [[Qu’est-ce que c’est ?|O que é isso?]]'
+      },
+      {
+        type: 'callout',
+        tone: 'unverified',
+        title: 'Sem fonte oficial',
+        text:
+          'As regras de formação das perguntas (entonação, est-ce que, inversão, palavras interrogativas) vêm das páginas do Lawless French listadas. ' +
+          'A página da TEF Canada listada só apresenta as provas obrigatórias: nada nela confirma que uma das tarefas da expressão oral é ligar para alguém sobre um anúncio. ' +
+          'Também não têm fonte oficial: que escolher o registro certo "conta pontos" na produção oral; o tratamento por vous ser esperado nessa tarefa; e que variar as estruturas e começar com uma fórmula educada seja avaliado. ' +
+          'Trate esses pontos como conselho de preparação, não como regra da prova.'
       }
     ]
   },
@@ -169,11 +181,21 @@ const content: TopicContent = {
         text:
           'Quel change avec le nom : Quel jour ?, Quelle heure ?, Quels documents ?, Quelles options ? ' +
           'Et pour demander ce qu’est une chose, on dit Qu’est-ce que c’est ?, jamais « quoi est ».'
+      },
+      {
+        type: 'callout',
+        tone: 'unverified',
+        title: 'Sans source officielle',
+        text:
+          'Les règles de formation des questions (intonation, est-ce que, inversion, mots interrogatifs) viennent des pages de Lawless French indiquées. ' +
+          'La page du TEF Canada indiquée présente seulement les épreuves obligatoires : rien n’y confirme qu’une des tâches de l’expression orale consiste à appeler quelqu’un au sujet d’une annonce. ' +
+          'N’ont pas non plus de source officielle : le fait que choisir le bon registre « rapporte des points » à l’oral ; le vouvoiement attendu dans cette tâche ; et l’évaluation de la variété des structures et d’une formule polie au début. ' +
+          'Ces points sont des conseils de préparation, pas des règles de l’épreuve.'
       }
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {

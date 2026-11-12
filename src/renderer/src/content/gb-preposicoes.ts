@@ -7,26 +7,42 @@ const content: TopicContent = {
     title: 'Preposições de lugar e tempo (à, en, au, chez, depuis, pendant, il y a)',
     summary:
       'As preposições de lugar dependem do tipo de lugar: cidade, país masculino ou feminino, casa de alguém, meio de transporte. ' +
-      'As de tempo são a maior armadilha para quem fala português, porque o nosso "há" pode virar depuis, il y a ou pendant.',
+      'As de tempo são a maior armadilha para quem fala português, porque o nosso "há" pode virar [[depuis|desde]], [[il y a|há]] ou [[pendant|durante]].',
     blocks: [
       { type: 'heading', text: 'Cidades, países e províncias' },
       {
         type: 'table',
         headers: ['Lugar', 'Estar em, ir para', 'Vir de'],
         rows: [
-          ['Cidade', 'à Montréal, à Paris', 'de Montréal, de Paris'],
+          [
+            'Cidade',
+            '[[à Montréal|em / para Montreal]], [[à Paris|em / para Paris]]',
+            '[[de Montréal|de Montreal]], [[de Paris|de Paris]]'
+          ],
           [
             'País ou continente feminino (quase todos terminam em -e)',
-            'en France, en Amérique',
-            'de France, d’Amérique'
+            '[[en France|na / para a França]], [[en Amérique|na / para a América]]',
+            '[[de France|da França]], [[d’Amérique|da América]]'
           ],
-          ['País masculino', 'au Canada, au Brésil, au Japon', 'du Canada, du Brésil'],
-          ['País masculino que começa por vogal', 'en Iran, en Ontario', 'd’Iran, de l’Ontario'],
-          ['País no plural', 'aux États-Unis, aux Pays-Bas', 'des États-Unis'],
+          [
+            'País masculino',
+            '[[au Canada|no / para o Canadá]], [[au Brésil|no / para o Brasil]], [[au Japon|no / para o Japão]]',
+            '[[du Canada|do Canadá]], [[du Brésil|do Brasil]]'
+          ],
+          [
+            'País ou província masculina que começa por vogal',
+            '[[en Iran|no / para o Irã]], [[en Ontario|em / para Ontário]]',
+            '[[d’Iran|do Irã]], [[d’Ontario|de Ontário]]'
+          ],
+          [
+            'País no plural',
+            '[[aux États-Unis|nos / para os Estados Unidos]], [[aux Pays-Bas|nos / para os Países Baixos]]',
+            '[[des États-Unis|dos Estados Unidos]]'
+          ],
           [
             'Províncias do Canadá',
-            'au Québec, au Manitoba, en Alberta, en Colombie-Britannique',
-            'du Québec, de l’Alberta'
+            '[[au Québec|no / para o Québec]], [[au Manitoba|em / para Manitoba]], [[en Alberta|em / para Alberta]], [[en Colombie-Britannique|na / para a Colúmbia Britânica]]',
+            '[[du Québec|do Québec]], [[d’Alberta|de Alberta]]'
           ]
         ]
       },
@@ -35,10 +51,10 @@ const content: TopicContent = {
       {
         type: 'list',
         items: [
-          'Chez + pessoa ou profissional: chez moi, chez mes parents, chez le dentiste.',
-          'Dans + um lugar fechado ou com artigo: dans la cuisine, dans le bureau du directeur.',
-          'À + um lugar público ou um endereço: au travail, à la banque, à l’hôpital, au 25 rue Sherbrooke.',
-          'Transportes: en voiture, en train, en avion, en métro (dentro do veículo), mas à pied e à vélo.'
+          '[[Chez|na casa de]] + pessoa ou profissional: [[chez moi|na minha casa]], [[chez mes parents|na casa dos meus pais]], [[chez le dentiste|no dentista]].',
+          '[[Dans|dentro de]] + um lugar fechado ou com artigo: [[dans la cuisine|na cozinha]], [[dans le bureau du directeur|no escritório do diretor]].',
+          '[[À|em]] + um lugar público ou um endereço: [[au travail|no trabalho]], [[à la banque|no banco]], [[à l’hôpital|no hospital]], [[au 25 rue Sherbrooke|no número 25 da rue Sherbrooke]].',
+          'Transportes: [[en voiture|de carro]], [[en train|de trem]], [[en avion|de avião]], [[en métro|de metrô]] (dentro do veículo), mas [[à pied|a pé]] e [[à vélo|de bicicleta]].'
         ]
       },
 
@@ -47,23 +63,39 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Preposição', 'Uso', 'Exemplo'],
         rows: [
-          ['à', 'hora exata', 'Le rendez-vous est à 14 h.'],
+          ['[[à|às]]', 'hora exata', '[[Le rendez-vous est à 14 h.|O compromisso é às 14 h.]]'],
           [
-            'en',
+            '[[en|em]]',
             'mês, ano, estação (exceto a primavera)',
-            'en mai, en 2026, en hiver, au printemps'
+            '[[en mai|em maio]], [[en 2026|em 2026]], [[en hiver|no inverno]], [[au printemps|na primavera]]'
           ],
-          ['le', 'data (sem preposição)', 'Je pars le 3 juin.'],
+          ['[[le|em]]', 'data (sem preposição)', '[[Je pars le 3 juin.|Viajo no dia 3 de junho.]]'],
           [
-            'depuis',
+            '[[depuis|desde]]',
             'desde quando ou há quanto tempo algo continua',
-            'Je suis ici depuis 2024 / depuis deux ans.'
+            '[[Je suis ici depuis 2024.|Estou aqui desde 2024.]] [[Je suis ici depuis deux ans.|Estou aqui há dois anos.]]'
           ],
-          ['il y a', 'há (tempo passado, ação terminada)', 'Je suis arrivé il y a deux ans.'],
-          ['pendant', 'durante (duração completa)', 'J’ai travaillé là pendant cinq ans.'],
-          ['pour', 'duração prevista', 'Je pars pour une semaine.'],
-          ['en', 'tempo gasto para fazer algo', 'J’ai lu le livre en deux jours.'],
-          ['dans', 'daqui a (futuro)', 'Le train part dans dix minutes.']
+          [
+            '[[il y a|há]]',
+            'há (tempo passado, ação terminada)',
+            '[[Je suis arrivé il y a deux ans.|Cheguei há dois anos.]]'
+          ],
+          [
+            '[[pendant|durante]]',
+            'durante (duração completa)',
+            '[[J’ai travaillé là pendant cinq ans.|Trabalhei lá durante cinco anos.]]'
+          ],
+          ['[[pour|por]]', 'duração prevista', '[[Je pars pour une semaine.|Viajo por uma semana.]]'],
+          [
+            '[[en|em]]',
+            'tempo gasto para fazer algo',
+            '[[J’ai lu le livre en deux jours.|Li o livro em dois dias.]]'
+          ],
+          [
+            '[[dans|daqui a]]',
+            'daqui a (futuro)',
+            '[[Le train part dans dix minutes.|O trem sai daqui a dez minutos.]]'
+          ]
         ]
       },
 
@@ -72,16 +104,16 @@ const content: TopicContent = {
         tone: 'warning',
         title: 'O "há" do português tem três traduções',
         text:
-          '"Moro aqui há dois anos" (ainda moro): J’habite ici depuis deux ans, com o verbo no présent. ' +
-          '"Cheguei há dois anos" (ação terminada): Je suis arrivé il y a deux ans. ' +
-          '"Morei lá durante dois anos" (período fechado): J’ai habité là pendant deux ans.'
+          '"Moro aqui há dois anos" (ainda moro): [[J’habite ici depuis deux ans.|Moro aqui há dois anos.]] Use o verbo no [[présent|presente]]. ' +
+          '"Cheguei há dois anos" (ação terminada): [[Je suis arrivé il y a deux ans.|Cheguei há dois anos.]] ' +
+          '"Morei lá durante dois anos" (período fechado): [[J’ai habité là pendant deux ans.|Morei lá durante dois anos.]]'
       },
       {
         type: 'callout',
         tone: 'tip',
         title: 'Na prova',
         text:
-          'Os textos e áudios sobre imigração estão cheios de au Canada, au Québec, en Ontario e depuis + présent. ' +
+          'Os textos e áudios sobre imigração estão cheios de [[au Canada|no Canadá]], [[au Québec|no Québec]], [[en Ontario|em Ontário]] e [[depuis|desde]] + [[présent|presente]]. ' +
           'Nas questões de gramática, identifique primeiro o gênero do país e se a ação ainda continua.'
       }
     ]
@@ -106,15 +138,15 @@ const content: TopicContent = {
           ],
           ['Un pays masculin', 'au Canada, au Brésil, au Japon', 'du Canada, du Brésil'],
           [
-            'Un pays masculin qui commence par une voyelle',
+            'Un pays ou une province masculin qui commence par une voyelle',
             'en Iran, en Ontario',
-            'd’Iran, de l’Ontario'
+            'd’Iran, d’Ontario'
           ],
           ['Un pays au pluriel', 'aux États-Unis, aux Pays-Bas', 'des États-Unis'],
           [
             'Les provinces canadiennes',
             'au Québec, au Manitoba, en Alberta, en Colombie-Britannique',
-            'du Québec, de l’Alberta'
+            'du Québec, d’Alberta'
           ]
         ]
       },
@@ -179,7 +211,7 @@ const content: TopicContent = {
     ]
   },
 
-  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables'],
+  audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
     {
