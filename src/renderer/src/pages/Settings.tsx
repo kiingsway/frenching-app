@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { FaWindows } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 import {
+  FiBookOpen,
   FiCheck,
   FiCheckSquare,
   FiCloud,
@@ -13,6 +14,7 @@ import {
   FiGithub,
   FiGlobe,
   FiLayers,
+  FiLayout,
   FiLogOut,
   FiMonitor,
   FiMoon,
@@ -71,7 +73,7 @@ import {
   isCustomBackground
 } from '@/lib/background'
 import { useSyncStatus } from '@/lib/cloud-sync'
-import { themeModePref } from '@/lib/prefs'
+import { themeModePref, studyStylePref, type StudyStyle } from '@/lib/prefs'
 import { NEW_PER_DAY_MAX, newPerDayPref } from '@/lib/flashcard-progress'
 import { PROJECT_DOCS } from '@/lib/docs'
 
@@ -666,6 +668,38 @@ const rowLabelSx = {
   '&:not(:first-of-type)': { mt: { xs: 1.5, sm: 0 } }
 }
 
+// Estilo da página de estudo. Por enquanto, o Leitura só troca a fonte
+const STUDY_STYLE_OPTIONS: { value: StudyStyle; label: string; icon: IconType }[] = [
+  { value: 'current', label: 'Atual', icon: FiLayout },
+  { value: 'reading', label: 'Leitura', icon: FiBookOpen }
+]
+
+function StudyStylePicker(): ReactElement {
+  const style = studyStylePref.use()
+  const setStyle = studyStylePref.set
+  return (
+    <Box>
+      <ToggleButtonGroup
+        exclusive
+        size="small"
+        color="primary"
+        value={style}
+        onChange={(_, value: StudyStyle | null) => value && setStyle(value)}
+      >
+        {STUDY_STYLE_OPTIONS.map(({ value, label, icon: Icon }) => (
+          <ToggleButton key={value} value={value} sx={{ gap: 1, px: 1.75 }}>
+            <Icon />
+            {label}
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
+      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.75 }}>
+        Leitura: coluna estreita, letra de livro no texto e tabelas e avisos mais leves.
+      </Typography>
+    </Box>
+  )
+}
+
 // Limite de cartões novos por dia (preferência sincronizada com a conta).
 // O controle desliza livre e o valor só é salvo ao soltar, para não gravar a cada passo
 function NewPerDaySetting(): ReactElement {
@@ -879,6 +913,11 @@ export default function Settings({
               Cor de fundo
             </Typography>
             <BackgroundPicker />
+
+            <Typography variant="body2" sx={rowLabelSx}>
+              Página de estudo
+            </Typography>
+            <StudyStylePicker />
           </Box>
         </SettingsCard>
 

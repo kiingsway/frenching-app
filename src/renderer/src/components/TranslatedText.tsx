@@ -23,6 +23,30 @@ const tint = (opacity: number): string =>
 // Só um termo toca por vez: ao dar play, o que estava tocando para
 let stopCurrent: (() => void) | null = null
 
+// A tradução pode ter variantes por região, separadas por "|":
+//   [[déjeuner|Québec: café da manhã|França: almoço]]
+// Cada variante vira uma linha na dica, com o nome da região em destaque.
+// Sem "|", é só o texto da tradução.
+function translationNode(pt: string): ReactNode {
+  const variants = pt.split('|').map((v) => v.trim())
+  if (variants.length < 2) return pt
+  return (
+    <Box component="span" sx={{ display: 'flex', flexDirection: 'column', gap: 0.25 }}>
+      {variants.map((variant) => {
+        const colon = variant.indexOf(':')
+        return colon > 0 ? (
+          <span key={variant}>
+            <b>{variant.slice(0, colon)}:</b>
+            {variant.slice(colon + 1)}
+          </span>
+        ) : (
+          <span key={variant}>{variant}</span>
+        )
+      })}
+    </Box>
+  )
+}
+
 function TermWithAudio({ fr, pt, src }: { fr: string; pt: string; src: string }): ReactElement {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [playing, setPlaying] = useState(false)
@@ -89,7 +113,7 @@ function TermWithAudio({ fr, pt, src }: { fr: string; pt: string; src: string })
 
   const tip = (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <span>{pt}</span>
+      <span>{translationNode(pt)}</span>
       <IconButton
         size="small"
         onClick={toggle}
@@ -171,7 +195,7 @@ function TermWithAudio({ fr, pt, src }: { fr: string; pt: string; src: string })
 function TermWithoutAudio({ fr, pt }: { fr: string; pt: string }): ReactElement {
   return (
     <Tooltip
-      title={pt}
+      title={translationNode(pt)}
       arrow
       describeChild
       enterTouchDelay={0}

@@ -1,6 +1,7 @@
 import conectores from './conectores'
 import essenciais from './essenciais'
 import falsosCognatos from './falsos-cognatos'
+import generoSubstantivos from './genre-different'
 import opiniao from './opiniao'
 import type { Flashcard, FlashcardDeck, FlashcardDeckDraft } from './types'
 
@@ -15,6 +16,7 @@ const build = (draft: FlashcardDeckDraft): FlashcardDeck => ({
 export const FLASHCARD_DECKS: FlashcardDeck[] = [
   essenciais,
   conectores,
+  generoSubstantivos,
   falsosCognatos,
   opiniao
 ].map(build)

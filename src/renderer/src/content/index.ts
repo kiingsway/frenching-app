@@ -16,6 +16,11 @@ import coFalado from './co-falado'
 import coEstrategias from './co-estrategias'
 import ceCotidiano from './ce-cotidiano'
 import ceCartas from './ce-cartas'
+import ceOfertas from './ce-ofertas'
+import ceNoticias from './ce-noticias'
+import ceEstrategias from './ce-estrategias'
+import ceLiterarios from './ce-literarios'
+import ceArgumentativos from './ce-argumentativos'
 import gbArtigos from './gb-artigos'
 import gbGenero from './gb-genero'
 import gbAdjetivos from './gb-adjetivos'
@@ -46,6 +51,11 @@ export const ALL_CONTENT: TopicContent[] = [
   coEstrategias,
   ceCotidiano,
   ceCartas,
+  ceOfertas,
+  ceNoticias,
+  ceEstrategias,
+  ceLiterarios,
+  ceArgumentativos,
   gbArtigos,
   gbGenero,
   gbAdjetivos,

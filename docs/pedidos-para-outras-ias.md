@@ -108,10 +108,18 @@ Cada versão tem:
   - Dentro da marcação, não use os caracteres | e ] além dos da própria marcação.
   - O texto em volta continua em português: "a resposta certa é [[à l’heure|no horário]]".
   - Uma tabela pode ter colunas separadas para o francês e o português; nesse caso, as células em francês também levam a marcação.
+  - Texto de exemplo em francês (um anúncio, uma notícia, um trecho literário): vai num bloco "paragraph" só dele, marcado inteiro, com a tradução do trecho todo. O título do exemplo, se houver, é outro bloco "paragraph".
+- Só texto simples dentro dos blocos:
+  - Nada de Markdown: sem `**negrito**`, `*itálico*`, `#` nem listas com hífen dentro de um texto. O app mostra os asteriscos como estão. Para destacar um rótulo, como "Interpretação literal:", abra um bloco "paragraph" novo começando por ele.
+  - Nada de quebras de linha (\n) dentro de um texto: cada parágrafo é um bloco "paragraph" separado.
+  - Uma lista é um bloco "list" com um item por linha; não use "1.", "-" nem "•" no começo do item.
+- Falsos cognatos e comparações de palavras: confira que a armadilha é real. Palavra que significa o mesmo em francês e em português (ex.: "actuellement" = "atualmente") não é falso cognato. Dê só exemplos verdadeiros (ex.: "demander" = pedir ou perguntar, não "demandar"; "éventuellement" = possivelmente, não "eventualmente").
+- Exemplos fictícios coerentes: quem lê precisa entender quem fez o quê. Não deixe personagens ou ações sem explicação (ex.: alguém que "prestou socorro" sem se dizer de quem era ou por que estava lá).
+- Dados da prova (número de questões, tempo) só se forem conferidos nas fontes oficiais; na dúvida, deixe de fora.
 - A versão "fr" fica toda em francês, sem traduções nem marcações, porque vira áudio.
 - Tamanho: de 6 a 12 blocos por versão.
 
-"sources": as fontes usadas, no fim (título e endereço real).
+"sources": as fontes usadas, no fim (título e endereço real, de uma página que abre). Prefira as que você de fato consultou.
 
 Formato:
 {

@@ -33,11 +33,21 @@ import Page from '@/components/Page'
 import { translatedText } from '@/components/TranslatedText'
 import { getAudioUrl } from '@/lib/audio'
 import { SECTIONS, type Topic } from '@/data/topics'
+import { readingMinutes } from '@/lib/reading-time'
 import { getTopicContent } from '@/content'
 import type { AudioPart, Block, Lang } from '@/content/types'
 import { useCompletedTopics } from '@/lib/completed'
 import { onZoomShortcut } from '@/lib/platform'
-import { topicLangPref, topicZoomPref, ZOOM_DEFAULT, ZOOM_MAX, ZOOM_MIN } from '@/lib/prefs'
+import {
+  READING_FONT,
+  READING_SANS_FONT,
+  studyStylePref,
+  topicLangPref,
+  topicZoomPref,
+  ZOOM_DEFAULT,
+  ZOOM_MAX,
+  ZOOM_MIN
+} from '@/lib/prefs'
 import type { ZoomAction } from '../../../preload'
 
 // Todos os tópicos em sequência, para navegar entre anterior e próximo.
@@ -173,6 +183,181 @@ function TopicNavButton({
   )
 }
 
+// Estilo Leitura (Configurações → Aparência → Página de estudo), copiado da proposta.
+// Os elementos da página levam classes "st-*" e este objeto as estiliza a partir do
+// contêiner. O "&&" dá peso para ganhar dos estilos que o MUI põe em cada elemento.
+// Cores: acento = cor principal; cinza = text.secondary; linhas = divider
+const accentSoft = (a: number): string => `rgba(var(--mui-palette-primary-mainChannel) / ${a})`
+const toneSoft = (tone: 'success' | 'warning', a: number): string =>
+  `rgba(var(--mui-palette-${tone}-mainChannel) / ${a})`
+const muted = 'var(--mui-palette-text-secondary)'
+const line = 'var(--mui-palette-divider)'
+
+const readingSx = {
+  fontFamily: READING_FONT,
+  fontSize: '1.125rem',
+  lineHeight: 1.75,
+  '&& *': { fontFamily: 'inherit' },
+  // Sem serifa: nome da seção, títulos das seções, tabelas, títulos dos avisos, rótulos, fontes
+  '&& .MuiTypography-body2, && .MuiTypography-h6, && .MuiTypography-subtitle2, && .MuiAlertTitle-root, && table, && table *, && .st-label':
+    { fontFamily: READING_SANS_FONT },
+  // Termos em francês em itálico
+  '&& [lang="fr"]': { fontStyle: 'italic' },
+
+  '&& .st-eyebrow': {
+    fontSize: '.75rem',
+    fontWeight: 600,
+    letterSpacing: '.09em',
+    textTransform: 'uppercase',
+    color: 'var(--mui-palette-primary-main)',
+    lineHeight: 1.5,
+    mb: '.6rem'
+  },
+  '&& .st-title': {
+    fontSize: { xs: '1.7rem', sm: '2.1rem' },
+    lineHeight: 1.2,
+    fontWeight: 600,
+    letterSpacing: '-.01em',
+    textWrap: 'balance',
+    mt: 0,
+    mb: '1.2rem'
+  },
+  '&& .st-lead': {
+    fontSize: { xs: '1.15rem', sm: '1.3rem' },
+    lineHeight: 1.6,
+    color: muted,
+    mb: '1rem'
+  },
+  '&& .st-meta': {
+    fontSize: '.8rem',
+    color: muted,
+    pb: '1.6rem',
+    borderBottom: `1px solid ${line}`,
+    mb: '.5rem'
+  },
+  '&& .st-h2-box': { mt: '2.8rem', mb: '.8rem' },
+  '&& .st-h2': { fontSize: '1.2rem', lineHeight: 1.3, fontWeight: 650 },
+  '&& .st-p': { fontSize: '1.125rem', lineHeight: 1.75 },
+  '&& .st-block': { mb: '1.1rem' },
+  '&& .st-ul': { pl: '1.2rem', mt: 0, mb: '1.1rem' },
+  '&& .st-li': {
+    fontSize: '1.125rem',
+    lineHeight: 1.75,
+    mb: '.7rem',
+    pl: '.3rem',
+    '&::marker': { color: 'var(--mui-palette-primary-main)' }
+  },
+  '&& .st-label': {
+    fontSize: '.8rem',
+    fontWeight: 600,
+    letterSpacing: '.05em',
+    textTransform: 'uppercase',
+    color: muted,
+    mr: '.2rem'
+  },
+
+  // Tabela: só linhas horizontais, sem caixa em volta
+  '&& .st-table': {
+    border: 0,
+    bgcolor: 'transparent',
+    backgroundImage: 'none',
+    my: '1.4rem'
+  },
+  '&& .st-table th, && .st-table td': { fontSize: '.95rem', lineHeight: 1.5 },
+  '&& .st-table th': {
+    fontSize: '.72rem',
+    letterSpacing: '.08em',
+    textTransform: 'uppercase',
+    color: muted,
+    bgcolor: 'transparent',
+    fontWeight: 600,
+    borderBottom: '1.5px solid var(--mui-palette-text-primary)'
+  },
+  '&& .st-table td': { borderBottom: `1px solid ${line}` },
+  '&& .st-table td:first-of-type': { fontWeight: 600 },
+  '&& .st-table .st-cell': { p: '.8rem .9rem .8rem 0' },
+  '&& .st-table th.st-cell': { p: '0 .9rem .6rem 0' },
+
+  // Dicas e avisos: fundo suave com barra colorida à esquerda
+  '&& .st-callout': {
+    border: 0,
+    borderLeft: '3px solid',
+    borderRadius: '0 10px 10px 0',
+    px: '1.2rem',
+    py: '1rem',
+    my: '1.6rem',
+    color: 'var(--mui-palette-text-primary)',
+    fontSize: '1.05rem',
+    lineHeight: 1.75,
+    // Ícone do aviso (⚠) ou da dica (✓), alinhado com o título, na cor do tipo
+    // A altura do ícone é a da primeira linha (do título, quando há; senão, do texto),
+    // para ele ficar centralizado nela. Quando a primeira linha tem áudio, o botão de
+    // áudio (variante inline) tem 4px de espaço em cima, e o ícone desce o mesmo tanto.
+    '& .MuiAlert-icon': {
+      p: 0,
+      m: 0,
+      mr: '.6rem',
+      fontSize: '.95rem',
+      opacity: 1,
+      color: 'inherit',
+      alignItems: 'center',
+      height: '1.84rem',
+      '&:has(~ .MuiAlert-message .MuiAlertTitle-root)': { height: '1.25rem' },
+      '&:has(~ .MuiAlert-message > [role="button"]:first-child)': { mt: '4px' }
+    },
+    alignItems: 'flex-start',
+    '& .MuiAlert-message': { p: 0 },
+    '& .MuiAlertTitle-root': {
+      fontSize: '.78rem',
+      fontWeight: 700,
+      letterSpacing: '.07em',
+      textTransform: 'uppercase',
+      lineHeight: '1.25rem',
+      mt: 0,
+      mb: '.35rem'
+    }
+  },
+  '&& .st-callout.st-warn': {
+    borderColor: 'var(--mui-palette-warning-main)',
+    bgcolor: toneSoft('warning', 0.09),
+    '& .MuiAlert-icon': { color: 'var(--mui-palette-warning-main)' },
+    '& .MuiAlertTitle-root': { color: 'var(--mui-palette-warning-main)' }
+  },
+  '&& .st-callout.st-tip': {
+    borderColor: 'var(--mui-palette-success-main)',
+    bgcolor: toneSoft('success', 0.08),
+    '& .MuiAlert-icon': { color: 'var(--mui-palette-success-main)' },
+    '& .MuiAlertTitle-root': { color: 'var(--mui-palette-success-main)' }
+  },
+
+  // Fontes no fim: menores e discretas
+  '&& .st-footer': {
+    mt: '3.5rem',
+    pt: '1.2rem',
+    borderTop: `1px solid ${line}`,
+    '& .MuiDivider-root': { display: 'none' },
+    '& .st-sources-title': {
+      fontSize: '.75rem',
+      letterSpacing: '.09em',
+      textTransform: 'uppercase',
+      color: muted,
+      mb: '.5rem'
+    },
+    '& ul': { pl: '1rem' },
+    '& li': { fontSize: '.85rem', lineHeight: 1.6, color: muted, mb: '.25rem' },
+    '& a': { color: 'var(--mui-palette-primary-main)', textDecoration: 'none' },
+    '& a:hover': { textDecoration: 'underline' }
+  }
+}
+
+// Nos itens de lista do estilo Leitura, o que vem antes dos dois-pontos ("Transporte :")
+// vira um rótulo em maiúsculas pequenas
+function listLabel(item: string): { label: string; rest: string } | null {
+  // Rótulo curto: até duas palavras (Transporte, Tempo). Frases com dois-pontos não contam
+  const m = /^([^:[\]\s]+(?:\s[^:[\]\s]+)?)\s?:\s+([\s\S]+)$/.exec(item)
+  return m && m[1].length <= 24 ? { label: m[1], rest: m[2] } : null
+}
+
 // Célula com áudio: o trecho de áudio ocupa a célula inteira (veja a variante 'cell')
 const CELL_WITH_AUDIO = { p: 0, height: '1px' }
 
@@ -201,44 +386,56 @@ function renderBlock(
   key: number,
   audioFor: AudioFor,
   label: string,
-  terms: boolean
+  terms: boolean,
+  reading: boolean
 ): ReactElement {
   switch (block.type) {
     case 'heading':
       return (
-        <Box key={key} sx={{ mt: 4, mb: 1.5 }}>
+        <Box key={key} className="st-h2-box" sx={{ mt: 4, mb: 1.5 }}>
           {withAudio(
             audioFor('headings', block.text),
             label,
-            <Typography variant="h6">{translatedText(block.text, terms)}</Typography>
+            <Typography variant="h6" className="st-h2">
+              {translatedText(block.text, terms)}
+            </Typography>
           )}
         </Box>
       )
     case 'paragraph':
       return (
-        <Box key={key} sx={{ mb: 2 }}>
+        <Box key={key} className="st-block" sx={{ mb: 2 }}>
           {withAudio(
             audioFor('paragraphs', block.text),
             label,
-            <Typography>{translatedText(block.text, terms)}</Typography>
+            <Typography className="st-p">{translatedText(block.text, terms)}</Typography>
           )}
         </Box>
       )
     case 'list':
       return (
-        <Box key={key} component="ul" sx={{ pl: 3, my: 1, '& li': { mb: 0.75 } }}>
-          {block.items.map((item) => (
-            <Typography key={item} component="li">
-              {withAudio(
-                audioFor('lists', item),
-                label,
-                <Box component="span" sx={{ display: 'block' }}>
-                  {translatedText(item, terms)}
-                </Box>,
-                'inline'
-              )}
-            </Typography>
-          ))}
+        <Box key={key} component="ul" className="st-ul" sx={{ pl: 3, my: 1, '& li': { mb: 0.75 } }}>
+          {block.items.map((item) => {
+            const parts = reading ? listLabel(item) : null
+            return (
+              <Typography key={item} component="li" className="st-li">
+                {withAudio(
+                  audioFor('lists', item),
+                  label,
+                  <Box component="span" sx={{ display: 'block' }}>
+                    {parts ? (
+                      <>
+                        <b className="st-label">{parts.label}</b> {translatedText(parts.rest, terms)}
+                      </>
+                    ) : (
+                      translatedText(item, terms)
+                    )}
+                  </Box>,
+                  'inline'
+                )}
+              </Typography>
+            )
+          })}
         </Box>
       )
     case 'table':
@@ -247,6 +444,7 @@ function renderBlock(
           key={key}
           component={Paper}
           variant="outlined"
+          className="st-table"
           sx={{ my: 2, overflowX: 'visible' }}
         >
           <Table
@@ -264,6 +462,7 @@ function renderBlock(
                   return (
                     <TableCell
                       key={i}
+                      className={src ? undefined : 'st-cell'}
                       sx={{ fontWeight: 600, bgcolor: 'action.hover', ...(src && CELL_WITH_AUDIO) }}
                     >
                       {withAudio(src, label, translatedText(h, terms), 'cell')}
@@ -280,6 +479,7 @@ function renderBlock(
                     return (
                       <TableCell
                         key={c}
+                        className={src ? undefined : 'st-cell'}
                         sx={{
                           verticalAlign: 'top',
                           ...(c === 0 && { fontWeight: 500 }),
@@ -302,6 +502,7 @@ function renderBlock(
           key={key}
           severity={block.tone === 'tip' ? 'success' : 'warning'}
           variant="outlined"
+          className={`st-callout ${block.tone === 'tip' ? 'st-tip' : 'st-warn'}`}
           sx={{ my: 2, '& .MuiAlert-message': { flex: 1 } }}
         >
           {/* Título e texto da caixa têm áudios separados */}
@@ -338,6 +539,7 @@ export default function TopicPage({
   // Idioma e zoom são preferências salvas (e sincronizadas com a conta, se houver login)
   const lang: Lang = topicLangPref.use()
   const setLang = topicLangPref.set
+  const reading = studyStylePref.use() === 'reading'
   const zoom = topicZoomPref.use()
   const setZoom = topicZoomPref.set
 
@@ -440,6 +642,30 @@ export default function TopicPage({
     document.getElementById('main-content')?.scrollTo(0, 0)
   }, [topicId])
 
+  // Barra de progresso de leitura: uma linha fina na base da barra fixa, que enche com o
+  // scroll da página (a área que rola é o #main-content). Atualiza direto no elemento,
+  // sem renderizar a página a cada rolagem
+  const progressRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    const main = document.getElementById('main-content')
+    if (!main) return
+    const update = (): void => {
+      const max = main.scrollHeight - main.clientHeight
+      const pct = max > 0 ? Math.min(100, Math.max(0, (main.scrollTop / max) * 100)) : 0
+      if (progressRef.current) progressRef.current.style.width = `${pct}%`
+    }
+    update()
+    main.addEventListener('scroll', update, { passive: true })
+    // O tamanho do texto muda com zoom, idioma, estilo e tópico
+    const observer = new ResizeObserver(update)
+    observer.observe(main)
+    if (main.firstElementChild) observer.observe(main.firstElementChild)
+    return () => {
+      main.removeEventListener('scroll', update)
+      observer.disconnect()
+    }
+  }, [topicId, lang, zoom, reading, content])
+
   return (
     <Box component="article" lang={lang}>
       {/* Barra fixa no topo: continua visível durante o scroll */}
@@ -456,6 +682,20 @@ export default function TopicPage({
           borderColor: 'divider'
         }}
       >
+        {/* Progresso de leitura: acompanha o scroll, na cor principal do tema */}
+        <Box
+          ref={progressRef}
+          aria-hidden
+          sx={{
+            position: 'absolute',
+            left: 0,
+            bottom: -1,
+            height: 2,
+            width: 0,
+            bgcolor: 'primary.main',
+            pointerEvents: 'none'
+          }}
+        />
         <Stack
           direction="row"
           spacing={1.5}
@@ -580,21 +820,30 @@ export default function TopicPage({
       </Paper>
 
       {/* Zoom só no conteúdo; textos longos quebram em vez de gerar scroll horizontal */}
-      <Box sx={{ zoom: zoom / 100, overflowWrap: 'anywhere', hyphens: 'auto' }}>
-        <Page>
+      <Box
+        sx={{
+          zoom: zoom / 100,
+          overflowWrap: 'anywhere',
+          hyphens: 'auto',
+          ...(reading && readingSx)
+        }}
+      >
+        <Page narrow={reading}>
           {section && (
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary" className="st-eyebrow">
               {section.title}
             </Typography>
           )}
           {titleAudio ? (
             <Box sx={{ mt: 0.5, mb: 2 }}>
               <AudioSection src={titleAudio} label={t.listen}>
-                <Typography variant="h5">{localized?.title}</Typography>
+                <Typography variant="h5" className="st-title">
+                  {localized?.title}
+                </Typography>
               </AudioSection>
             </Box>
           ) : (
-            <Typography variant="h5" sx={{ mt: 0.5, mb: 2 }}>
+            <Typography variant="h5" className="st-title" sx={{ mt: 0.5, mb: 2 }}>
               {localized?.title ?? topic?.title ?? 'Tópico'}
             </Typography>
           )}
@@ -604,16 +853,29 @@ export default function TopicPage({
               {summaryAudio ? (
                 <Box sx={{ mb: 2 }}>
                   <AudioSection src={summaryAudio} label={t.listen}>
-                    <Typography sx={{ fontSize: 17 }}>{localized.summary}</Typography>
+                    <Typography className="st-lead" sx={{ fontSize: 17 }}>
+                      {localized.summary}
+                    </Typography>
                   </AudioSection>
                 </Box>
               ) : (
-                <Typography sx={{ fontSize: 17, mb: 2 }}>
+                <Typography className="st-lead" sx={{ fontSize: 17, mb: 2 }}>
                   {translatedText(localized.summary, termsAudio)}
                 </Typography>
               )}
+              {/* Tempo de leitura calculado do texto */}
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                className="st-meta"
+                sx={{ mb: 2 }}
+              >
+                {lang === 'fr'
+                  ? `Lecture de ${readingMinutes(localized)} min`
+                  : `Leitura de ${readingMinutes(localized)} min`}
+              </Typography>
               {localized.blocks.map((block, i) =>
-                renderBlock(block, i, audioFor, t.listen, termsAudio)
+                renderBlock(block, i, audioFor, t.listen, termsAudio, reading)
               )}
             </>
           ) : (
@@ -621,9 +883,9 @@ export default function TopicPage({
           )}
 
           {content && content.sources.length > 0 && (
-            <Box component="footer" sx={{ mt: 5 }}>
+            <Box component="footer" className="st-footer" sx={{ mt: 5 }}>
               <Divider sx={{ mb: 2 }} />
-              <Typography variant="subtitle2" gutterBottom>
+              <Typography variant="subtitle2" className="st-sources-title" gutterBottom>
                 {t.sources}
               </Typography>
               <Box component="ul" sx={{ pl: 3, m: 0 }}>

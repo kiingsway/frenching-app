@@ -63,6 +63,18 @@ export const topicZoomPref = createPref<number>(
   isNumberBetween(ZOOM_MIN, ZOOM_MAX)
 )
 
+// Estilo da página de estudo (Configurações → Aparência): 'reading' usa letra de livro
+export type StudyStyle = 'current' | 'reading'
+export const studyStylePref = createPref<StudyStyle>(
+  'studyStyle',
+  'current',
+  isOneOf('current', 'reading')
+)
+// As duas fontes do exemplo de leitura: serifada no texto, sem serifa nos rótulos e tabelas
+export const READING_FONT =
+  '"Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif'
+export const READING_SANS_FONT = 'Roboto, "Segoe UI", system-ui, sans-serif'
+
 // Flashcards: limite de cartões novos por dia (Configurações → Flashcards)
 export const NEW_PER_DAY_MAX = 50
 export const newPerDayPref = createPref<number>(

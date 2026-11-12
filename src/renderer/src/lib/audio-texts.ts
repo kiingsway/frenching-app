@@ -63,7 +63,9 @@ export function textsFor(page: TopicContent, part: AudioPart): string[] {
 }
 
 // Termo em francês com a tradução, escrito no texto em português como [[francês|tradução]]
-export const TERM_MARKUP = /\[\[([^|\]]+)\|([^\]]+)\]\]/g
+// A tradução (segunda parte) pode ter variantes por região, separadas por "|":
+// [[déjeuner|Québec: café da manhã|França: almoço]]. O áudio usa só o francês.
+export const TERM_MARKUP =/\[\[([^|\]]+)\|([^\]]+)\]\]/g
 
 export function termsIn(text: string): { fr: string; pt: string }[] {
   return [...text.matchAll(TERM_MARKUP)].map((match) => ({ fr: match[1], pt: match[2] }))

@@ -61,7 +61,10 @@ const content: TopicContent = {
           '"[[Tu|você]]" depois do verbo marca uma pergunta na fala informal: "[[Tu viens-tu ?|Você vem?]]" quer dizer "[[Tu viens ?|Você vem?]]".',
           '"[[Pantoute|de jeito nenhum]]" significa "[[pas du tout|de jeito nenhum]]", e "[[c’est plate|é chato]]" significa "[[c’est ennuyeux|é chato]]".',
           '"[[Bienvenue|bem-vindo]]" também é a resposta para "[[merci|obrigado]]", como "de nada".',
-          'As refeições no Québec: [[déjeuner|café da manhã]], [[dîner|almoço]] e [[souper|jantar]].'
+          'As refeições no Québec: [[déjeuner|Québec: café da manhã|França: almoço]], [[dîner|Québec: almoço|França: jantar]] e [[souper|jantar]].',
+          'As refeições na França: [[petit-déjeuner|café da manhã]], [[déjeuner|Québec: café da manhã|França: almoço]] e [[dîner|Québec: almoço|França: jantar]]. ' +
+            'As palavras [[déjeuner|Québec: café da manhã|França: almoço]] e [[dîner|Québec: almoço|França: jantar]] existem nas duas regiões, mas com sentidos diferentes.',
+          'Exemplo: ao ouvir "[[Je t’invite à dîner demain.|Québec: Convido você para almoçar amanhã.|França: Convido você para jantar amanhã.]]", no Québec a pessoa está convidando para o almoço; na França, para o jantar. Preste atenção ao horário que vier junto.'
         ]
       },
       {
@@ -141,7 +144,10 @@ const content: TopicContent = {
           '« Tu » après le verbe marque une question à l’oral familier : « Tu viens-tu ? » veut dire « Tu viens ? ».',
           '« Pantoute » veut dire « pas du tout », et « c’est plate » veut dire « c’est ennuyeux ».',
           '« Bienvenue » sert aussi à répondre à « merci », comme « de rien ».',
-          'Les repas : le déjeuner (le petit-déjeuner), le dîner (le déjeuner) et le souper (le dîner).'
+          'Les repas au Québec : le déjeuner (le petit-déjeuner), le dîner (le déjeuner) et le souper (le dîner).',
+          'Les repas en France : le petit-déjeuner, le déjeuner (le repas du midi) et le dîner (le repas du soir). ' +
+            'Les mots déjeuner et dîner existent dans les deux régions, mais avec des sens différents.',
+          'Exemple : quand on entend « Je t’invite à dîner demain. », au Québec la personne propose le repas du midi ; en France, le repas du soir. Faites attention à l’heure mentionnée.'
         ]
       },
       {

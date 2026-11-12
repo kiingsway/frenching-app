@@ -322,6 +322,8 @@ export default function AudioManager({ onBack }: { onBack: () => void }): ReactE
   const files = readOnly ? bundled.files : audioState.files
   const voices: VoiceOverrides = readOnly ? bundled.voices : audioState.voices
   const [filter, setFilter] = useState<Filter>('all')
+  // Filtro por voz: 'all' ou uma voz (vale também na prévia só para ouvir)
+  const [voiceFilter, setVoiceFilter] = useState<VoiceId | 'all'>('all')
   const [search, setSearch] = useState('')
   // A busca filtra com a versão "atrasada" do texto: digitar nunca espera a lista
   const deferredSearch = useDeferredValue(search)
@@ -340,6 +342,16 @@ export default function AudioManager({ onBack }: { onBack: () => void }): ReactE
 
   const missingCount = useMemo(() => entries.filter((e) => !files[e.key]).length, [entries, files])
 
+  // Quantos áudios cada voz tem hoje (para mostrar no filtro)
+  const voiceCounts = useMemo(() => {
+    const counts: Record<string, number> = {}
+    for (const entry of entries) {
+      const id = voices[entry.key] ?? DEFAULT_VOICE
+      counts[id] = (counts[id] ?? 0) + 1
+    }
+    return counts
+  }, [entries, voices])
+
   // Linhas visíveis (filtro + busca), com o título da página antes de cada grupo
   const items = useMemo(() => {
     const query = deferredSearch.trim().toLowerCase()
@@ -348,6 +360,7 @@ export default function AudioManager({ onBack }: { onBack: () => void }): ReactE
     for (const entry of entries) {
       if (filter === 'missing' && files[entry.key]) continue
       if (filter === 'generated' && !files[entry.key]) continue
+      if (voiceFilter !== 'all' && (voices[entry.key] ?? DEFAULT_VOICE) !== voiceFilter) continue
       if (query && !entry.haystack.includes(query)) continue
       if (entry.pageId !== lastPage) {
         result.push({ type: 'group', id: entry.pageId, title: entry.pageTitle })
@@ -356,7 +369,7 @@ export default function AudioManager({ onBack }: { onBack: () => void }): ReactE
       result.push({ type: 'entry', entry })
     }
     return result
-  }, [entries, files, filter, deferredSearch])
+  }, [entries, files, voices, filter, voiceFilter, deferredSearch])
 
   // A lista rola junto com a página (o <main>), então a virtualização usa ele como
   // área de rolagem e desconta a altura do que vem antes da lista (scrollMargin)
@@ -381,7 +394,7 @@ export default function AudioManager({ onBack }: { onBack: () => void }): ReactE
     if (!main || !stickyRef.current) return
     const listStart = scrollMargin - stickyRef.current.offsetHeight
     if (main.scrollTop > listStart) main.scrollTop = listStart
-  }, [deferredSearch, filter]) // de propósito: só ao mudar busca/filtro
+  }, [deferredSearch, filter, voiceFilter]) // de propósito: só ao mudar busca/filtro
 
   const virtualizer = useVirtualizer({
     count: items.length,
@@ -579,6 +592,25 @@ export default function AudioManager({ onBack }: { onBack: () => void }): ReactE
               }
             }}
           />
+          <Select
+            size="small"
+            value={voiceFilter}
+            onChange={(e) => setVoiceFilter(e.target.value as VoiceId | 'all')}
+            inputProps={{ 'aria-label': 'Filtrar por voz' }}
+            sx={{ minWidth: 190, fontSize: 14 }}
+          >
+            <MenuItem value="all" sx={{ fontSize: 14 }}>
+              Todas as vozes ({entries.length})
+            </MenuItem>
+            {VOICE_IDS.map((id) => (
+              <MenuItem key={id} value={id} sx={{ fontSize: 14 }}>
+                <VoiceLabel id={id} />
+                <Typography component="span" variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                  ({voiceCounts[id] ?? 0})
+                </Typography>
+              </MenuItem>
+            ))}
+          </Select>
           {!readOnly && (
             <ToggleButtonGroup
               exclusive

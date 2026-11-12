@@ -39,6 +39,40 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '1.3.1',
+    date: '2026-11-12',
+    changes: {
+      added: [
+        {
+          pt: 'Cinco páginas novas em "Compreensão escrita": ofertas de emprego, anúncios de moradia e regulamentos; artigos de jornal e notícias (faits divers); estratégias de leitura; textos literários e abstratos; e textos argumentativos e editoriais. Todas com versão em francês, fontes e áudio.',
+          fr: 'Cinq nouvelles fiches dans « Compréhension écrite » : offres d’emploi, annonces de logement et règlements ; articles de presse et faits divers ; stratégies de lecture ; textes littéraires et abstraits ; textes argumentatifs et éditoriaux. Toutes avec version en français, sources et audio.'
+        },
+        {
+          pt: 'Novo estilo "Leitura" para as páginas de estudo, em Configurações → Aparência → Página de estudo: coluna mais estreita, letra de livro no texto, tabelas e avisos mais leves e rótulos nas listas.',
+          fr: 'Nouveau style « Lecture » pour les fiches d’étude, dans Paramètres → Apparence → Fiche d’étude : colonne plus étroite, police de livre pour le texte, tableaux et avis plus légers et étiquettes dans les listes.'
+        },
+        {
+          pt: 'Nas páginas de estudo, o tempo de leitura aparece abaixo do resumo e uma linha fina na barra do topo mostra quanto da página você já leu.',
+          fr: 'Dans les fiches d’étude, le temps de lecture apparaît sous le résumé et un fin trait dans la barre du haut montre la part de la page déjà lue.'
+        },
+        {
+          pt: 'Baralho novo nos Flashcards: "Diferenças de gênero entre português e francês", com 50 substantivos que mudam de gênero (em francês, "le pont" é masculino, mas a ponte é feminina), cada um com exemplo e áudio.',
+          fr: 'Nouveau paquet dans les Flashcards : « Différences de genre entre portugais et français », avec 50 noms dont le genre change (« le pont » est masculin, mais « a ponte » est féminin en portugais), chacun avec exemple et audio.'
+        },
+        {
+          pt: 'Na Lista de áudios, um filtro por voz mostra só os textos falados por Sylvie, Antoine, Denise ou Vivienne, com o total de cada uma.',
+          fr: 'Dans la Liste des audios, un filtre par voix n’affiche que les textes dits par Sylvie, Antoine, Denise ou Vivienne, avec le total de chacune.'
+        }
+      ],
+      changed: [
+        {
+          pt: 'Na página Sotaques, as refeições agora mostram também como é na França (petit-déjeuner, déjeuner e dîner), e a dica de tradução de palavras que mudam de sentido (como déjeuner e dîner) mostra o significado de cada região.',
+          fr: 'Dans la fiche Accents, les repas montrent aussi l’usage en France (petit-déjeuner, déjeuner et dîner), et la bulle de traduction des mots dont le sens change (comme déjeuner et dîner) indique le sens de chaque région.'
+        }
+      ]
+    }
+  },
+  {
     version: '1.3.0',
     date: '2026-11-09',
     changes: {

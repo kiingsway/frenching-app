@@ -22,6 +22,8 @@ Valem ao escrever ou integrar conteúdo, inclusive o gerado por outras IAs. Os m
 - **Na versão `pt`, todo francês é marcado com a tradução:** `[[francês|tradução]]`, por exemplo `[[la voie|a linha]]`. O app mostra o termo destacado, com a tradução numa dica e o áudio ao clicar (`components/TranslatedText.tsx`). Vale também para palavras "fáceis" e para títulos de seção, tabelas e avisos. Só nomes próprios ficam sem marcação. Não traduza entre parênteses.
 - Página com termos marcados leva `'terms'` no campo `audio`; depois rode `npm run audio` para gerar os áudios dos termos.
 - As seções "Conhecendo a prova" e "Compreensão oral" já usam a marcação. As outras páginas ainda têm a tradução entre parênteses (ou nenhuma) e serão convertidas aos poucos.
+- **Só texto simples nos blocos:** sem Markdown (`**negrito**`), sem quebras de linha (`\n`) dentro de um texto e sem numeração dentro dos itens de lista; o app mostra os símbolos como estão. Ao integrar conteúdo que venha assim, separe em blocos `paragraph` (um texto de exemplo em francês vai marcado inteiro num bloco só dele; o rótulo "Interpretação literal:" abre um parágrafo novo) e tire o negrito. Isso já está pedido em [docs/pedidos-para-outras-ias.md](docs/pedidos-para-outras-ias.md).
+- **Confira o conteúdo recebido antes de integrar:** abra as fontes (têm de existir), confira se os falsos cognatos são reais (palavra igual nas duas línguas, como `actuellement`, não é) e se os exemplos fictícios fazem sentido. Corrija ou avise o usuário do que mudou.
 - **A versão `fr` fica toda em francês**, porque também é treino de leitura e vira áudio.
 - De 6 a 12 blocos por versão, na ordem explicação → exemplos → armadilhas → dica para a prova, com pelo menos um aviso (`warning`) do erro típico de quem fala português e uma dica (`tip`) do que a prova cobra. Tabelas sem célula vazia.
 
@@ -43,6 +45,7 @@ Valem ao escrever ou integrar conteúdo, inclusive o gerado por outras IAs. Os m
 
 ### Revisão
 
+- **Antes de integrar qualquer conteúdo novo, siga a lista de [docs/revisao-de-conteudo.md](docs/revisao-de-conteudo.md)** (formato, fontes, francês e português, exemplos, áudio) e diga ao usuário o que corrigiu e o que não conferiu. Quando aparecer um erro novo, acrescente-o lá.
 - Conteúdo gerado pode ter erros de francês ou de fatos da prova, e seguir estas regras não evita isso. O usuário revisa no app, e as marcações ficam em `content-review/grammar.json` e `content-review/flashcards.json`. Ao corrigir, trate todos os itens com `"status": "problem"` usando a nota de cada um.
 - Parte do conteúdo antigo é anterior às regras do francês canadense e da tradução na versão `pt`: não presuma que já as segue.
 
