@@ -223,14 +223,71 @@ function TermWithoutAudio({ fr, pt }: { fr: string; pt: string }): ReactElement 
   )
 }
 
-// Troca cada [[francês|tradução]] do texto pelo termo com a dica; o resto fica igual.
-// `withAudio`: a página tem áudio dos termos ('terms' no campo `audio`)
+// Citação numerada [n] (como na Wikipédia): o número da fonte na lista "Fontes" do fim da
+// página. Clicar leva até a fonte, sem tocar o áudio do trecho em volta
+const CITATION = /\[(\d+)\]/g
+
+export function sourceAnchorId(n: number): string {
+  return `source-${n}`
+}
+
+function Citation({ n }: { n: number }): ReactElement {
+  return (
+    <Box
+      component="a"
+      href={`#${sourceAnchorId(n)}`}
+      title={`Fonte ${n}`}
+      onClick={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        const target = document.getElementById(sourceAnchorId(n))
+        target?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        target?.animate(
+          [{ backgroundColor: tint(0.25) }, { backgroundColor: 'transparent' }],
+          { duration: 1600 }
+        )
+      }}
+      onKeyDown={(e) => e.stopPropagation()}
+      sx={{
+        fontSize: '0.7em',
+        verticalAlign: 'super',
+        lineHeight: 0,
+        ml: '1px',
+        color: 'primary.main',
+        textDecoration: 'none',
+        '&:hover': { textDecoration: 'underline' }
+      }}
+    >
+      [{n}]
+    </Box>
+  )
+}
+
+// Troca os [n] de um trecho de texto simples pelas citações; o espaço antes do [n] some
+function withCitations(text: string, keyPrefix: string): ReactNode[] {
+  const nodes: ReactNode[] = []
+  let last = 0
+  for (const match of text.matchAll(CITATION)) {
+    const before = text.slice(last, match.index).replace(/\s+$/, '')
+    if (before) nodes.push(before)
+    nodes.push(<Citation key={`${keyPrefix}-c${match.index}`} n={Number(match[1])} />)
+    last = match.index + match[0].length
+  }
+  if (last < text.length) nodes.push(text.slice(last))
+  return nodes
+}
+
+// Troca cada [[francês|tradução]] do texto pelo termo com a dica e cada [n] pela citação;
+// o resto fica igual. `withAudio`: a página tem áudio dos termos ('terms' no campo `audio`)
 export function translatedText(text: string, withAudio = false): ReactNode {
-  if (!text.includes('[[')) return text
+  const hasCitation = /\[\d+\]/.test(text)
+  if (!text.includes('[[') && !hasCitation) return text
+  const plain = (s: string, key: number): ReactNode[] =>
+    hasCitation ? withCitations(s, String(key)) : [s]
   const nodes: ReactNode[] = []
   let last = 0
   for (const match of text.matchAll(TERM_MARKUP)) {
-    if (match.index > last) nodes.push(text.slice(last, match.index))
+    if (match.index > last) nodes.push(...plain(text.slice(last, match.index), last))
     const [, fr, pt] = match
     const src = withAudio ? getAudioUrl(fr) : undefined
     nodes.push(
@@ -242,6 +299,6 @@ export function translatedText(text: string, withAudio = false): ReactNode {
     )
     last = match.index + match[0].length
   }
-  if (last < text.length) nodes.push(text.slice(last))
+  if (last < text.length) nodes.push(...plain(text.slice(last), last))
   return nodes
 }

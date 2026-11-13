@@ -39,6 +39,24 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '1.4.3',
+    date: '2026-11-13',
+    changes: {
+      added: [
+        {
+          pt: 'Citações numeradas nas páginas de estudo, como na Wikipédia: um número [1], [2]… no fim de uma afirmação mostra qual fonte a confirma. Clicar no número leva à fonte na lista do fim da página, que agora é numerada. Por enquanto, só a página “Pontuação CRS para francês” tem citações; as outras vão ganhando aos poucos.',
+          fr: 'Citations numérotées dans les fiches d’étude, comme sur Wikipédia : un numéro [1], [2]… à la fin d’une affirmation indique la source qui la confirme. Cliquer sur le numéro mène à la source dans la liste en bas de la page, désormais numérotée. Pour l’instant, seule la fiche « Points CRS pour le français » a des citations ; les autres en recevront peu à peu.'
+        }
+      ],
+      changed: [
+        {
+          pt: 'Na página “Pontuação CRS para francês”, o aviso sobre a categoria de francês agora diz, conforme o IRCC, que entre os candidatos da categoria são convidados os de nota CRS mais alta.',
+          fr: 'Dans la fiche « Points CRS pour le français », l’avertissement sur la catégorie francophone indique désormais, selon IRCC, que parmi les candidats de la catégorie, ceux qui ont la note SCG la plus élevée sont invités.'
+        }
+      ]
+    }
+  },
+  {
     version: '1.4.2',
     date: '2026-11-12',
     changes: {

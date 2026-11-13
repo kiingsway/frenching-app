@@ -169,6 +169,8 @@ Cada versão tem:
 
 "sources": as fontes usadas, no fim (título e endereço real, de uma página que abre). Prefira as que você de fato consultou.
 
+Citações: cada fonte tem o número da sua posição em "sources" (1, 2, 3…). No texto, cite [n] no fim de cada afirmação que a fonte confirma, depois da pontuação e com um espaço antes ("… até 136 pontos. [1]"; várias: "[1] [2]"). Cite só o que está de fato na fonte. Não cite em títulos de seção nem na caixa "unverified".
+
 Formato:
 {
   "topic": "[nome do tópico]",

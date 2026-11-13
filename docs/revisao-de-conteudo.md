@@ -21,6 +21,7 @@ Lista de conferência para todo conteúdo novo ou vindo de outra IA (páginas de
 - A fonte precisa tratar do assunto da página. Prefira as oficiais e as de referência (veja o CLAUDE.md).
 - Dados da prova (número de questões, tempo, notas) só entram se estiverem na fonte oficial. Na dúvida, fora.
 - **Caixa vermelha "Sem fonte oficial":** depois de abrir as fontes, compare com a página. O que as fontes não confirmam (principalmente o que parecer regra ou exigência da prova, como "o examinador vai…", "a prova exige…", "o avaliador espera…") deve estar listado numa caixa `unverified`, por último, nas duas versões. Se a página já tem a caixa, confira se a lista ainda bate com o texto. Fonte que bloqueia robôs e que você não conseguiu abrir não vale como confirmação: o que dependia dela entra na caixa.
+- **Citações `[n]`:** confira que cada `[n]` aponta para a fonte certa (número = posição em `sources`) e que a fonte diz mesmo aquilo. Citação que a fonte não confirma sai, e a afirmação vai para a caixa "Sem fonte oficial".
 
 ## 3. Francês e português
 

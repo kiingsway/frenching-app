@@ -13,20 +13,20 @@ const content: TopicContent = {
       {
         type: 'list',
         items: [
-          'Como primeira língua oficial: até 136 pontos (34 por habilidade).',
-          'Como segunda língua oficial, se a primeira for o inglês: até 24 pontos.',
-          'Bônus por francês: até 50 pontos extras para quem tem NCLC 7 nas 4 habilidades.'
+          'Como primeira língua oficial: até 136 pontos (34 por habilidade). [1]',
+          'Como segunda língua oficial, se a primeira for o inglês: até 24 pontos. [1]',
+          'Bônus por francês: até 50 pontos extras para quem tem NCLC 7 nas 4 habilidades. [2]'
         ]
       },
       {
         type: 'paragraph',
         text:
-          'Desde 3 de novembro de 2026, o IRCC pontua de outro jeito a experiência de trabalho no Canadá e a oferta de emprego, que não exige mais LMIA. Os pontos de idioma desta página não mudaram.'
+          'Desde 3 de novembro de 2026, o IRCC pontua de outro jeito a experiência de trabalho no Canadá e a oferta de emprego, que não exige mais LMIA. Os pontos de idioma desta página não mudaram. [1]'
       },
       {
         type: 'paragraph',
         text:
-          'Além disso, o nível de idioma multiplica outros fatores na "transferibilidade de habilidades", combinado com estudo ou experiência fora do Canadá.'
+          'Além disso, o nível de idioma multiplica outros fatores na "transferibilidade de habilidades", combinado com estudo ou experiência fora do Canadá. [1]'
       },
 
       { type: 'heading', text: 'Primeira língua oficial (por habilidade)' },
@@ -49,7 +49,7 @@ const content: TopicContent = {
         title: 'Onde está o salto',
         text:
           'Repare nos saltos de NCLC 6 para 7 (+8 por habilidade) e de 8 para 9 (+8). ' +
-          'Subir as 4 habilidades de NCLC 7 para NCLC 9 rende 56 pontos só neste fator, para quem não tem cônjuge.'
+          'Subir as 4 habilidades de NCLC 7 para NCLC 9 rende 56 pontos só neste fator, para quem não tem cônjuge. [1]'
       },
 
       { type: 'heading', text: 'Segunda língua oficial (por habilidade)' },
@@ -65,7 +65,7 @@ const content: TopicContent = {
       },
       {
         type: 'paragraph',
-        text: 'O máximo é 24 pontos sem cônjuge e 22 com cônjuge.'
+        text: 'O máximo é 24 pontos sem cônjuge e 22 com cônjuge. [1]'
       },
 
       { type: 'heading', text: 'Bônus por francês' },
@@ -83,7 +83,7 @@ const content: TopicContent = {
         type: 'paragraph',
         text:
           'Esses pontos combinam o idioma com outro fator. Exigem pelo menos NCLC 7, e o valor máximo só vem com NCLC 9 nas 4 habilidades. ' +
-          'O total desta parte é limitado a 100 pontos.'
+          'O total desta parte é limitado a 100 pontos. [1]'
       },
       {
         type: 'table',
@@ -109,22 +109,23 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Os totais não incluem a transferibilidade, que pode somar até 100 pontos a mais conforme sua formação e experiência.'
+          'Os totais não incluem a transferibilidade, que pode somar até 100 pontos a mais conforme sua formação e experiência. [1]'
       },
       {
         type: 'callout',
         tone: 'warning',
         title: 'NCLC 7 é o portão; acima dele são pontos',
         text:
-          'Para entrar na categoria de francês dos sorteios, basta NCLC 7 nas 4 habilidades. Mas os sorteios são decididos pela nota CRS, ' +
-          'e a nota de corte varia de um sorteio para outro. Cada nível acima de 7 aumenta suas chances.'
+          'Para entrar na categoria de francês dos sorteios, basta NCLC 7 nas 4 habilidades. [3] ' +
+          'Mas, entre os candidatos da categoria, o IRCC convida os que têm a nota CRS mais alta. [3] ' +
+          'Cada nível acima de 7 soma pontos e aumenta suas chances. [1]'
       },
       {
         type: 'callout',
         tone: 'tip',
         title: 'Vale a pena fazer um teste de inglês?',
         text:
-          'Se você já tem NCLC 7 em francês, um teste de inglês com CLB 5 nas 4 habilidades dobra o bônus (de 25 para 50) e ainda soma pontos de segunda língua.'
+          'Se você já tem NCLC 7 em francês, um teste de inglês com CLB 5 nas 4 habilidades dobra o bônus (de 25 para 50) e ainda soma pontos de segunda língua. [1] [2]'
       }
     ]
   },
@@ -139,20 +140,20 @@ const content: TopicContent = {
       {
         type: 'list',
         items: [
-          'Comme première langue officielle : jusqu’à 136 points (34 par compétence).',
-          'Comme deuxième langue officielle, si la première est l’anglais : jusqu’à 24 points.',
-          'Points supplémentaires pour le français : jusqu’à 50 points pour le NCLC 7 dans les 4 compétences.'
+          'Comme première langue officielle : jusqu’à 136 points (34 par compétence). [1]',
+          'Comme deuxième langue officielle, si la première est l’anglais : jusqu’à 24 points. [1]',
+          'Points supplémentaires pour le français : jusqu’à 50 points pour le NCLC 7 dans les 4 compétences. [2]'
         ]
       },
       {
         type: 'paragraph',
         text:
-          'Depuis le 3 novembre 2026, IRCC attribue autrement les points pour l’expérience de travail au Canada et pour l’offre d’emploi, qui n’exige plus d’EIMT. Les points de langue de cette fiche n’ont pas changé.'
+          'Depuis le 3 novembre 2026, IRCC attribue autrement les points pour l’expérience de travail au Canada et pour l’offre d’emploi, qui n’exige plus d’EIMT. Les points de langue de cette fiche n’ont pas changé. [1]'
       },
       {
         type: 'paragraph',
         text:
-          'De plus, le niveau de langue multiplie d’autres facteurs dans la « transférabilité des compétences », combiné aux études ou à l’expérience hors du Canada.'
+          'De plus, le niveau de langue multiplie d’autres facteurs dans la « transférabilité des compétences », combiné aux études ou à l’expérience hors du Canada. [1]'
       },
 
       { type: 'heading', text: 'Première langue officielle (par compétence)' },
@@ -175,7 +176,7 @@ const content: TopicContent = {
         title: 'Où se trouve le saut',
         text:
           'Remarquez les sauts du NCLC 6 au 7 (+8 par compétence) et du 8 au 9 (+8). ' +
-          'Passer les 4 compétences du NCLC 7 au NCLC 9 rapporte 56 points rien que pour ce facteur, sans conjoint.'
+          'Passer les 4 compétences du NCLC 7 au NCLC 9 rapporte 56 points rien que pour ce facteur, sans conjoint. [1]'
       },
 
       { type: 'heading', text: 'Deuxième langue officielle (par compétence)' },
@@ -191,7 +192,7 @@ const content: TopicContent = {
       },
       {
         type: 'paragraph',
-        text: 'Le maximum est de 24 points sans conjoint et de 22 avec conjoint.'
+        text: 'Le maximum est de 24 points sans conjoint et de 22 avec conjoint. [1]'
       },
 
       { type: 'heading', text: 'Points supplémentaires pour le français' },
@@ -209,7 +210,7 @@ const content: TopicContent = {
         type: 'paragraph',
         text:
           'Ces points combinent la langue avec un autre facteur. Ils exigent au moins le NCLC 7, et la valeur maximale n’est atteinte qu’avec le NCLC 9 dans les 4 compétences. ' +
-          'Le total de cette partie est plafonné à 100 points.'
+          'Le total de cette partie est plafonné à 100 points. [1]'
       },
       {
         type: 'table',
@@ -235,28 +236,30 @@ const content: TopicContent = {
       {
         type: 'paragraph',
         text:
-          'Ces totaux n’incluent pas la transférabilité, qui peut ajouter jusqu’à 100 points selon votre formation et votre expérience.'
+          'Ces totaux n’incluent pas la transférabilité, qui peut ajouter jusqu’à 100 points selon votre formation et votre expérience. [1]'
       },
       {
         type: 'callout',
         tone: 'warning',
         title: 'Le NCLC 7 ouvre la porte ; au-delà, ce sont des points',
         text:
-          'Pour entrer dans la catégorie francophone des tirages, le NCLC 7 dans les 4 compétences suffit. Mais les tirages se décident sur la note SCG, ' +
-          'et la note de passage varie d’un tirage à l’autre. Chaque niveau au-dessus de 7 augmente vos chances.'
+          'Pour entrer dans la catégorie francophone des tirages, le NCLC 7 dans les 4 compétences suffit. [3] ' +
+          'Mais, parmi les candidats de la catégorie, IRCC invite ceux qui ont la note SCG la plus élevée. [3] ' +
+          'Chaque niveau au-dessus de 7 ajoute des points et augmente vos chances. [1]'
       },
       {
         type: 'callout',
         tone: 'tip',
         title: 'Faut-il passer un test d’anglais ?',
         text:
-          'Si vous avez déjà le NCLC 7 en français, un test d’anglais avec CLB 5 dans les 4 compétences double les points supplémentaires (de 25 à 50) et ajoute des points de deuxième langue.'
+          'Si vous avez déjà le NCLC 7 en français, un test d’anglais avec CLB 5 dans les 4 compétences double les points supplémentaires (de 25 à 50) et ajoute des points de deuxième langue. [1] [2]'
       }
     ]
   },
 
   audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
+  // A ordem é fixa: o texto cita cada fonte pelo número da posição ([1], [2]…)
   sources: [
     {
       title: 'IRCC – Comprehensive Ranking System (CRS) criteria',
@@ -264,7 +267,11 @@ const content: TopicContent = {
     },
     {
       title: 'IRCC – Express Entry for French-speaking skilled workers',
-      url: 'https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/permit/temporary/eligibility/francophone-immigration-express-entry.html'
+      url: 'https://www.canada.ca/en/immigration-refugees-citizenship/campaigns/francophone-immigration-outside-quebec/francophone-immigration-express-entry.html'
+    },
+    {
+      title: 'IRCC – Express Entry: Category-based selection',
+      url: 'https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/rounds-invitations/category-based-selection.html'
     },
     {
       title: 'Berlitz – How French language points work in Express Entry',

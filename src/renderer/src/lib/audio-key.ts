@@ -6,6 +6,8 @@
 export function speechText(text: string): string {
   return (
     text
+      // Citações das fontes ([1], [2]…) não são lidas
+      .replace(/\s*\[\d+\]/g, '')
       // Telefones não são faixas: 514 555-0182 → 5 1 4, 5 5 5, 0 1 8 2 (algarismo por
       // algarismo, como se diz no Québec)
       .replace(/\b(\d{3}) (\d{3})-(\d{4})\b/g, (_, a: string, b: string, c: string) =>

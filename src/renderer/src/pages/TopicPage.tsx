@@ -49,7 +49,7 @@ import Typography from '@mui/material/Typography'
 import AudioSection, { type AudioSectionVariant } from '@/components/AudioSection'
 import Page from '@/components/Page'
 import ReportPageDialog from '@/components/ReportPageDialog'
-import { translatedText } from '@/components/TranslatedText'
+import { sourceAnchorId, translatedText } from '@/components/TranslatedText'
 import { getAudioUrl } from '@/lib/audio'
 import { AudioPageContext } from '@/lib/audio-page'
 import { SECTIONS, type Topic } from '@/data/topics'
@@ -1314,9 +1314,19 @@ export default function TopicPage({
                 <Typography variant="subtitle2" className="st-sources-title" gutterBottom>
                   {t.sources}
                 </Typography>
-                <Box component="ul" sx={{ pl: 3, m: 0 }}>
-                  {content.sources.map((source) => (
-                    <Typography key={source.url} component="li" variant="body2">
+                {/* Numeradas: o texto cita cada uma por [n], na ordem da lista */}
+                <Box component="ol" sx={{ pl: 0, m: 0, listStyle: 'none' }}>
+                  {content.sources.map((source, i) => (
+                    <Typography
+                      key={source.url}
+                      id={sourceAnchorId(i + 1)}
+                      component="li"
+                      variant="body2"
+                      sx={{ display: 'flex', gap: 1, borderRadius: 1, mb: 0.5 }}
+                    >
+                      <Box component="span" sx={{ color: 'text.secondary', flexShrink: 0 }}>
+                        [{i + 1}]
+                      </Box>
                       <Link href={source.url} target="_blank" rel="noreferrer">
                         {source.title}
                       </Link>
