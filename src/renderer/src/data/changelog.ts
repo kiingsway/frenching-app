@@ -39,6 +39,36 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '1.4.4',
+    date: '2026-11-13',
+    changes: {
+      added: [
+        {
+          pt: 'Citações numeradas [1], [2]… em todas as páginas de “Conhecendo a prova”, conferidas nas fontes. O que nenhuma fonte confirma está agora listado na caixa vermelha “Sem fonte oficial” de cada página.',
+          fr: 'Citations numérotées [1], [2]… dans toutes les fiches de « Connaître l’examen », vérifiées dans les sources. Ce qu’aucune source ne confirme est maintenant listé dans la boîte rouge « Sans source officielle » de chaque fiche.'
+        }
+      ],
+      fixed: [
+        {
+          pt: 'Fontes conferidas nas páginas de Funções (pedir informações, narrar, planos, gostos, reclamar, pedidos, argumentar, opinião, conselhos e hipótese) e em algumas de Gramática e Vocabulário: a caixa vermelha agora diz o que cada fonte confirma e o que continua sem fonte.',
+          fr: 'Sources vérifiées dans les fiches de Fonctions (demander des renseignements, raconter, projets, goûts, réclamer, demandes, argumenter, opinion, conseils et hypothèse) et dans certaines fiches de Grammaire et de Vocabulaire : la boîte rouge indique maintenant ce que chaque source confirme et ce qui reste sans source.'
+        },
+        {
+          pt: 'Pronúncia: os símbolos fonéticos das tabelas, como [ɑ̃], deixaram de aparecer na lista de áudios, porque não são palavras e davam erro ao gerar.',
+          fr: 'Prononciation : les symboles phonétiques des tableaux, comme [ɑ̃], n’apparaissent plus dans la liste des audios, car ce ne sont pas des mots et leur génération échouait.'
+        },
+        {
+          pt: 'Compreensão oral do TCF: as páginas diziam para ler as perguntas antes do áudio, mas no TCF a pergunta vem depois da gravação; no TEF há pausas para lê-las.',
+          fr: 'Compréhension orale du TCF : les fiches conseillaient de lire les questions avant l’audio, mais au TCF la question est posée après l’écoute ; au TEF, des pauses permettent de les lire.'
+        },
+        {
+          pt: 'Tarefas 1 e 2 da expressão escrita do TCF descritas como na página oficial (mensagem para descrever, contar ou explicar; artigo, carta ou nota relatando uma experiência), e o nível avançado do NCLC descrito como no documento oficial.',
+          fr: 'Tâches 1 et 2 de l’expression écrite du TCF décrites comme sur la page officielle (message pour décrire, raconter ou expliquer ; article, courrier ou note rendant compte d’une expérience), et stade avancé du NCLC décrit comme dans le document officiel.'
+        }
+      ]
+    }
+  },
+  {
     version: '1.4.3',
     date: '2026-11-13',
     changes: {

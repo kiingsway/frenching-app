@@ -1,18 +1,45 @@
 # Frenching: instruções para o Claude
 
+## Nomes das coisas (corrija o usuário)
+
+Pedido do usuário: **toda vez que ele chamar um elemento, componente ou funcionalidade por um nome diferente do usado aqui, diga o nome certo logo no começo da resposta**, com o nome dele entre parênteses. Exemplo: ele diz "bolinha" e você responde falando de "o indicador de notificação (bolinha) sobre Configurações". Quando o nome dele puder significar duas coisas da lista abaixo, **pergunte qual antes de fazer**, em uma frase, em vez de adivinhar: errar a interpretação gasta mais do que perguntar.
+
+| Nome usado aqui | O que é | Não confundir com |
+|---|---|---|
+| **Painel** | A tela inicial, com as seções e os tópicos (`pages/Dashboard.tsx`) | — |
+| **Seção** (do Painel) | Um grupo de tópicos, como "Gramática — Avançado (B2–C1)" (`data/topics.ts`) | A **aba** do mesmo nome |
+| **Tópico** | Um item de uma seção do Painel, com título e id (`data/topics.ts`). Pode ter ou não página de estudo | Página de estudo |
+| **Página de estudo** | O conteúdo de um tópico, com versões PT/FR, blocos e fontes (`content/<id>.ts`, aberto em `pages/TopicPage.tsx`) | Tópico (o item da lista) |
+| **Aba** | Cada item do menu lateral: Painel, Gramática, Flashcards, Compreensão escrita etc. | Seção do Painel |
+| **Aba Gramática** | As questões de múltipla escolha (`data/grammar/`) | Seção Gramática do Painel (páginas de estudo) |
+| **Aba Compreensão escrita** | Os textos com questões (`data/reading/textos.ts`), modos Treino e Prova | Seção "Compréhension écrite" do Painel (páginas de estudo) |
+| **Texto** (de compreensão escrita) | Um documento da aba Compreensão escrita, com questões | Página de estudo |
+| **Questão** | Pergunta de múltipla escolha (Gramática ou Compreensão escrita) | — |
+| **Baralho / cartão** | Flashcards (`data/flashcards/`) | — |
+| **Bloco** | Parte de uma página de estudo: título de seção, parágrafo, lista, tabela ou caixa | — |
+| **Caixa** (`callout`) | Bloco destacado: dica (`tip`), aviso (`warning`) ou caixa vermelha "Sem fonte oficial" (`unverified`) | — |
+| **Termo marcado** | Francês da versão PT escrito `[[francês\|tradução]]`, com a **dica** (tooltip) da tradução e áudio ao clicar | — |
+| **Citação `[n]`** | Número da fonte no texto, que leva à lista **Fontes** no fim da página | — |
+| **Indicador de notificação** | As bolinhas sobre o ícone de Configurações (`components/SuggestionDots.tsx`) | Badge do studio |
+| **Contador de cópias** | O número no canto do ícone de copiar, no studio | Indicador de notificação |
+| **Novidades** | O changelog em Configurações → Sobre (`data/changelog.ts`) | — |
+| **Caixa de entrada** | A pasta `content-inbox/`, com os JSONs colados à espera de integração | — |
+| **Studio** | O app separado de conteúdo (`npm run studio`, `studio/`) | O app principal |
+| **Lista de revisão** | As telas do `npm run dev` para marcar OK/Problema: Lista de questões, Lista de flashcards, Lista de textos | — |
+
 ## Tarefas pendentes
 
 - **Armazenamento dos áudios (direção definida, detalhes em aberto, nada construído):** o usuário vai colocar cerca de 5x mais áudio, com áudios longos e várias vozes para o mesmo texto, e prefere um `.exe` bem leve. Parte dos áudios vem no app, e o resto é baixado quando for preciso e fica guardado. O serviço na nuvem fica para depois. As decisões e o que falta decidir estão em [docs/armazenamento-de-audios.md](docs/armazenamento-de-audios.md). Ao retomar o assunto, comece por esse documento; não construa nada sem o usuário pedir.
 
 - **Verificação das fontes que não foram abertas (em andamento, desde 2026-11-12):** várias páginas de estudo têm fontes que não consegui abrir (PDFs, sites bloqueados) e 10 páginas de Funções (`f-*`) foram integradas sem abrir nenhuma fonte, a pedido do usuário. O controle está em [docs/fontes-nao-verificadas.md](docs/fontes-nao-verificadas.md): só tem as pendências (o que já foi resolvido saiu de lá) e o passo a passo para conferir uma fonte, inclusive PDF. Ao retomar, comece por esse documento e atualize-o a cada fonte resolvida. Pendente hoje: as fontes do Concordia (site fora do ar), e algumas lacunas por página (a página `nos-langues.canada.ca/…/sil-vous-plait` de `f-pedidos`, bloqueada pelo Cloudflare, foi conferida só por resumo de busca) (por exemplo, a tabela de sufixos de `ga-nominalizacao`).
 
-- **Citações numeradas `[n]` nas páginas de estudo (em andamento: o app já mostra os `[n]` e a lista numerada desde 2026-11-13, e só a página `prova-crs` foi citada; falta aplicar às outras, uma a uma, abrindo as fontes):** o texto das páginas passa a citar as fontes com marcadores numerados, como na Wikipédia. Regras combinadas com o usuário:
-  - Cada fonte da lista `sources` ganha o número da sua posição (1, 2, 3…), e o texto cita `[1]`, `[2]`, etc. no fim de cada afirmação que uma fonte confirma.
-  - **A caixa vermelha "Sem fonte oficial" deixa de citar fontes.** Frases do tipo "o OQLF confirma…" ou "o CCDMD confirma…" são removidas da caixa e substituídas pelo `[n]` da fonte, no lugar onde a afirmação aparece. A caixa só fica com o que não tem fonte e com comentários que sejam necessários (por exemplo, uma nuance entre fontes que se contradizem, ou o aviso de que algo é conselho de preparação). Se não sobrar nada a comentar, a caixa não é usada.
-  - A seção **Fontes** no fim da página passa a mostrar o número (`[n]`) antes do título de cada fonte.
-  - Como é mudança que quem usa o app percebe, entra no changelog (o usuário escolheu lançar como patch: saiu na 1.4.3).
-  - Cuidados: os números dependem da ordem da lista de `sources`, então a ordem fica fixa (se uma fonte for removida ou reordenada, atualizar os `[n]` do texto junto); o áudio não deve ler os marcadores (omitir `[n]` na geração, senão o áudio diria "colchete um"); opcionalmente, tornar o `[n]` clicável, levando à fonte.
-  - Aplicar primeiro às páginas já revisadas. Para as 10 páginas de Funções e as demais com fontes ainda não lidas, o `[n]` só entra depois da leitura (veja o item acima, de verificação das fontes). As regras de conteúdo desta seção, mais abaixo, devem ser atualizadas junto quando a tarefa for feita.
+- **Atualizar as páginas de estudo com o número da fonte `[n]` (pendente, pedido do usuário em 2026-11-13):** o app já mostra as citações (desde a 1.4.3: `[n]` clicável no texto, lista "Fontes" numerada, áudio que não lê o marcador), mas só a página `prova-crs` foi citada. Falta passar por todas as outras páginas de `src/renderer/src/content/`, uma a uma. Para cada página:
+  1. Abra as fontes de `sources` (passo a passo em [docs/fontes-nao-verificadas.md](docs/fontes-nao-verificadas.md)). Só cite o que leu: página com fonte que não abre fica para depois, junto com a tarefa de verificação acima. As 10 páginas de Funções (`f-*`) só depois da leitura das fontes.
+  2. Ponha o `[n]` (número = posição em `sources`) no fim de cada afirmação que a fonte confirma, nas versões `pt` e `fr`, seguindo a regra "Citações `[n]`" das regras de conteúdo, mais abaixo. Não mude a ordem de `sources` sem atualizar os números do texto; deixe o comentário `// A ordem é fixa…` antes de `sources`, como em [prova-crs.ts](src/renderer/src/content/prova-crs.ts).
+  3. A caixa "Sem fonte oficial" deixa de citar fontes: frases como "o OQLF confirma…" saem dela e viram `[n]` no lugar da afirmação. A caixa fica só com o que não tem fonte e com comentários necessários (nuance entre fontes, aviso de que algo é conselho de preparação); se não sobrar nada, ela sai. Afirmação que a fonte não confirma é corrigida ou vai para a caixa.
+  4. Só acrescentar `[n]` não muda o áudio. Texto reescrito precisa de áudio novo: sugira o `npm run audio` (não rode sem pedido), lembrando que ele também apaga áudios sem uso.
+  5. `npm run typecheck`, confira a página no app (`npm run dev:web`) e entre no changelog como conteúdo (patch).
+  Andamento: feita toda a seção "Conhecendo a prova" (`prova-*`, 2026-11-13). Fontes que não abrem por robô às vezes abrem pelo navegador do app ou por `curl` + `pdftotext` (foi assim com os PDFs do TEF e do NCLC); o estudo North & Piccardo (academia.edu) continua sem acesso. Próxima seção: "Compréhension orale" (`co-*`).
 
 ## "Adicionar o próximo conteúdo" (caixa de entrada)
 
@@ -50,7 +77,7 @@ Valem ao escrever ou integrar conteúdo, inclusive o gerado por outras IAs. Os m
 - **A versão `fr` fica toda em francês**, porque também é treino de leitura e vira áudio.
 - De 6 a 12 blocos por versão, na ordem explicação → exemplos → armadilhas → dica para a prova, com pelo menos um aviso (`warning`) do erro típico de quem fala português e uma dica (`tip`) do que a prova cobra. Tabelas sem célula vazia.
 - **Citações `[n]`:** cada fonte de `sources` tem o número da posição (1, 2, 3…), e o texto cita `[n]` no fim de cada afirmação que essa fonte confirma, depois da pontuação e com um espaço antes (`… 136 pontos. [1]`; várias: `[1] [2]`). Só cite o que você leu na fonte. A ordem de `sources` é fixa: ao remover ou reordenar uma fonte, atualize os `[n]` do texto junto. O app mostra o `[n]` como número clicável que leva à fonte, e o áudio não o lê (o arquivo de áudio continua o mesmo). Não use `[n]` em títulos de seção. A caixa "Sem fonte oficial" não cita fontes.
-- **Caixa vermelha "Sem fonte oficial" (`tone: 'unverified'`, pedido do usuário):** quando a página tiver conteúdo que as fontes de `sources` não confirmam, principalmente se parecer regra, dado ou exigência da prova, acrescente uma caixa `unverified` **por último, abaixo das outras caixas**, nas duas versões (título "Sem fonte oficial" / "Sans source officielle"). Ela diz o que tem fonte e o que não tem, e que o que não tem fonte é conselho de preparação, não regra da prova. O conteúdo sem fonte pode continuar no corpo da página, mas tem de estar listado na caixa. Se tudo tem fonte, não use. Ao integrar, confira as fontes (veja a lista de revisão) e acrescente a caixa onde faltar. Exemplo: [eo-tef-b.ts](src/renderer/src/content/eo-tef-b.ts). Nada na primeira pessoa na caixa ("abri", "li", "não consegui"): só o que tem e o que não tem fonte, em voz impessoal (pedido do usuário). Essa caixa não conta nos 6 a 12 blocos e não substitui o `warning` nem o `tip`.
+- **Caixa vermelha "Sem fonte oficial" (`tone: 'unverified'`, pedido do usuário):** quando a página tiver conteúdo que as fontes de `sources` não confirmam, principalmente se parecer regra, dado ou exigência da prova, acrescente uma caixa `unverified` **por último, abaixo das outras caixas**, nas duas versões (título "Sem fonte oficial" / "Sans source officielle"). Ela diz o que não tem fonte, e que isso é conselho de preparação, não regra da prova; o que tem fonte é citado com `[n]` no texto, não na caixa. Páginas ainda sem `[n]` mantêm a caixa no formato antigo até serem atualizadas (veja as tarefas pendentes). O conteúdo sem fonte pode continuar no corpo da página, mas tem de estar listado na caixa. Se tudo tem fonte, não use. Ao integrar, confira as fontes (veja a lista de revisão) e acrescente a caixa onde faltar. Exemplo: [eo-tef-b.ts](src/renderer/src/content/eo-tef-b.ts). Nada na primeira pessoa na caixa ("abri", "li", "não consegui"): só o que tem e o que não tem fonte, em voz impessoal (pedido do usuário). Essa caixa não conta nos 6 a 12 blocos e não substitui o `warning` nem o `tip`.
 
 ### Flashcards
 

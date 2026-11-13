@@ -130,7 +130,8 @@ const content: TopicContent = {
           'O OQLF confirma [[bail|contrato de locação]], [[locateur|locador]] e [[locataire|inquilino]]. ' +
           'O FEI e o Le français des affaires confirmam as provas de compreensão escrita e oral. ' +
           'O "Aide-mémoire pour la recherche d’un logement permanent" (Governo do Québec, 2021) confirma [[le bail|o contrato de locação]] entre o proprietário e o inquilino, o [[3 ½|três e meio]] (três cômodos, com sala, quarto e cozinha, mais um banheiro, a "metade"), [[semi-meublé|semimobiliado]] (fogão e geladeira incluídos no aluguel), [[chauffé ou non chauffé|aquecido ou não]], e a recomendação de perguntar por serviços ([[le chauffage|o aquecimento]], [[l’électricité|a eletricidade]], [[la buanderie|a lavanderia]]), móveis e eletrodomésticos, de avaliar o [[le quartier|o bairro]] e o [[le transport en commun|o transporte coletivo]] e de ler o contrato antes de assinar. ' +
-          'Não têm fonte: [[le déménagement|a mudança]], o falso amigo [[location|aluguel / locação]] e [[emplacement|localização]], o anúncio de exemplo e a dica de treino. ' +
+          'O Usito confirma [[le déménagement|a mudança]] como o fato de mudar de moradia, [[la location|a locação]] como a ação de dar ou tomar um bem em aluguel (e também de reservar um lugar ou um quarto de hotel) e [[l’emplacement|o local]] como o lugar escolhido ou ocupado por algo, o que sustenta o contraste entre [[location|aluguel / locação]] e [[emplacement|localização]]. ' +
+          'Não têm fonte: o anúncio de exemplo e a dica de treino. ' +
           'Esses pontos são conselhos de preparação, não regras oficiais dos exames.'
       }
     ]
@@ -254,7 +255,8 @@ const content: TopicContent = {
           'L’OQLF confirme bail, locateur et locataire. ' +
           'Le FEI et Le français des affaires confirment les épreuves de compréhension écrite et orale. ' +
           'L’« Aide-mémoire pour la recherche d’un logement permanent » (gouvernement du Québec, 2021) confirme le bail entre le propriétaire et le locataire, le 3 ½ (trois pièces, avec salon, chambre et cuisine, plus une salle de bain, la « demie »), semi-meublé (cuisinière et réfrigérateur inclus dans le loyer), chauffé ou non chauffé, et la recommandation de s’informer des services (chauffage, électricité, buanderie), des meubles et appareils compris, d’examiner le quartier et le transport en commun et de lire le bail avant de le signer. ' +
-          'Ne sont pas sourcés : le déménagement, le faux ami location et emplacement, l’annonce d’exemple et le conseil d’entraînement. ' +
+          'Usito confirme le déménagement comme le fait de changer de logement, la location comme l’action de donner ou de prendre à loyer (et aussi de réserver une place ou une chambre d’hôtel) et l’emplacement comme l’endroit choisi ou occupé par qqch, ce qui soutient le contraste entre location et emplacement. ' +
+          'Ne sont pas sourcés : l’annonce d’exemple et le conseil d’entraînement. ' +
           'Ces points sont des conseils de préparation et non des règles officielles des examens.'
       }
     ]
@@ -263,6 +265,18 @@ const content: TopicContent = {
   audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
+    {
+      title: 'déménagement — Usito, Université de Sherbrooke',
+      url: 'https://usito.usherbrooke.ca/d%C3%A9finitions/d%C3%A9m%C3%A9nagement'
+    },
+    {
+      title: 'location — Usito, Université de Sherbrooke',
+      url: 'https://usito.usherbrooke.ca/d%C3%A9finitions/location'
+    },
+    {
+      title: 'emplacement — Usito, Université de Sherbrooke',
+      url: 'https://usito.usherbrooke.ca/d%C3%A9finitions/emplacement'
+    },
     {
       title: 'Aide-mémoire pour la recherche d’un logement permanent (F-1823-FR, 2021-12) — gouvernement du Québec',
       url: 'https://cdn-contenu.quebec.ca/cdn-contenu/immigration/publications/fr/DOC_Aide_memoire_logement.pdf'

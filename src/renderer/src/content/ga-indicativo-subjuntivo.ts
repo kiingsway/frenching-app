@@ -113,7 +113,7 @@ const content: TopicContent = {
           'O FEI e o Le français des affaires confirmam as provas de expressão escrita e oral. ' +
           'Não têm fonte: os exemplos e a dica de treino. ' +
           'O guia da Escola da função pública do Canadá (Grammaire d’appoint, nível C, capítulo sobre o subjuntivo) lista [[je ne pense pas que|eu não acho que]], [[je ne crois pas que|eu não acredito que]] e [[je ne trouve pas que|eu não acho que]] entre as expressões seguidas de subjuntivo, com a ressalva do indicativo na fala quando a opinião se apoia em fatos. ' +
-          'O CCDMD (L’emploi du mode dans la subordonnée complétive) confirma o uso facultativo do indicativo ou do subjuntivo depois de [[je ne crois pas|eu não acredito]] e [[je ne pense pas|eu não acho]] e nas perguntas com [[croyez-vous|você acredita]] e [[pensez-vous|você pensa]]; por isso, chamar o indicativo depois de negação de “erro”, como faz o Lawless French, é uma simplificação. As páginas do Larousse citadas no JSON original ainda não foram lidas. ' +
+          'O CCDMD (L’emploi du mode dans la subordonnée complétive) confirma o uso facultativo do indicativo ou do subjuntivo depois de [[je ne crois pas|eu não acredito]] e [[je ne pense pas|eu não acho]] e nas perguntas com [[croyez-vous|você acredita]] e [[pensez-vous|você pensa]]; por isso, chamar o indicativo depois de negação de “erro”, como faz o Lawless French, é uma simplificação. O Larousse (verbetes [[croire|acreditar]] e [[trouver|achar]]) confirma apenas os usos afirmativos com opinião e indicativo: [[Je crois qu’il est intelligent.|Acredito que ele é inteligente.]], [[Je crois bien qu’il va pleuvoir.|Acredito que vai chover.]] e [[Vraiment, je trouve que tu exagères.|Sinceramente, acho que você exagera.]]. Os verbetes não tratam da negação nem do subjuntivo. ' +
           'Essa dica é conselho de preparação, não regra oficial nem exigência das provas.'
       }
     ]
@@ -227,7 +227,7 @@ const content: TopicContent = {
           'Le FEI et Le français des affaires confirment les épreuves d’expression écrite et orale. ' +
           'Ne sont pas sourcés : les exemples et le conseil d’entraînement. ' +
           'Le guide de l’École de la fonction publique du Canada (Grammaire d’appoint, niveau C, chapitre sur le subjonctif) range je ne pense pas que, je ne crois pas que et je ne trouve pas que parmi les expressions suivies du subjonctif, avec la réserve de l’indicatif à l’oral quand l’opinion s’appuie sur des faits. ' +
-          'Le CCDMD (L’emploi du mode dans la subordonnée complétive) confirme l’emploi facultatif de l’indicatif ou du subjonctif après je ne crois pas et je ne pense pas et dans les questions avec croyez-vous et pensez-vous ; qualifier d’« erreur » l’indicatif après une négation, comme le fait Lawless French, est donc une simplification. Les pages de Larousse citées dans le JSON d’origine n’ont pas encore été lues. ' +
+          'Le CCDMD (L’emploi du mode dans la subordonnée complétive) confirme l’emploi facultatif de l’indicatif ou du subjonctif après je ne crois pas et je ne pense pas et dans les questions avec croyez-vous et pensez-vous ; qualifier d’« erreur » l’indicatif après une négation, comme le fait Lawless French, est donc une simplification. Larousse (articles croire et trouver) confirme seulement les emplois affirmatifs d’opinion avec l’indicatif : Je crois qu’il est intelligent., Je crois bien qu’il va pleuvoir. et Vraiment, je trouve que tu exagères.. Les articles ne traitent ni de la négation ni du subjonctif. ' +
           'Ce conseil est une recommandation de préparation, et non une règle officielle ni une exigence des examens.'
       }
     ]
@@ -236,6 +236,14 @@ const content: TopicContent = {
   audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
+    {
+      title: 'croire — Dictionnaire de français Larousse',
+      url: 'https://www.larousse.fr/dictionnaires/francais/croire/20610'
+    },
+    {
+      title: 'trouver — Dictionnaire de français Larousse',
+      url: 'https://www.larousse.fr/dictionnaires/francais/trouver/80032'
+    },
     {
       title: 'L’emploi du mode dans la subordonnée complétive — Centre collégial de développement de matériel didactique (CCDMD)',
       url: 'https://ameliofrancais.ccdmd.qc.ca/storage/amelioration-du-francais/ressources/1697833339-04Concordance_V2.pdf'

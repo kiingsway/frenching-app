@@ -105,7 +105,8 @@ const content: TopicContent = {
         title: 'Sem fonte oficial',
         text:
           'O Dictionnaire de l’Académie française confirma a definição de nominalização, a transformação de uma oração em grupo nominal (“os deputados adotam este texto” → “a adoção deste texto pelos deputados”) e a recomendação de preferir uma oração com verbo. ' +
-          'Não têm fonte: os padrões de sufixos e a tabela de exemplos, a regra sobre o gênero dos substantivos formados, a perda das marcas de tempo e pessoa, os exemplos e a dica para a prova. ' +
+          'O Usito confirma, nas etimologias, [[organisation|organização]] (de [[organiser|organizar]] e -ation), [[fermeture|fechamento]] (de [[fermer|fechar]] e -ure), [[nettoyage|limpeza]] (de [[nettoyer|limpar]] e -age) e [[disponibilité|disponibilidade]] (de [[disponible|disponível]] e -ité), e confirma o gênero: [[la décision|a decisão]], [[l’organisation|a organização]], [[la fermeture|o fechamento]], [[la disponibilité|a disponibilidade]], [[l’absence|a ausência]], [[la participation|a participação]] e [[l’augmentation|o aumento]] são femininos, e [[le nettoyage|a limpeza]] é masculino. Atenção: para [[décision|decisão]], [[absence|ausência]], [[participation|participação]] e [[augmentation|aumento]], o Usito indica origem diretamente do latim, e não a formação por sufixo a partir de [[décider|decidir]], [[absent|ausente]], [[participer|participar]] ou [[augmenter|aumentar]]; a relação entre verbo e nome existe, mas a tabela a apresenta como transformação regular. ' +
+          'Não têm fonte: a lista geral de sufixos (-tion, -ment, -age, -ure, -ité, -ence, -té), a perda das marcas de tempo e pessoa, os exemplos e a dica para a prova. ' +
           'O guia "La grammaire du français : terminologie grammaticale" (Ministério da Educação francês, Eduscol) foi lido, mas não trata de nominalização nem lista os sufixos -tion, -ment, -age e -ité, entre outros. Ele só confirma o princípio geral de que os sufixos podem mudar a classe gramatical da base ([[président → présidentiel|presidente → presidencial]]) e que as marcas de tempo, modo e pessoa são morfemas flexionais, não sufixos. Por isso não sustenta a tabela de formação. ' +
           'Esses pontos são material didático, não regra oficial nem exigência do TEF Canada ou do TCF Canada.'
       }
@@ -205,7 +206,8 @@ const content: TopicContent = {
         title: 'Sans source officielle',
         text:
           'Le Dictionnaire de l’Académie française confirme la définition de la nominalisation, la transformation d’une proposition en groupe nominal (« les députés adoptent ce texte » → « l’adoption de ce texte par les députés ») et la recommandation de préférer une proposition construite autour d’un verbe. ' +
-          'Ne sont pas sourcés : les modèles de suffixes et le tableau d’exemples, la règle sur le genre des noms formés, la perte des marques de temps et de personne, les exemples et le conseil pour l’examen. ' +
+          'Usito confirme, dans les étymologies, organisation (de organiser et -ation), fermeture (de fermer et -ure), nettoyage (de nettoyer et -age) et disponibilité (de disponible et -ité), et confirme le genre : la décision, l’organisation, la fermeture, la disponibilité, l’absence, la participation et l’augmentation sont féminins, et le nettoyage est masculin. Précision : pour décision, absence, participation et augmentation, Usito indique une origine directement latine, et non une formation par suffixe à partir de décider, absent, participer ou augmenter ; le lien entre le verbe et le nom existe, mais le tableau le présente comme une transformation régulière. ' +
+          'Ne sont pas sourcés : la liste générale des suffixes (-tion, -ment, -age, -ure, -ité, -ence, -té), la perte des marques de temps et de personne, les exemples et le conseil pour l’examen. ' +
           'Le guide « La grammaire du français : terminologie grammaticale » (ministère français de l’Éducation nationale, Eduscol) a été lu, mais il ne traite pas de la nominalisation et ne liste pas les suffixes -tion, -ment, -age, -ité, etc. Il confirme seulement le principe général selon lequel les suffixes peuvent changer la classe grammaticale de la base (président → présidentiel) et que les marques de temps, de mode et de personne sont des morphèmes flexionnels, non des suffixes. Il ne soutient donc pas le tableau de formation. ' +
           'Ces points sont du matériel pédagogique, et non une règle officielle ni une exigence du TEF Canada ou du TCF Canada.'
       }
@@ -215,6 +217,38 @@ const content: TopicContent = {
   audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
+    {
+      title: 'organisation — Usito, Université de Sherbrooke',
+      url: 'https://usito.usherbrooke.ca/d%C3%A9finitions/organisation'
+    },
+    {
+      title: 'fermeture — Usito, Université de Sherbrooke',
+      url: 'https://usito.usherbrooke.ca/d%C3%A9finitions/fermeture'
+    },
+    {
+      title: 'nettoyage — Usito, Université de Sherbrooke',
+      url: 'https://usito.usherbrooke.ca/d%C3%A9finitions/nettoyage'
+    },
+    {
+      title: 'disponibilité — Usito, Université de Sherbrooke',
+      url: 'https://usito.usherbrooke.ca/d%C3%A9finitions/disponibilit%C3%A9'
+    },
+    {
+      title: 'décision — Usito, Université de Sherbrooke',
+      url: 'https://usito.usherbrooke.ca/d%C3%A9finitions/d%C3%A9cision'
+    },
+    {
+      title: 'absence — Usito, Université de Sherbrooke',
+      url: 'https://usito.usherbrooke.ca/d%C3%A9finitions/absence'
+    },
+    {
+      title: 'participation — Usito, Université de Sherbrooke',
+      url: 'https://usito.usherbrooke.ca/d%C3%A9finitions/participation'
+    },
+    {
+      title: 'augmentation — Usito, Université de Sherbrooke',
+      url: 'https://usito.usherbrooke.ca/d%C3%A9finitions/augmentation'
+    },
     {
       title: 'Nominalisation — Dictionnaire de l’Académie française, 9e édition',
       url: 'https://www.dictionnaire-academie.fr/article/A9N0561'

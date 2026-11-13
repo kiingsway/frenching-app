@@ -77,8 +77,34 @@ const VOICES_FILE = join(AUDIO_DIR, 'voices.json')
 
 mkdirSync(AUDIO_DIR, { recursive: true })
 
-// Restos de uma geração interrompida (o .part só vira .mp3 quando o áudio termina)
-for (const f of readdirSync(AUDIO_DIR)) if (f.endsWith('.part')) rmSync(join(AUDIO_DIR, f))
+// Outra geração ainda rodando? Então não mexe nos mesmos arquivos (dois ao mesmo tempo se atrapalham)
+if (!DRY_RUN && existsSync(STATUS_FILE)) {
+  try {
+    const previous = JSON.parse(readFileSync(STATUS_FILE, 'utf8')) as AudioGenStatus
+    if (previous.running) {
+      try {
+        process.kill(previous.pid, 0)
+        console.error(`Já há uma geração rodando (PID ${previous.pid}). Espere ela terminar.`)
+        process.exit(1)
+      } catch {
+        // PID não existe mais: a geração anterior caiu, pode seguir
+      }
+    }
+  } catch {
+    // Status ilegível: segue normalmente
+  }
+}
+
+// Restos de uma geração interrompida (o .part só vira .mp3 quando o áudio termina).
+// Arquivo ainda preso por outro processo fica para a próxima vez
+for (const f of readdirSync(AUDIO_DIR))
+  if (f.endsWith('.part')) {
+    try {
+      rmSync(join(AUDIO_DIR, f))
+    } catch {
+      // em uso: deixa
+    }
+  }
 
 const voices: VoiceOverrides = existsSync(VOICES_FILE)
   ? JSON.parse(readFileSync(VOICES_FILE, 'utf8'))
@@ -193,7 +219,52 @@ saveStatus()
 
 // Um processo Python só (scripts/tts-batch.py) gera a fila inteira, até JOBS áudios
 // ao mesmo tempo, e avisa cada início e fim por uma linha JSON
+// Progresso: no terminal, uma barra que se redesenha a cada segundo; fora dele (ex.: saída
+// gravada em arquivo), uma linha por áudio terminado
+const started = Date.now()
+const interactive = !!process.stdout.isTTY
+
+function fmt(ms: number): string {
+  const secs = Math.round(ms / 1000)
+  const h = Math.floor(secs / 3600)
+  const m = Math.floor((secs % 3600) / 60)
+  const s = secs % 60
+  if (h) return `${h} h ${String(m).padStart(2, '0')} min`
+  if (m) return `${m} min ${String(s).padStart(2, '0')} s`
+  return `${s} s`
+}
+
+function progressText(): string {
+  const done = status.done.length
+  const total = queue.length
+  const elapsed = Date.now() - started
+  const percent = Math.floor((done / total) * 100)
+  const width = 20
+  const filled = Math.round((width * done) / total)
+  const bar = '█'.repeat(filled) + '░'.repeat(width - filled)
+  // Média até agora por áudio × o que falta (já conta os que rodam ao mesmo tempo)
+  const left = done ? fmt((elapsed / done) * (total - done)) : 'calculando'
+  return `[${bar}] ${done}/${total} (${percent}%) · decorrido ${fmt(elapsed)} · faltam ~${left}`
+}
+
+function draw(): void {
+  if (interactive) process.stdout.write(`\r\x1b[2K${progressText()}`)
+}
+
+// Escreve uma linha acima da barra de progresso
+function say(message: string): void {
+  if (interactive) {
+    process.stdout.write(`\r\x1b[2K${message}\n`)
+    draw()
+  } else {
+    console.log(message)
+  }
+}
+
 if (queue.length) {
+  console.log(`Gerando ${queue.length} áudio(s), até ${JOBS} ao mesmo tempo.`)
+  draw()
+  const timer = interactive ? setInterval(draw, 1000) : null
   const python = spawn('python', [BATCH_SCRIPT], { stdio: ['pipe', 'pipe', 'pipe'] })
   let stderr = ''
   python.stderr.on('data', (chunk) => (stderr += chunk))
@@ -219,16 +290,19 @@ if (queue.length) {
     } else {
       status.done.push(event.key)
       const { label } = entries.get(event.key)!
-      console.log(`[${status.done.length}/${queue.length}] ${label} → ${event.key}.mp3`)
+      if (interactive) say(`✓ ${label} → ${event.key}.mp3`)
+      else console.log(`${progressText()} | ${label} → ${event.key}.mp3`)
       if (event.error) {
         status.errors[event.key] = event.error
-        console.error(`  erro: ${event.error}`)
+        say(`  erro: ${event.error}`)
       }
     }
     saveStatus()
   }
 
   const code: number = await new Promise((done) => python.on('close', done))
+  if (timer) clearInterval(timer)
+  if (interactive) process.stdout.write(`\r\x1b[2K${progressText()}\n`)
   // O Python parou antes de terminar (ex.: edge-tts não instalado): o que sobrou na
   // fila conta como erro, com a última linha do erro dele
   if (code !== 0 || status.done.length < queue.length) {

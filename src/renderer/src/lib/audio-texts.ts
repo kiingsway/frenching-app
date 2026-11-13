@@ -34,6 +34,9 @@ export const DEFAULT_VOICE: VoiceId = 'sylvie'
 
 export type VoiceOverrides = Record<string, VoiceId>
 
+// Célula de tabela que é só uma transcrição fonética: "[ɑ̃]", "[ʁ]", "[y]"
+const PHONETIC_CELL = /^\[[^\]\s]+\]$/
+
 export function textsFor(page: TopicContent, part: AudioPart): string[] {
   const blocks = page.fr.blocks
   switch (part) {
@@ -53,9 +56,12 @@ export function textsFor(page: TopicContent, part: AudioPart): string[] {
         block.type === 'callout' ? [...(block.title ? [block.title] : []), block.text] : []
       )
     case 'tables':
-      // Cada célula (cabeçalhos incluídos) tem seu próprio áudio
+      // Cada célula (cabeçalhos incluídos) tem seu próprio áudio. Célula que é só uma
+      // transcrição fonética entre colchetes, como [ɑ̃], não é uma palavra: fica sem áudio.
       return blocks.flatMap((block) =>
-        block.type === 'table' ? [...block.headers, ...block.rows.flat()] : []
+        block.type === 'table'
+          ? [...block.headers, ...block.rows.flat()].filter((cell) => !PHONETIC_CELL.test(cell))
+          : []
       )
     case 'terms':
       // O francês de cada [[francês|tradução]] da versão em português

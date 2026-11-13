@@ -44,11 +44,11 @@ As 10 páginas (f-informacoes, f-narrar, f-planos, f-gostos, f-reclamar, f-pedid
 
 | Página | O que falta |
 |---|---|
-| ga-nominalizacao | A tabela de formação (sufixos *-tion*, *-ment*, *-age*, *-ité* etc.), o gênero dos substantivos formados e a perda das marcas de tempo e pessoa continuam sem fonte. O guia do Eduscol não trata do assunto. Procurar OQLF, Larousse ou outra fonte sobre os sufixos. |
-| ga-indicativo-subjuntivo | As páginas do Larousse citadas no JSON original ainda não foram lidas. |
-| v-moradia | Sem fonte: *déménagement*, o falso amigo *location* × *emplacement* e o anúncio de exemplo. A página usa *locateur*, e o aide-mémoire do Québec usa *propriétaire*. |
-| gb-savoir-connaitre | Sem fonte: *savoir* + nome (*Je sais son nom*). |
-| ga-concordancia | Sem fonte: os exemplos e a dica para a prova. |
+| ga-nominalizacao | Lido o Usito: confirma a derivação de *organisation*, *fermeture*, *nettoyage* e *disponibilité* e o gênero dos substantivos. Mostra também que *décision*, *absence*, *participation* e *augmentation* vêm direto do latim, o que relativiza a tabela de formação, e isso está na caixa. Continuam sem fonte: a lista geral de sufixos (*-tion*, *-ment*, *-age*, *-ure*, *-ité*, *-ence*, *-té*) e a perda das marcas de tempo e pessoa. Uma busca por fonte dos sufixos não devolveu nada; vale procurar à mão (Larousse, CNRTL ou OQLF). |
+| ga-indicativo-subjuntivo | Larousse lido (*croire* e *trouver*): confirma só os usos afirmativos com indicativo (*Je crois qu'il est intelligent*, *Je trouve que tu exagères*). Não trata de negação nem de subjuntivo. |
+| v-moradia | Usito lido: confirma *déménagement*, *location* e *emplacement*. Sem fonte: o anúncio de exemplo e a dica de treino. A página usa *locateur*, e o aide-mémoire do Québec usa *propriétaire*. |
+| gb-savoir-connaitre | *savoir* + nome (*Je sais son nom*) agora tem sustento na OQLF (*savoir* aceita complemento de coisa, como informação ou algo sabido de cor). |
+| ga-concordancia | Sem fonte: os exemplos e a dica para a prova (material didático). |
 | Páginas de vocabulário e de funções em geral | Tabelas de vocabulário, exemplos, equivalentes da França e dicas de treino estão sem fonte nas caixas vermelhas, e isso é intencional (material didático, não regra da prova). Conferir uma tabela específica só se o usuário pedir. |
 
 ## Estado
