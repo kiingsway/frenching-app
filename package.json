@@ -1,6 +1,6 @@
 {
   "name": "frenching-electron",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "App de estudos de francês para o TEF/TCF Canada",
   "private": true,
   "main": "./out/main/index.js",
@@ -10,11 +10,12 @@
     "preview": "electron-vite preview",
     "dist:win": "electron-vite build && electron-builder --win --publish never",
     "dev:web": "vite --config vite.web.config.ts",
+    "studio": "vite --config vite.studio.config.ts",
     "build:web": "vite build --config vite.web.config.ts",
     "preview:web": "vite preview --config vite.web.config.ts",
     "icons:web": "node scripts/make-web-icons.mjs",
     "audio": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-audio.mts",
-    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json && tsc --noEmit -p tsconfig.sw.json"
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json && tsc --noEmit -p tsconfig.sw.json && tsc --noEmit -p tsconfig.studio.json"
   },
   "dependencies": {
     "electron-updater": "^6.8.11"

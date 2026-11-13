@@ -64,6 +64,68 @@ import gbExpressoes from './gb-expressoes'
 import gbAdverbios from './gb-adverbios'
 import vCanada from './v-canada'
 import vEconomia from './v-economia'
+import giFuturSimple from './gi-futur-simple'
+import giConditionnel from './gi-conditionnel'
+import fDescrever from './f-descrever'
+import fCumprimentar from './f-cumprimentar'
+import giRelativos from './gi-relativos'
+import giPlusQueParfait from './gi-plus-que-parfait'
+import vPessoal from './v-pessoal'
+import giNegacao from './gi-negacao'
+import giIndefinidos from './gi-indefinidos'
+import giDuracao from './gi-duracao'
+import giAdjetivosPosicao from './gi-adjetivos-posicao'
+import giDiscursoIndireto from './gi-discurso-indireto'
+import gaSubjonctif from './ga-subjonctif'
+import giComparativo from './gi-comparativo'
+import giPronomes from './gi-pronomes'
+import giDemonstrativos from './gi-demonstrativos'
+import giCondicionais from './gi-condicionais'
+import giSubjonctif from './gi-subjonctif'
+import giVerbosPreposicao from './gi-verbos-preposicao'
+import gaFuturAnterieur from './ga-futur-anterieur'
+import gaExpressao from './ga-expressao'
+import gaRelativos from './ga-relativos'
+import gaConditionnelPasse from './ga-conditionnel-passe'
+import gaNominalizacao from './ga-nominalizacao'
+import gaConcordancia from './ga-concordancia'
+import gaPasseSimple from './ga-passe-simple'
+import gaInfinitivoPassado from './ga-infinitivo-passado'
+import gaCausativo from './ga-causativo'
+import gaIndicativoSubjuntivo from './ga-indicativo-subjuntivo'
+import gaFuturoPassado from './ga-futuro-passado'
+import eoApresentacao from './eo-apresentacao'
+import eoPerguntas from './eo-perguntas'
+import eoOpiniao from './eo-opiniao'
+import eoPersuadir from './eo-persuadir'
+import eoFluidez from './eo-fluidez'
+import eoPronuncia from './eo-pronuncia'
+import eoHesitacao from './eo-hesitacao'
+import vMoradia from './v-moradia'
+import vTrabalho from './v-trabalho'
+import vEducacao from './v-educacao'
+import vSaude from './v-saude'
+import vConsumo from './v-consumo'
+import vTransportes from './v-transportes'
+import vViagens from './v-viagens'
+import vAlimentacao from './v-alimentacao'
+import vLazer from './v-lazer'
+import vTecnologia from './v-tecnologia'
+import vAmbiente from './v-ambiente'
+import vMidia from './v-midia'
+import vExpressoes from './v-expressoes'
+import vCidadania from './v-cidadania'
+import vSociedade from './v-sociedade'
+import fInformacoes from './f-informacoes'
+import fNarrar from './f-narrar'
+import fPlanos from './f-planos'
+import fGostos from './f-gostos'
+import fReclamar from './f-reclamar'
+import fPedidos from './f-pedidos'
+import fArgumentar from './f-argumentar'
+import fOpiniao from './f-opiniao'
+import fConselhos from './f-conselhos'
+import fHipotese from './f-hipotese'
 
 // Registro das páginas de tópico já escritas. Novas páginas entram aqui.
 export const ALL_CONTENT: TopicContent[] = [
@@ -131,7 +193,69 @@ export const ALL_CONTENT: TopicContent[] = [
   gbExpressoes,
   gbAdverbios,
   vCanada,
-  vEconomia
+  vEconomia,
+  giFuturSimple,
+  giConditionnel,
+  fDescrever,
+  fCumprimentar,
+  giRelativos,
+  giPlusQueParfait,
+  vPessoal,
+  giNegacao,
+  giIndefinidos,
+  giDuracao,
+  giAdjetivosPosicao,
+  giDiscursoIndireto,
+  gaSubjonctif,
+  giComparativo,
+  giPronomes,
+  giDemonstrativos,
+  giCondicionais,
+  giSubjonctif,
+  giVerbosPreposicao,
+  gaFuturAnterieur,
+  gaExpressao,
+  gaRelativos,
+  gaConditionnelPasse,
+  gaNominalizacao,
+  gaConcordancia,
+  gaPasseSimple,
+  gaInfinitivoPassado,
+  gaCausativo,
+  gaIndicativoSubjuntivo,
+  gaFuturoPassado,
+  eoApresentacao,
+  eoPerguntas,
+  eoOpiniao,
+  eoPersuadir,
+  eoFluidez,
+  eoPronuncia,
+  eoHesitacao,
+  vMoradia,
+  vTrabalho,
+  vEducacao,
+  vSaude,
+  vConsumo,
+  vTransportes,
+  vViagens,
+  vAlimentacao,
+  vLazer,
+  vTecnologia,
+  vAmbiente,
+  vMidia,
+  vExpressoes,
+  vCidadania,
+  vSociedade,
+  fInformacoes,
+  fNarrar,
+  fPlanos,
+  fGostos,
+  fReclamar,
+  fPedidos,
+  fArgumentar,
+  fOpiniao,
+  fConselhos,
+  fHipotese
 ]
 
 const CONTENT: Record<string, TopicContent> = Object.fromEntries(

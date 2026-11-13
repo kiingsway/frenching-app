@@ -14,8 +14,8 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Prova', 'TEF Canada', 'TCF Canada', 'Como é feita'],
         rows: [
-          ['Compreensão oral', '40 questões · 40 min', '39 questões · 35 min', 'Coletiva, múltipla escolha, geralmente no computador'],
-          ['Compreensão escrita', '40 questões · 60 min', '39 questões · 60 min', 'Coletiva, múltipla escolha, geralmente no computador'],
+          ['Compreensão oral', '40 questões · 40 min', '39 questões · 35 min', 'Coletiva, múltipla escolha (no TCF, no papel ou no computador, conforme o centro)'],
+          ['Compreensão escrita', '40 questões · 60 min', '39 questões · 60 min', 'Coletiva, múltipla escolha (no TCF, no papel ou no computador, conforme o centro)'],
           ['Expressão escrita', '2 seções · 60 min', '3 tarefas · 60 min', 'Coletiva, redação'],
           ['Expressão oral', '2 seções · cerca de 15 min', '3 tarefas · 12 min', 'Individual, com um examinador']
         ]
@@ -125,8 +125,8 @@ const content: TopicContent = {
         type: 'table',
         headers: ['Épreuve', 'TEF Canada', 'TCF Canada', 'Déroulement'],
         rows: [
-          ['Compréhension orale', '40 questions · 40 min', '39 questions · 35 min', 'Collective, QCM, généralement sur ordinateur'],
-          ['Compréhension écrite', '40 questions · 60 min', '39 questions · 60 min', 'Collective, QCM, généralement sur ordinateur'],
+          ['Compréhension orale', '40 questions · 40 min', '39 questions · 35 min', 'Collective, QCM (au TCF, sur papier ou sur ordinateur, selon le centre)'],
+          ['Compréhension écrite', '40 questions · 60 min', '39 questions · 60 min', 'Collective, QCM (au TCF, sur papier ou sur ordinateur, selon le centre)'],
           ['Expression écrite', '2 sections · 60 min', '3 tâches · 60 min', 'Collective, rédaction'],
           ['Expression orale', '2 sections · environ 15 min', '3 tâches · 12 min', 'Individuelle, avec un examinateur']
         ]

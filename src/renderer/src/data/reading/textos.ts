@@ -268,5 +268,84 @@ export const TEXTOS: ReadingPassageDraft[] = [
         '“On en convient” (é preciso admitir) marca a concessão: o autor aceita um argumento contrário e logo responde com “encore faut-il…”. Reconhecer a concessão e o contra-argumento é o que a prova cobra nos textos argumentativos.'
       ]
     ]
+  },
+
+  {
+    id: 'ce-horaire-pharmacie',
+    level: 'A1',
+    kind: 'ce-cotidiano',
+    title: 'Pharmacie Lavoie : heures d’ouverture',
+    text: [
+      'Lundi au vendredi : de 9 h à 21 h',
+      'Samedi : de 10 h à 18 h',
+      'Dimanche : fermé',
+      'Le 1er juillet, la pharmacie est fermée.',
+      'Livraison gratuite à domicile, du lundi au vendredi.',
+      'Vaccin contre la grippe : le mardi et le jeudi, sur rendez-vous.',
+      'Stationnement gratuit derrière la pharmacie.',
+      'Téléphone : 418 555-0123'
+    ],
+    translation: [
+      'De segunda a sexta: das 9h às 21h',
+      'Sábado: das 10h às 18h',
+      'Domingo: fechado',
+      'No dia 1º de julho, a farmácia está fechada.',
+      'Entrega grátis em casa, de segunda a sexta.',
+      'Vacina contra a gripe: às terças e quintas, com hora marcada.',
+      'Estacionamento grátis atrás da farmácia.',
+      'Telefone: 418 555-0123'
+    ],
+    questions: [
+      [
+        'Quel jour de la semaine la pharmacie est-elle fermée ?',
+        ['Le dimanche.', 'Le samedi.', 'Le lundi.', 'Le vendredi.'],
+        '“Dimanche : fermé.” Dimanche é domingo e samedi é sábado: cuidado para não trocar os dois. Fermé quer dizer fechado (o contrário de ouvert, aberto).'
+      ],
+      [
+        'À quelle heure la pharmacie ouvre-t-elle le samedi ?',
+        ['À 10 h.', 'À 9 h.', 'À 18 h.', 'À 21 h.'],
+        '“Samedi : de 10 h à 18 h.” Ouvrir é abrir: a farmácia abre às 10h e fecha às 18h. As 9h e as 21h são o horário de segunda a sexta. Em francês, as horas são escritas com h e espaços: 10 h.'
+      ],
+      [
+        'Est-ce que la pharmacie est ouverte le 1er juillet ?',
+        [
+          'Non, elle est fermée.',
+          'Oui, de 9 h à 21 h.',
+          'Oui, de 10 h à 18 h.',
+          'Oui, seulement le matin.'
+        ],
+        '“Le 1er juillet, la pharmacie est fermée.” O aviso abre uma exceção ao horário normal: nesse dia, fechada o dia todo. Fermée tem -e no fim porque concorda com la pharmacie (feminino). 1er se lê premier: em francês, só o dia 1 usa o ordinal.'
+      ],
+      [
+        'Quels jours peut-on recevoir le vaccin contre la grippe ?',
+        [
+          'Le mardi et le jeudi.',
+          'Le lundi et le vendredi.',
+          'Le mercredi et le samedi.',
+          'Tous les jours.'
+        ],
+        '“Vaccin contre la grippe : le mardi et le jeudi.” Mardi é terça e jeudi é quinta; mercredi, a quarta, é fácil de confundir com mardi. Sur rendez-vous quer dizer com hora marcada.'
+      ],
+      [
+        'Où est le stationnement ?',
+        [
+          'Derrière la pharmacie.',
+          'Devant la pharmacie.',
+          'À côté de la pharmacie.',
+          'Dans la rue.'
+        ],
+        '“Stationnement gratuit derrière la pharmacie.” Derrière é atrás; devant é na frente. Stationnement é a palavra do Québec para estacionamento; na França, diz-se parking.'
+      ],
+      [
+        'Le samedi, est-ce que la pharmacie fait des livraisons ?',
+        [
+          'Non, seulement du lundi au vendredi.',
+          'Oui, de 10 h à 18 h.',
+          'Oui, gratuitement.',
+          'Oui, sur rendez-vous.'
+        ],
+        '“Livraison gratuite à domicile, du lundi au vendredi.” A farmácia abre no sábado, mas a entrega só vale de segunda a sexta. Gratuite (grátis) está no texto, mas não responde à pergunta: é a armadilha.'
+      ]
+    ]
   }
 ]

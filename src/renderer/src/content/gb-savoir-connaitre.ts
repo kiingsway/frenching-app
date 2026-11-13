@@ -174,7 +174,7 @@ const content: TopicContent = {
         text:
           'A página do OQLF listada confirma o sentido comum dos dois verbos e a distinção: connaître para pessoas, coisas, existência, domínio de uma área e experiência vivida; savoir para atividade aprendida, informação, algo sabido de cor e conhecimento mais aprofundado. ' +
           'Ela também diz que a oposição é muitas vezes sutil e que, em certos contextos, os dois verbos servem. ' +
-          'O PDF do ministério do Québec listado abre, mas o conteúdo dele não foi conferido. ' +
+          'A ficha "Savoir ou connaître ?" do ministério do Québec (Québec Atout) confirma [[savoir + infinitif|saber + infinitivo]] ([[Mon enfant sait marcher.|Meu filho sabe andar.]]), [[savoir|saber]] seguido de [[où|onde]], [[quand|quando]], [[comment|como]], [[combien|quanto]] ou [[que|que]] ([[Tu sais que je suis malade.|Você sabe que estou doente.]]) e [[connaître|conhecer]] + nome ([[Je connais l’histoire de mon pays.|Conheço a história do meu país.]] e [[Elle ne connaît pas le premier ministre.|Ela não conhece o primeiro-ministro.]]). Ela não trata de savoir + nome ([[Je sais son nom.|Sei o nome dele.]]). ' +
           'Nenhuma fonte confirma as recomendações de aplicação ao TEF Canada e ao TCF Canada: são sugestões de preparação, não exigências das provas.'
       }
     ]
@@ -347,7 +347,7 @@ const content: TopicContent = {
         text:
           'La page de l’OQLF indiquée confirme le sens commun des deux verbes et la distinction : connaître pour les personnes, les choses, l’existence, la maîtrise d’un domaine et l’expérience vécue ; savoir pour l’activité apprise, l’information, ce qu’on sait par cœur et une connaissance plus approfondie. ' +
           'Elle dit aussi que l’opposition est souvent ténue et que, dans certains contextes, les deux verbes peuvent convenir. ' +
-          'Le PDF du ministère du Québec indiqué s’ouvre, mais son contenu n’a pas été vérifié. ' +
+          'La fiche « Savoir ou connaître ? » du ministère du Québec (Québec Atout) confirme savoir + infinitif (Mon enfant sait marcher), savoir suivi de où, quand, comment, combien ou que (Tu sais que je suis malade) et connaître + nom (Je connais l’histoire de mon pays, Elle ne connaît pas le premier ministre). Elle ne traite pas de savoir + nom (Je sais son nom). ' +
           'Aucune source ne confirme les recommandations d’application au TEF Canada et au TCF Canada : ce sont des suggestions de préparation, pas des exigences des épreuves.'
       }
     ]
@@ -356,6 +356,10 @@ const content: TopicContent = {
   audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
+    {
+      title: 'Savoir ou connaître ? (fiche Québec Atout, Autrement dit) — ministère de l’Immigration du Québec',
+      url: 'https://referencesfrancisation.immigration-quebec.gouv.qc.ca/moodle_ref/pluginfile.php/1/block_public_files/files/Catalogue/PDF/DA%20Cahiers/Cahier%204/02%20%C3%89tablissement/CA_DA_O2T2S2_Cahier4_T3-IF6_248_249_lacunaire_savoir_connaitre.pdf'
+    },
     {
       title: 'OQLF – Différence entre savoir et connaître',
       url: 'https://vitrinelinguistique.oqlf.gouv.qc.ca/22416/le-vocabulaire/nuances-semantiques/difference-entre-savoir-et-connaitre'

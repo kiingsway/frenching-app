@@ -16,7 +16,7 @@ const content: TopicContent = {
           'São aceitos pelo IRCC para Express Entry e outros programas de imigração.',
           'Avaliam 4 habilidades: compreensão oral, compreensão escrita, expressão oral e expressão escrita. Para a residência permanente, as 4 são obrigatórias.',
           'O resultado é convertido em níveis NCLC (de 1 a 12), que é o que conta no seu perfil.',
-          'O resultado vale por 2 anos a partir da data da prova.',
+          'O IRCC aceita resultados com menos de 2 anos, tanto ao criar o perfil quanto ao enviar o pedido de residência. No TCF Canada, o atestado vale 2 anos a partir da data em que o resultado sai.',
           'Compreensão oral e escrita são de múltipla escolha; expressão oral é feita com um examinador.'
         ]
       },
@@ -109,7 +109,8 @@ const content: TopicContent = {
         items: [
           'TEF Canada: cada prova recebe uma pontuação própria, depois convertida em NCLC.',
           'TCF Canada: compreensões recebem nota de 100 a 699; expressões recebem nota de 0 a 20. Cada uma é convertida em NCLC.',
-          'Nos dois, cada habilidade tem seu próprio NCLC. Para a categoria de francês do Express Entry, você precisa de NCLC 7 em todas.'
+          'Nos dois, cada habilidade tem seu próprio NCLC. Para a categoria de francês do Express Entry, você precisa de NCLC 7 em todas.',
+          'TCF Canada: a partir das provas de 1º de setembro de 2026, não dá mais para pedir uma nova correção das provas de expressão oral e escrita. A France Éducation international prevê voltar a aceitar esses pedidos no outono de 2027.'
         ]
       },
 
@@ -137,7 +138,7 @@ const content: TopicContent = {
         type: 'callout',
         tone: 'warning',
         text:
-          'Preços, datas, regras para refazer a prova e detalhes do formato mudam. Confirme sempre no site oficial do exame e do IRCC antes de se inscrever.'
+          'Preços, datas, regras para refazer a prova e detalhes do formato mudam. No TCF Canada, por exemplo, é preciso esperar 20 dias entre uma prova e outra. Confirme sempre no site oficial do exame e do IRCC antes de se inscrever.'
       }
     ]
   },
@@ -155,7 +156,7 @@ const content: TopicContent = {
           'Ils sont acceptés par IRCC pour Entrée express et les autres programmes d’immigration.',
           'Ils évaluent 4 compétences : compréhension orale, compréhension écrite, expression orale et expression écrite. Pour la résidence permanente, les 4 sont obligatoires.',
           'Le résultat est converti en niveaux NCLC (de 1 à 12) : c’est ce qui compte dans votre profil.',
-          'Le résultat est valable 2 ans à partir de la date de l’examen.',
+          'IRCC accepte les résultats de moins de 2 ans, à la création du profil comme au dépôt de la demande de résidence permanente. Pour le TCF Canada, l’attestation est valable 2 ans à partir de la date de délivrance des résultats.',
           'Les compréhensions orale et écrite sont des QCM ; l’expression orale se passe face à un examinateur.'
         ]
       },
@@ -244,7 +245,8 @@ const content: TopicContent = {
         items: [
           'TEF Canada : chaque épreuve reçoit son propre score, ensuite converti en NCLC.',
           'TCF Canada : les compréhensions sont notées de 100 à 699 ; les expressions de 0 à 20. Chaque note est convertie en NCLC.',
-          'Dans les deux cas, chaque compétence a son propre NCLC. Pour la catégorie francophone d’Entrée express, il faut le NCLC 7 dans toutes.'
+          'Dans les deux cas, chaque compétence a son propre NCLC. Pour la catégorie francophone d’Entrée express, il faut le NCLC 7 dans toutes.',
+          'TCF Canada : à partir des sessions du 1er septembre 2026, les demandes de recorrection des épreuves d’expression orale et écrite ne sont plus acceptées. France Éducation international prévoit de reprendre ce service à l’automne 2027.'
         ]
       },
 
@@ -272,7 +274,7 @@ const content: TopicContent = {
         type: 'callout',
         tone: 'warning',
         text:
-          'Les tarifs, les dates, les règles pour repasser l’examen et les détails du format changent. Vérifiez toujours sur le site officiel de l’examen et d’IRCC avant de vous inscrire.'
+          'Les tarifs, les dates, les règles pour repasser l’examen et les détails du format changent. Pour le TCF Canada, par exemple, il faut attendre 20 jours entre deux passations. Vérifiez toujours sur le site officiel de l’examen et d’IRCC avant de vous inscrire.'
       }
     ]
   },
@@ -283,6 +285,10 @@ const content: TopicContent = {
     {
       title: 'France Éducation international – TCF Canada',
       url: 'https://www.france-education-international.fr/test/tcf-canada?langue=fr'
+    },
+    {
+      title: 'IRCC – Express Entry: Language test results',
+      url: 'https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/documents/language-test.html'
     },
     {
       title: 'IRCC – Express Entry for French-speaking skilled workers',

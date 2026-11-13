@@ -52,7 +52,7 @@ Lista de conferência para todo conteúdo novo ou vindo de outra IA (páginas de
 
 ## 6. Áudio
 
-- Depois de integrar, rode `npm run audio` (sem `--force`). Se o script avisar que apagou áudios sem uso, confira se foi esperado.
+- Depois de integrar, **sugira** rodar `npm run audio` (sem `--force`); só rode se o usuário pedir explicitamente. Se o script avisar que apagou áudios sem uso, confira se foi esperado.
 - Texto que mudou gera áudio novo; o antigo, sem uso, é apagado. Isso é normal.
 
 ## 7. O que ainda cabe ao usuário

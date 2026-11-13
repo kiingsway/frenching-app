@@ -146,8 +146,8 @@ const content: TopicContent = {
           'O site oficial e o exemplo oficial de prova (PDF) confirmam: 5 minutos e 30 segundos, dos quais 2 minutos de preparação e 3 minutos e 30 segundos de conversa; ' +
           'o objetivo de obter informações numa situação da vida cotidiana; o examinador com um papel dado pelo enunciado; você falar primeiro e conduzir a conversa; ' +
           'poder pedir mais detalhes ou repetição; poder tomar notas na folha fornecida durante a preparação. ' +
-          'Nenhuma fonte confirma isto: os critérios citados (vocabulário, gramática, fluidez, coerência, adequação ao contexto social); a referência ao nível B2; ' +
-          'a ideia de que a prova pede perguntas complementares e comparação de opções; e os cenários de treino sugeridos. ' +
+          'O manual do examinador do TCF (versão Q, dezembro de 2025) confirma, para a tarefa 2: obter informações numa situação cotidiana de comunicação não formal, solicitar o interlocutor no mínimo 5 vezes (perguntas, pedidos de precisão ou de repetição), tomar notas curtas na preparação, respostas do examinador de 20 a 30 segundos (no máximo um terço do tempo) e a grade de critérios (léxico, gramática, fluidez, interação, coerência). ' +
+          'Nenhuma fonte confirma isto: a comparação de opções e os cenários de treino sugeridos. ' +
           'O exemplo do curso de culinária, as frases-modelo e as dicas de preparação (como levantar de quatro a seis informações) são sugestões de preparação, não regras da prova.'
       }
     ]
@@ -290,8 +290,8 @@ const content: TopicContent = {
           'Le site officiel et l’exemple officiel d’épreuve (PDF) confirment : 5 minutes 30 dont 2 minutes de préparation et 3 minutes 30 d’échange ; ' +
           'l’objectif d’obtenir des informations dans une situation de la vie quotidienne ; l’examinateur qui joue un rôle donné par le sujet ; le candidat qui parle en premier et conduit la conversation ; ' +
           'la possibilité de demander des précisions ou de faire répéter ; la possibilité de prendre des notes sur la feuille fournie pendant la préparation. ' +
-          'Aucune source ne confirme ceci : les critères cités (vocabulaire, grammaire, aisance, cohérence, adaptation au contexte social) ; la référence au niveau B2 ; ' +
-          'l’idée que l’épreuve demande des questions complémentaires et la comparaison d’options ; et les situations d’entraînement proposées. ' +
+          'Le manuel de l’examinateur du TCF (version Q, décembre 2025) confirme, pour la tâche 2 : obtenir des informations dans une situation de la vie quotidienne dans un cadre de communication non formel, solliciter l’interlocuteur au moins 5 fois (questions, demandes de précisions ou de répétition), prendre de courtes notes pendant la préparation, des réponses de l’examinateur de 20 à 30 secondes (au plus un tiers du temps) et la grille de critères (lexique, grammaire, fluidité, interaction, cohérence). ' +
+          'Aucune source ne confirme ceci : la comparaison d’options et les situations d’entraînement proposées. ' +
           'L’exemple du cours de cuisine, les phrases modèles et les conseils de préparation (comme repérer quatre à six informations) sont des suggestions, pas des règles de l’épreuve.'
       }
     ]
@@ -300,6 +300,10 @@ const content: TopicContent = {
   audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
+    {
+      title: 'Manuel de l’examinateur du TCF, version Q, décembre 2025 — France Éducation international',
+      url: 'https://www.france-education-international.fr/document/manuel-examinateur-tcf'
+    },
     {
       title: 'TCF Canada – Apresentação oficial das provas e da expressão oral',
       url: 'https://www.france-education-international.fr/test/tcf-canada'

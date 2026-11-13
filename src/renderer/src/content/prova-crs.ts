@@ -6,7 +6,7 @@ const content: TopicContent = {
   pt: {
     title: 'Pontuação CRS para francês',
     summary:
-      'No Express Entry, cada candidato recebe uma nota no CRS (Comprehensive Ranking System), de até 1.200 pontos. ' +
+      'No Express Entry, cada candidato recebe uma nota no CRS (Comprehensive Ranking System), que soma pontos de idade, estudo, idioma, experiência e outros fatores. ' +
       'O idioma é um dos fatores que mais pesam, e o francês pode render pontos de três formas diferentes.',
     blocks: [
       { type: 'heading', text: 'As três formas de o francês dar pontos' },
@@ -17,6 +17,11 @@ const content: TopicContent = {
           'Como segunda língua oficial, se a primeira for o inglês: até 24 pontos.',
           'Bônus por francês: até 50 pontos extras para quem tem NCLC 7 nas 4 habilidades.'
         ]
+      },
+      {
+        type: 'paragraph',
+        text:
+          'Desde 3 de novembro de 2026, o IRCC pontua de outro jeito a experiência de trabalho no Canadá e a oferta de emprego, que não exige mais LMIA. Os pontos de idioma desta página não mudaram.'
       },
       {
         type: 'paragraph',
@@ -127,7 +132,7 @@ const content: TopicContent = {
   fr: {
     title: 'Points CRS pour le français',
     summary:
-      'Dans Entrée express, chaque candidat reçoit une note au SCG (Système de classement global, CRS en anglais), jusqu’à 1 200 points. ' +
+      'Dans Entrée express, chaque candidat reçoit une note au SCG (Système de classement global, CRS en anglais), qui additionne des points pour l’âge, les études, la langue, l’expérience et d’autres facteurs. ' +
       'La langue est l’un des facteurs les plus importants, et le français peut rapporter des points de trois façons.',
     blocks: [
       { type: 'heading', text: 'Les trois façons dont le français rapporte des points' },
@@ -138,6 +143,11 @@ const content: TopicContent = {
           'Comme deuxième langue officielle, si la première est l’anglais : jusqu’à 24 points.',
           'Points supplémentaires pour le français : jusqu’à 50 points pour le NCLC 7 dans les 4 compétences.'
         ]
+      },
+      {
+        type: 'paragraph',
+        text:
+          'Depuis le 3 novembre 2026, IRCC attribue autrement les points pour l’expérience de travail au Canada et pour l’offre d’emploi, qui n’exige plus d’EIMT. Les points de langue de cette fiche n’ont pas changé.'
       },
       {
         type: 'paragraph',

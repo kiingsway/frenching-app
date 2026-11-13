@@ -121,8 +121,8 @@ const content: TopicContent = {
         text:
           'O site oficial e o exemplo oficial de prova (PDF) confirmam: entrevista dirigida sem preparação, de 2 minutos, com um examinador que você não conhece, avaliando a capacidade de falar de si e do seu meio familiar e profissional; ' +
           'os temas (estado civil, família, estudos, situação profissional, hábitos, gostos, fatos passados, moradia, projetos, viagens); e o pedido inicial “Est-ce que vous pouvez vous présenter ?”. ' +
-          'Nenhuma fonte confirma isto: o examinador começar com perguntas gerais e depois fazer complementares, ' +
-          'os critérios citados (vocabulário, gramática, pronúncia, interação, organização das ideias) e a referência ao nível B2. ' +
+          'O manual do examinador do TCF (versão Q, dezembro de 2025) confirma que a tarefa 1 avalia todos os níveis (A1 a C2), que o examinador faz perguntas para obter informações e relança conforme as respostas, variando as perguntas e adaptando o número delas ao tamanho das respostas, e a grade de critérios (léxico, correção gramatical, fluidez e pronúncia, interação). ' +
+          'Nenhuma fonte confirma isto: o examinador começar com perguntas gerais e só depois fazer as complementares, a organização das ideias como critério citado e a referência ao nível B2 para esta tarefa. ' +
           'Os exemplos de resposta e os conselhos de treino são sugestões de preparação, não regras da prova.'
       }
     ]
@@ -244,8 +244,8 @@ const content: TopicContent = {
         text:
           'Le site officiel et l’exemple officiel d’épreuve (PDF) confirment : un entretien dirigé sans préparation, de deux minutes, avec un examinateur que vous ne connaissez pas, qui évalue la capacité à parler de soi et de son environnement familial et professionnel ; ' +
           'les thèmes (état civil, famille, études, situation professionnelle, habitudes, goûts, événements passés, logement, projets, voyages) ; et la demande initiale « Est-ce que vous pouvez vous présenter ? ». ' +
-          'Aucune source ne confirme ceci : l’examinateur qui commence par des questions générales puis pose des questions complémentaires, ' +
-          'les critères cités (vocabulaire, grammaire, prononciation, interaction, organisation des idées) et la référence au niveau B2. ' +
+          'Le manuel de l’examinateur du TCF (version Q, décembre 2025) confirme que la tâche 1 évalue tous les niveaux (A1 à C2), que l’examinateur pose des questions pour obtenir des informations et relance en fonction des réponses, en variant les questions et en adaptant leur nombre à la longueur des réponses, et la grille de critères (lexique, correction grammaticale, fluidité et prononciation, interaction). ' +
+          'Aucune source ne confirme ceci : l’examinateur qui commence par des questions générales puis pose des questions complémentaires, l’organisation des idées comme critère cité et la référence au niveau B2 pour cette tâche. ' +
           'Les exemples de réponses et les conseils d’entraînement sont des suggestions de préparation, pas des règles de l’épreuve.'
       }
     ]
@@ -254,6 +254,10 @@ const content: TopicContent = {
   audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
+    {
+      title: 'Manuel de l’examinateur du TCF, version Q, décembre 2025 — France Éducation international',
+      url: 'https://www.france-education-international.fr/document/manuel-examinateur-tcf'
+    },
     {
       title: 'TCF Canada – Présentation officielle des épreuves et de l’expression orale',
       url: 'https://www.france-education-international.fr/test/tcf-canada'

@@ -6,9 +6,10 @@
 
 import type { Source } from '../../content/types'
 
-export type ReadingLevel = 'A2' | 'B1' | 'B2' | 'C1'
+// A1 = os documentos mais curtos do começo da prova (veja a página ce-cotidiano)
+export type ReadingLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1'
 
-export const READING_LEVELS: ReadingLevel[] = ['A2', 'B1', 'B2', 'C1']
+export const READING_LEVELS: ReadingLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1']
 
 // Tipo de documento = tópico da seção "Compreensão escrita" de data/topics.ts,
 // para o app poder abrir a teoria daquele tipo de texto

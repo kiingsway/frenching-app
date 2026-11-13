@@ -4,14 +4,24 @@
 
 - **Armazenamento dos áudios (direção definida, detalhes em aberto, nada construído):** o usuário vai colocar cerca de 5x mais áudio, com áudios longos e várias vozes para o mesmo texto, e prefere um `.exe` bem leve. Parte dos áudios vem no app, e o resto é baixado quando for preciso e fica guardado. O serviço na nuvem fica para depois. As decisões e o que falta decidir estão em [docs/armazenamento-de-audios.md](docs/armazenamento-de-audios.md). Ao retomar o assunto, comece por esse documento; não construa nada sem o usuário pedir.
 
+- **Verificação das fontes que não foram abertas (em andamento, desde 2026-11-12):** várias páginas de estudo têm fontes que não consegui abrir (PDFs, sites bloqueados) e 10 páginas de Funções (`f-*`) foram integradas sem abrir nenhuma fonte, a pedido do usuário. O controle está em [docs/fontes-nao-verificadas.md](docs/fontes-nao-verificadas.md): só tem as pendências (o que já foi resolvido saiu de lá) e o passo a passo para conferir uma fonte, inclusive PDF. Ao retomar, comece por esse documento e atualize-o a cada fonte resolvida. Pendente hoje: as fontes do Concordia (site fora do ar), e algumas lacunas por página (a página `nos-langues.canada.ca/…/sil-vous-plait` de `f-pedidos`, bloqueada pelo Cloudflare, foi conferida só por resumo de busca) (por exemplo, a tabela de sufixos de `ga-nominalizacao`).
+
+- **Próxima tarefa: citações numeradas `[n]` nas páginas de estudo (definida em 2026-11-12, nada construído):** o texto das páginas passa a citar as fontes com marcadores numerados, como na Wikipédia. Regras combinadas com o usuário:
+  - Cada fonte da lista `sources` ganha o número da sua posição (1, 2, 3…), e o texto cita `[1]`, `[2]`, etc. no fim de cada afirmação que uma fonte confirma.
+  - **A caixa vermelha "Sem fonte oficial" deixa de citar fontes.** Frases do tipo "o OQLF confirma…" ou "o CCDMD confirma…" são removidas da caixa e substituídas pelo `[n]` da fonte, no lugar onde a afirmação aparece. A caixa só fica com o que não tem fonte e com comentários que sejam necessários (por exemplo, uma nuance entre fontes que se contradizem, ou o aviso de que algo é conselho de preparação). Se não sobrar nada a comentar, a caixa não é usada.
+  - A seção **Fontes** no fim da página passa a mostrar o número (`[n]`) antes do título de cada fonte.
+  - Como é mudança que quem usa o app percebe, sobe a versão (minor) e entra no changelog.
+  - Cuidados: os números dependem da ordem da lista de `sources`, então a ordem fica fixa (se uma fonte for removida ou reordenada, atualizar os `[n]` do texto junto); o áudio não deve ler os marcadores (omitir `[n]` na geração, senão o áudio diria "colchete um"); opcionalmente, tornar o `[n]` clicável, levando à fonte.
+  - Aplicar primeiro às páginas já revisadas. Para as 10 páginas de Funções e as demais com fontes ainda não lidas, o `[n]` só entra depois da leitura (veja o item acima, de verificação das fontes). As regras de conteúdo desta seção, mais abaixo, devem ser atualizadas junto quando a tarefa for feita.
+
 ## "Adicionar o próximo conteúdo" (caixa de entrada)
 
-O usuário coloca os JSONs de páginas de estudo em `content-inbox/` (fora do Git; no `npm run dev`, o administrador também pode colar o JSON pelo botão "Colar JSON" das páginas sem conteúdo, que salva o arquivo lá) e, em qualquer sessão, diz **"adicionar o próximo conteúdo"**. Fluxo:
+O usuário coloca os JSONs de páginas de estudo em `content-inbox/` (fora do Git; no `npm run dev`, o administrador também pode colar o JSON pelo botão "Colar JSON" das páginas sem conteúdo, que salva o arquivo lá; e o **studio** (`npm run studio`, em `studio/`, porta 5175) faz o mesmo para todos os tópicos do Painel, com o pedido para a IA e o andamento de cada tópico) e, em qualquer sessão, diz **"adicionar o próximo conteúdo"**. Fluxo:
 
 1. Pegue o `.json` mais antigo de `content-inbox/` (se não houver, diga isso e pare).
 2. Rode `node scripts/importar-json.mts content-inbox/<arquivo>.json`. Ele acha o tópico pelo campo `topic`, corrige apóstrofos, divide o francês da versão `pt` por frase, grava `src/renderer/src/content/<id>.ts`, registra em `content/index.ts` e lista avisos. Se o tópico não for achado, mostre os títulos parecidos de `data/topics.ts` e pergunte.
 3. **Revise** pela lista de [docs/revisao-de-conteudo.md](docs/revisao-de-conteudo.md): abra as fontes (o script não confere endereços), confira fatos da prova, falsos cognatos, exemplos e tabelas, e corrija no arquivo gerado. Sugestões que não vêm de fonte oficial saem ou são marcadas como sugestão.
-4. `npm run typecheck` e `npm run audio` (repita se der EPERM; sem `--force`).
+4. `npm run typecheck`. **Não rode `npm run audio` por conta própria:** só rode se o usuário pedir explicitamente. Ao terminar a página, sugira rodá-lo (o usuário também pode rodar). Se pedir e der EPERM, repita; sem `--force`.
 5. Mova o JSON para `content-inbox/feitos/` e relate o que corrigiu e o que não conferiu. Não faça commit nem push sem o usuário pedir.
 
 Um arquivo por vez. Se o usuário pedir "todos", repita o fluxo para cada um.
@@ -55,7 +65,7 @@ Valem ao escrever ou integrar conteúdo, inclusive o gerado por outras IAs. Os m
 
 ### Áudio
 
-- Depois de criar conteúdo ou mudar o francês, rode `npm run audio`, que gera só o que falta. **Não use `--force`** sem o usuário pedir; para textos específicos, use `--only=chave1,chave2`.
+- **Ao adicionar ou mudar conteúdo, não rode `npm run audio` por conta própria** (pedido do usuário): só rode se ele pedir explicitamente. Depois de criar a página, apenas **sugira** rodá-lo, dizendo que faltam áudios. O comando gera só o que falta. **Não use `--force`** sem o usuário pedir; para textos específicos, use `--only=chave1,chave2`.
 - Vozes (`AUDIO_VOICES` em `src/renderer/src/lib/audio-texts.ts`): Sylvie (mulher, padrão) e Antoine (homem), do Canadá; Denise e Vivienne, da França. A voz de cada texto que não usa a padrão fica em `assets/audio/voices.json`, inclusive os gerados antes de a Sylvie virar a padrão: ao mudar a voz padrão, marque os áudios existentes com a voz atual deles. Não troque a voz de textos existentes sem o usuário pedir, porque isso gera os áudios de novo.
 
 ### Revisão

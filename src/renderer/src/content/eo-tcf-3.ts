@@ -142,8 +142,8 @@ const content: TopicContent = {
         text:
           'O site oficial e o exemplo oficial de prova (PDF) confirmam: 4 minutos e 30 segundos, sem preparação, com uma pergunta escolhida pelo examinador; ' +
           'responder de forma argumentada, com exemplos, justificando as ideias e tentando convencer; e avaliar a opinião, vantagens e desvantagens, concordância e discordância e uma argumentação clara e estruturada. ' +
-          'Nenhuma fonte confirma isto: os outros critérios citados (coerência, vocabulário, gramática, pronúncia, fluidez, adequação ao contexto); a referência ao nível B2; ' +
-          'e o que o examinador faz durante a fala (o manual do candidato não foi consultado). ' +
+          'O manual do examinador do TCF (versão Q, dezembro de 2025) confirma o nível B2 como referência (a partir do B2, o candidato deve falar 4 minutos e 30 estruturando e nuançando o argumento e superar sozinho as dificuldades), o que o examinador faz (só intervém se precisar de precisões ou se o candidato tiver dificuldade para achar ideias ou ficar em silêncio) e a grade de critérios (léxico, correção gramatical, fluidez e pronúncia, interação, coerência e desenvolvimento temático). O manual do candidato confirma que o examinador pode interromper com perguntas sobre o ponto de vista e, se suspeitar de texto decorado, para verificar a competência real. ' +
+          'Nenhuma fonte confirma a adequação ao contexto como critério citado da expressão oral. ' +
           'A estrutura sugerida de opinião, argumentos, exemplos, ressalva e conclusão, os conectores, os modelos de resposta e os temas de treino além dos exemplos oficiais são recomendações didáticas, ' +
           'não uma fórmula obrigatória nem temas garantidos na prova.'
       }
@@ -289,8 +289,8 @@ const content: TopicContent = {
         text:
           'Le site officiel et l’exemple officiel d’épreuve (PDF) confirment : quatre minutes trente, sans préparation, avec une question choisie par l’examinateur ; ' +
           'répondre de façon argumentée, avec des exemples, en justifiant ses idées et en essayant de convaincre ; et l’évaluation de l’opinion, des avantages et inconvénients, de l’accord et du désaccord et d’une argumentation claire et structurée. ' +
-          'Aucune source ne confirme ceci : les autres critères cités (cohérence, vocabulaire, grammaire, prononciation, aisance, adaptation au contexte) ; la référence au niveau B2 ; ' +
-          'et ce que fait l’examinateur pendant la prise de parole (le manuel du candidat n’a pas été consulté). ' +
+          'Le manuel de l’examinateur du TCF (version Q, décembre 2025) confirme le niveau B2 comme référence (à partir du B2, le candidat doit parler 4 minutes 30 en structurant et en nuançant son argumentaire et surmonter seul ses difficultés), ce que fait l’examinateur (il n’intervient que s’il a besoin de précisions ou si le candidat peine à trouver ses idées ou devient silencieux) et la grille de critères (lexique, correction grammaticale, fluidité et prononciation, interaction, cohérence et développement thématique). Le manuel du candidat confirme que l’examinateur peut interrompre par des questions sur le point de vue et, s’il soupçonne un texte appris par cœur, pour vérifier la compétence réelle. ' +
+          'Aucune source ne confirme l’adaptation au contexte comme critère cité de l’expression orale. ' +
           'La structure proposée (opinion, arguments, exemples, réserve, conclusion), les connecteurs, les modèles de réponses et les thèmes d’entraînement au-delà des exemples officiels sont des recommandations pédagogiques, ' +
           'pas une formule obligatoire ni des thèmes garantis à l’épreuve.'
       }
@@ -300,6 +300,14 @@ const content: TopicContent = {
   audio: ['title', 'summary', 'headings', 'paragraphs', 'lists', 'callouts', 'tables', 'terms'],
 
   sources: [
+    {
+      title: 'Manuel de l’examinateur du TCF, version Q, décembre 2025 — France Éducation international',
+      url: 'https://www.france-education-international.fr/document/manuel-examinateur-tcf'
+    },
+    {
+      title: 'Manuel du candidat au TCF, version Q — France Éducation international',
+      url: 'https://france-education-international.fr/document/manuelcandidattoutes20dc3a9clinaisonsi'
+    },
     {
       title: 'TCF Canada – Apresentação oficial das provas e da expressão oral',
       url: 'https://www.france-education-international.fr/test/tcf-canada'

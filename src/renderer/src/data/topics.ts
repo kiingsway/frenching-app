@@ -199,7 +199,7 @@ export const SECTIONS: Section[] = [
         id: 'gi-demonstrativos',
         title: 'Pronomes demonstrativos e possessivos (celui, ce qui/ce que, le mien)'
       },
-      { id: 'gi-indefinidos', title: "Pronomes indefinidos (tout, chacun, quelqu'un, plusieurs)" },
+      { id: 'gi-indefinidos', title: 'Pronomes indefinidos (tout, chacun, quelqu’un, plusieurs)' },
       { id: 'gi-duracao', title: 'Preposições de duração (depuis, pendant, pour, en, dans)' },
       {
         id: 'gi-verbos-preposicao',

@@ -39,6 +39,32 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '1.4.2',
+    date: '2026-11-12',
+    changes: {
+      added: [
+        {
+          pt: '62 novas páginas de estudo no Painel: 15 em Gramática — Intermediário (B1), 12 em Gramática — Avançado (B2–C1), 16 em Vocabulário temático, 12 em Funções comunicativas e 7 em Expressão oral — Competências. Parte do áudio dessas páginas ainda vai ser gerada.',
+          fr: '62 nouvelles fiches d’étude dans le Tableau de bord : 15 en Grammaire — Intermédiaire (B1), 12 en Grammaire — Avancé (B2–C1), 16 en Vocabulaire thématique, 12 en Fonctions communicatives et 7 en Expression orale — Compétences. Une partie de l’audio de ces fiches sera générée plus tard.'
+        },
+        {
+          pt: 'Busca no Painel: digite parte do título de um tópico para ver só os tópicos que batem, com as seções já abertas. Maiúsculas e acentos não fazem diferença, e Esc limpa a busca.',
+          fr: 'Recherche dans le Tableau de bord : tapez une partie du titre d’un sujet pour n’afficher que les sujets correspondants, avec les sections déjà ouvertes. Les majuscules et les accents ne comptent pas, et Échap efface la recherche.'
+        },
+        {
+          pt: 'Na Compreensão escrita, o nível A1 e um primeiro texto dele: o horário e os serviços de uma farmácia, com 6 questões, para começar pelo mais fácil.',
+          fr: 'En Compréhension écrite, le niveau A1 et un premier texte de ce niveau : les heures d’ouverture et les services d’une pharmacie, avec 6 questions, pour commencer par le plus facile.'
+        }
+      ],
+      changed: [
+        {
+          pt: 'Páginas de “Conhecendo a prova” atualizadas com as regras oficiais de 2026: a suspensão dos pedidos de nova correção da expressão oral e escrita do TCF Canada (de setembro de 2026 ao outono de 2027), o prazo de 20 dias entre duas provas do TCF, a mudança no cálculo do CRS de 3 de novembro de 2026 e a validade do resultado.',
+          fr: 'Fiches de « Connaître l’examen » mises à jour selon les règles officielles de 2026 : la suspension des demandes de recorrection de l’expression orale et écrite du TCF Canada (de septembre 2026 à l’automne 2027), le délai de 20 jours entre deux passations du TCF, le changement du calcul du SCG du 3 novembre 2026 et la validité des résultats.'
+        }
+      ]
+    }
+  },
+  {
     version: '1.4.1',
     date: '2026-11-12',
     changes: {

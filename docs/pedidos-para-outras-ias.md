@@ -29,7 +29,7 @@ Regras:
 - Priorize o francês canadense (Québec): vocabulário, expressões e exemplos do Canadá são a forma principal (ex.: courriel, fin de semaine, magasiner). Quando a forma da França for diferente, mostre-a ao lado como alternativa, porque ela também pode aparecer na prova.
 - Explicações em português do Brasil, curtas e diretas, pensando nos erros típicos de quem fala português.
 - Fontes: use só páginas que existem de verdade, com o endereço completo, e prefira fontes oficiais (IRCC, France Éducation international, Le français des affaires) e de referência (Le Robert, Larousse, Usito, Lawless French, Kwiziq, TV5Monde, RFI). Se não tiver certeza de um endereço, não invente: deixe de fora.
-- Responda com o JSON pedido (use code snippet e código minificado se disponível) e no final mandar "Tópico pronto: [tópico] (seção: [seção])", nenhum comentário a mais.
+- Responda com o JSON pedido (use code snippet se disponível) e no final mandar "Tópico pronto: [tópico] (seção: [seção])", nenhum comentário a mais.
 ```
 
 ---
@@ -96,12 +96,12 @@ Os tópicos estão em [topicos-de-estudo.md](../topicos-de-estudo.md), na seçã
 ## Textos de compreensão escrita (aba Compreensão escrita)
 
 ```
-Crie [3] textos originais para treinar a compreensão escrita do TEF Canada e do TCF Canada, nível [A2 / B1 / B2 / C1], do tipo [documento do cotidiano / e-mail ou carta / oferta ou anúncio / notícia / texto argumentativo / texto literário].
+Crie [3] textos originais para treinar a compreensão escrita do TEF Canada e do TCF Canada, nível [A1 / A2 / B1 / B2 / C1], do tipo [documento do cotidiano / e-mail ou carta / oferta ou anúncio / notícia / texto argumentativo / texto literário].
 
 Cada texto:
 - Original: não copie nem adapte questões ou textos de provas oficiais ou de livros.
 - Situação do Canadá (Québec) sempre que fizer sentido, com vocabulário canadense (courriel, fin de semaine, texto, 4 ½, chauffé et éclairé). Pessoas, empresas e endereços fictícios; cidades reais podem aparecer, mas sem afirmar fatos reais sobre elas (estatísticas, leis, preços médios). Notícias falam de um acontecimento inventado, de preferência numa cidade fictícia.
-- Tamanho pelo nível: A2, 60 a 120 palavras; B1, 120 a 200; B2, 200 a 300; C1, 250 a 400.
+- Tamanho pelo nível: A1, 20 a 60 palavras (aviso, horário, cartaz, frases curtas no presente); A2, 60 a 120 palavras; B1, 120 a 200; B2, 200 a 300; C1, 250 a 400.
 - "text": lista de parágrafos (num anúncio, uma linha por item), só texto simples, sem Markdown e sem 
 .
 - "translation": a tradução em português do Brasil, com o MESMO número de itens de "text", item por item.
@@ -115,7 +115,7 @@ Cada texto tem 3 questões:
 Formato:
 {
   "id": "[id-curto-sem-acento, ex.: ce-annonce-velo]",
-  "level": "[A2 | B1 | B2 | C1]",
+  "level": "[A1 | A2 | B1 | B2 | C1]",
   "kind": "[ce-cotidiano | ce-cartas | ce-ofertas | ce-noticias | ce-argumentativos | ce-literarios]",
   "title": "[título do documento, em francês]",
   "text": ["...", "..."],

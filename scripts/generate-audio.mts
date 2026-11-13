@@ -167,9 +167,26 @@ const status: AudioGenStatus = {
 }
 
 function saveStatus(): void {
-  // Grava num arquivo temporário e renomeia, para o app nunca ler um JSON pela metade
-  writeFileSync(`${STATUS_FILE}.tmp`, JSON.stringify(status))
-  renameSync(`${STATUS_FILE}.tmp`, STATUS_FILE)
+  // Grava num arquivo temporário e renomeia, para o app nunca ler um JSON pela metade.
+  // No Windows o rename dá EPERM quando o app está lendo o status naquele instante, então
+  // tenta de novo por um tempo e, se não der, grava direto (o JSON é pequeno)
+  const tmp = `${STATUS_FILE}.tmp`
+  writeFileSync(tmp, JSON.stringify(status))
+  const pause = new Int32Array(new SharedArrayBuffer(4))
+  for (let attempt = 1; ; attempt++) {
+    try {
+      renameSync(tmp, STATUS_FILE)
+      return
+    } catch {
+      if (attempt >= 20) {
+        writeFileSync(STATUS_FILE, JSON.stringify(status))
+        rmSync(tmp, { force: true })
+        return
+      }
+      // Espera 50 ms de forma síncrona, sem gastar CPU
+      Atomics.wait(pause, 0, 0, 50)
+    }
+  }
 }
 
 saveStatus()
