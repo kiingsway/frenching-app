@@ -22,3 +22,13 @@ export function studyPagePrompt(topicTitle: string, sectionTitle: string): strin
     .replaceAll('[nome do tópico]', topicTitle)
   return `${context}\n\n${page}\n`
 }
+
+// Pedido para outra IA revisar uma página que já existe (fontes e citações [n]): contexto geral,
+// o modelo "Revisar uma página de estudo que já existe" e o conteúdo atual da página em JSON.
+export function reviewPagePrompt(topicTitle: string, content: unknown): string {
+  const context = codeAfter('Contexto geral')
+  const page = codeAfter('Revisar uma página de estudo que já existe')
+    .replaceAll('[nome do tópico]', topicTitle)
+    .replace('[cole aqui o conteúdo do arquivo]', JSON.stringify(content, null, 2))
+  return `${context}\n\n${page}\n`
+}

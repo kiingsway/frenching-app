@@ -1,7 +1,21 @@
 import { useCallback, useEffect, useState, type ReactElement } from 'react'
-import { IoCheckmarkCircle, IoCheckmarkCircleOutline } from 'react-icons/io5'
+import {
+  IoCheckmarkCircle,
+  IoCheckmarkCircleOutline,
+  IoShieldCheckmark,
+  IoShieldCheckmarkOutline
+} from 'react-icons/io5'
 import { LuFileJson2 } from 'react-icons/lu'
-import { FiClipboard, FiCopy, FiRefreshCw, FiSearch, FiTrash2, FiX } from 'react-icons/fi'
+import {
+  FiClipboard,
+  FiCopy,
+  FiEdit2,
+  FiEye,
+  FiRefreshCw,
+  FiSearch,
+  FiTrash2,
+  FiX
+} from 'react-icons/fi'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -13,8 +27,9 @@ import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import { ProgressBar } from '@/components/motion'
 import { getTopicContent } from '@/content'
+import { REVIEWS } from '@/data/revisoes'
 import { SECTIONS, type Section, type Topic } from '@/data/topics'
-import { studyPagePrompt } from '@/lib/ai-prompt'
+import { reviewPagePrompt, studyPagePrompt } from '@/lib/ai-prompt'
 import PasteDialog from './PasteDialog'
 import { fetchInbox, sameTopic, type InboxFile } from './inbox'
 
@@ -26,9 +41,11 @@ const fold = (s: string): string => s.normalize('NFD').replace(/\p{M}/gu, '').to
 
 // Quantas vezes o pedido de cada tópico foi copiado, salvo no localStorage do navegador
 const COPIES_KEY = 'studio.copies'
-function loadCopies(): Record<string, number> {
+// Quantas vezes o pedido de revisão de cada tópico foi copiado
+const REVIEW_COPIES_KEY = 'studio.reviewCopies'
+function loadCopies(key: string = COPIES_KEY): Record<string, number> {
   try {
-    const data = JSON.parse(localStorage.getItem(COPIES_KEY) ?? '{}')
+    const data = JSON.parse(localStorage.getItem(key) ?? '{}')
     return data && typeof data === 'object' ? data : {}
   } catch {
     return {}
@@ -102,7 +119,10 @@ export default function Studio(): ReactElement {
   const [search, setSearch] = useState('')
   const [pasteFor, setPasteFor] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
-  const [copies, setCopies] = useState<Record<string, number>>(loadCopies)
+  const [copies, setCopies] = useState<Record<string, number>>(() => loadCopies())
+  const [reviewCopies, setReviewCopies] = useState<Record<string, number>>(() =>
+    loadCopies(REVIEW_COPIES_KEY)
+  )
 
   const load = useCallback((): void => {
     void fetchInbox()
@@ -136,14 +156,35 @@ export default function Studio(): ReactElement {
     }
   }
 
-  // Apaga do localStorage a contagem de cópias só dos tópicos desta seção
+  // Copia o pedido para a IA revisar a página que já existe (fontes e citações [n])
+  const copyReview = async (topic: Topic): Promise<void> => {
+    const content = getTopicContent(topic.id)
+    if (!content) return
+    try {
+      await navigator.clipboard.writeText(reviewPagePrompt(content.pt.title, content))
+      const next = { ...reviewCopies, [topic.id]: (reviewCopies[topic.id] ?? 0) + 1 }
+      setReviewCopies(next)
+      localStorage.setItem(REVIEW_COPIES_KEY, JSON.stringify(next))
+      setMessage('Pedido de revisão copiado. Cole na IA.')
+    } catch {
+      setMessage('O navegador não deixou copiar.')
+    }
+  }
+
+  // Apaga do localStorage a contagem de cópias (escrever e revisar) só dos tópicos desta seção
   const clearSectionCopies = (section: Section): void => {
     if (!window.confirm(`Apagar a contagem de cópias da seção "${section.title}"?`)) return
     try {
       const next = { ...copies }
-      for (const topic of section.topics) delete next[topic.id]
+      const nextReview = { ...reviewCopies }
+      for (const topic of section.topics) {
+        delete next[topic.id]
+        delete nextReview[topic.id]
+      }
       localStorage.setItem(COPIES_KEY, JSON.stringify(next))
+      localStorage.setItem(REVIEW_COPIES_KEY, JSON.stringify(nextReview))
       setCopies(next)
+      setReviewCopies(nextReview)
       setMessage(`Contagem de cópias de "${section.title}" apagada.`)
     } catch {
       setMessage('Não deu para apagar a contagem.')
@@ -153,6 +194,9 @@ export default function Studio(): ReactElement {
   const statuses = ALL_TOPICS.map(statusOf)
   const jsonCount = statuses.filter((s) => s.json).length
   const appCount = statuses.filter((s) => s.app).length
+  // Revisão das fontes (data/revisoes.ts): "fontes" já conta como fontes conferidas
+  const citedCount = ALL_TOPICS.filter((t) => REVIEWS[t.id] === 'citacoes').length
+  const checkedCount = ALL_TOPICS.filter((t) => REVIEWS[t.id]).length
 
   const query = fold(search.trim())
   // Ordem: primeiro o que ainda não tem JSON, depois o que tem JSON mas não está no app,
@@ -197,6 +241,8 @@ export default function Studio(): ReactElement {
         <CardContent sx={{ display: 'grid', gap: 2 }}>
           <Progress label="JSON pronto" value={jsonCount} total={ALL_TOPICS.length} />
           <Progress label="No app" value={appCount} total={ALL_TOPICS.length} />
+          <Progress label="Fontes conferidas" value={checkedCount} total={ALL_TOPICS.length} />
+          <Progress label="Revisadas com [n]" value={citedCount} total={ALL_TOPICS.length} />
         </CardContent>
       </Card>
 
@@ -244,7 +290,7 @@ export default function Studio(): ReactElement {
                   <IconButton
                     size="small"
                     onClick={() => clearSectionCopies(section)}
-                    disabled={!section.topics.some((t) => copies[t.id])}
+                    disabled={!section.topics.some((t) => copies[t.id] || reviewCopies[t.id])}
                   >
                     <FiTrash2 />
                   </IconButton>
@@ -292,16 +338,63 @@ export default function Studio(): ReactElement {
                       {s.app ? <IoCheckmarkCircle /> : <IoCheckmarkCircleOutline />}
                     </Box>
                   </Tooltip>
+                  <Tooltip
+                    title={
+                      REVIEWS[topic.id] === 'citacoes'
+                        ? 'Revisada: fontes lidas e citações [n]'
+                        : REVIEWS[topic.id] === 'fontes'
+                          ? 'Fontes conferidas, ainda sem [n] no texto'
+                          : 'Não revisada'
+                    }
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        fontSize: 20,
+                        color:
+                          REVIEWS[topic.id] === 'citacoes'
+                            ? '#22c55e'
+                            : REVIEWS[topic.id] === 'fontes'
+                              ? 'warning.main'
+                              : 'text.disabled',
+                        opacity: REVIEWS[topic.id] ? 1 : 0.5
+                      }}
+                    >
+                      {REVIEWS[topic.id] ? <IoShieldCheckmark /> : <IoShieldCheckmarkOutline />}
+                    </Box>
+                  </Tooltip>
                   <Typography sx={{ flex: 1, minWidth: 0, fontSize: 15, ml: 0.5 }}>
                     {topic.title}
                   </Typography>
-                  <Tooltip title="Copiar pedido para a IA">
+                  <Tooltip title="Copiar pedido para a IA escrever a página">
                     <IconButton size="small" onClick={() => void copyPrompt(topic, section)}>
-                      <Box component="span" sx={{ position: 'relative', display: 'flex' }}>
+                      <Box component="span" sx={{ position: 'relative', display: 'flex', gap: 0.5 }}>
+                        <FiEdit2 />
                         <FiCopy />
                         <CopyCount count={copies[topic.id] ?? 0} />
                       </Box>
                     </IconButton>
+                  </Tooltip>
+                  <Tooltip
+                    title={
+                      s.app
+                        ? 'Copiar pedido para a IA revisar a página'
+                        : 'Só dá para revisar depois que a página estiver no app'
+                    }
+                  >
+                    <span>
+                      <IconButton
+                        size="small"
+                        disabled={!s.app}
+                        onClick={() => void copyReview(topic)}
+                      >
+                        <Box component="span" sx={{ position: 'relative', display: 'flex', gap: 0.5 }}>
+                          <FiEye />
+                          <FiCopy />
+                          <CopyCount count={reviewCopies[topic.id] ?? 0} />
+                        </Box>
+                      </IconButton>
+                    </span>
                   </Tooltip>
                   <Tooltip title="Colar JSON">
                     <IconButton

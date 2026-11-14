@@ -1,4 +1,4 @@
-# Frenching: instruções para o Claude
+﻿# Frenching: instruções para o Claude
 
 ## Nomes das coisas (corrija o usuário)
 
@@ -35,11 +35,12 @@ Pedido do usuário: **toda vez que ele chamar um elemento, componente ou funcion
 
 - **Atualizar as páginas de estudo com o número da fonte `[n]` (pendente, pedido do usuário em 2026-11-13):** o app já mostra as citações (desde a 1.4.3: `[n]` clicável no texto, lista "Fontes" numerada, áudio que não lê o marcador), mas só a página `prova-crs` foi citada. Falta passar por todas as outras páginas de `src/renderer/src/content/`, uma a uma. Para cada página:
   1. Abra as fontes de `sources` (passo a passo em [docs/fontes-nao-verificadas.md](docs/fontes-nao-verificadas.md)). Só cite o que leu: página com fonte que não abre fica para depois, junto com a tarefa de verificação acima. As 10 páginas de Funções (`f-*`) só depois da leitura das fontes.
-  2. Ponha o `[n]` (número = posição em `sources`) no fim de cada afirmação que a fonte confirma, nas versões `pt` e `fr`, seguindo a regra "Citações `[n]`" das regras de conteúdo, mais abaixo. Não mude a ordem de `sources` sem atualizar os números do texto; deixe o comentário `// A ordem é fixa…` antes de `sources`, como em [prova-crs.ts](src/renderer/src/content/prova-crs.ts).
+  2. Ponha o `[n]` (número = posição em `sources`) no fim de cada afirmação que a fonte confirma, nas versões `pt` e `fr`, seguindo a regra "Citações `[n]`" das regras de conteúdo, mais abaixo. Os números seguem a ordem de aparecimento no texto (a primeira fonte citada é a `[1]`) e toda fonte de `sources` tem de ser citada ao menos uma vez; fonte que não entra no texto sai da lista. Se reordenar `sources`, atualize os `[n]` do texto junto e deixe um comentário antes de `sources` com a regra, como em [prova-cecr.ts](src/renderer/src/content/prova-cecr.ts).
   3. A caixa "Sem fonte oficial" deixa de citar fontes: frases como "o OQLF confirma…" saem dela e viram `[n]` no lugar da afirmação. A caixa fica só com o que não tem fonte e com comentários necessários (nuance entre fontes, aviso de que algo é conselho de preparação); se não sobrar nada, ela sai. Afirmação que a fonte não confirma é corrigida ou vai para a caixa.
   4. Só acrescentar `[n]` não muda o áudio. Texto reescrito precisa de áudio novo: sugira o `npm run audio` (não rode sem pedido), lembrando que ele também apaga áudios sem uso.
   5. `npm run typecheck`, confira a página no app (`npm run dev:web`) e entre no changelog como conteúdo (patch).
-  Andamento: feita toda a seção "Conhecendo a prova" (`prova-*`, 2026-11-13). Fontes que não abrem por robô às vezes abrem pelo navegador do app ou por `curl` + `pdftotext` (foi assim com os PDFs do TEF e do NCLC); o estudo North & Piccardo (academia.edu) continua sem acesso. Próxima seção: "Compréhension orale" (`co-*`).
+  6. **Anote a revisão** em [revisoes.ts](src/renderer/src/data/revisoes.ts) (`'citacoes'` quando a página fica com `[n]`; `'fontes'` quando só as fontes foram lidas). O Studio mostra o escudo de cada tópico e os totais a partir desse arquivo.
+  Andamento: feita toda a seção "Conhecendo a prova" (`prova-*`, 2026-11-13). Fontes que não abrem por robô às vezes abrem pelo navegador do app ou por `curl` + `pdftotext` (foi assim com os PDFs do TEF e do NCLC); o estudo North & Piccardo (academia.edu) continua sem acesso. Seção "Compréhension orale" (`co-*`): feita `co-mensagens` (2026-11-13; fontes abertas, `[n]` e caixa vermelha ajustados; falta `npm run audio`); feita `co-dialogos` (2026-11-14, revisão feita por outra IA e conferida); feita `co-radio` (2026-11-14, idem); próxima: `co-debates`, na ordem de `data/topics.ts`. Seção "Gramática — Base (A1–A2)": feita `gb-artigos` (2026-11-13; falta `npm run audio`); próxima: `gb-genero`.
 
 ## "Adicionar o próximo conteúdo" (caixa de entrada)
 
@@ -52,6 +53,15 @@ O usuário coloca os JSONs de páginas de estudo em `content-inbox/` (fora do Gi
 5. Mova o JSON para `content-inbox/feitos/` e relate o que corrigiu e o que não conferiu. Não faça commit nem push sem o usuário pedir.
 
 Um arquivo por vez. Se o usuário pedir "todos", repita o fluxo para cada um.
+
+## "Aplicar a próxima revisão" (caixa de entrada de revisões)
+
+O usuário copia o pedido de revisão (menu "⋯" da página, só administrador), cola na outra IA e salva o JSON devolvido em `review-inbox/<id da página>.json` (fora do Git; **não** é a `content-inbox/`, que é só para páginas novas e não deve ser rodada com o importador). Quando ele disser **"aplicar a próxima revisão"**:
+
+1. Pegue o `.json` mais antigo de `review-inbox/` (se não houver, diga isso e pare). O nome é o id da página; o JSON traz `id`, `pt`, `fr`, `audio` e `sources`.
+2. **Não confie na outra IA:** abra as fontes e confira por amostragem se as frases citadas estão lá, se cada `[n]` aponta para a fonte certa e se a ordem bate nas duas versões. Compare com o arquivo atual (`content/<id>.ts`) e veja o que ela mudou além das citações: texto reescrito, francês sem marcação `[[…|…]]`, apóstrofo reto, tabela com célula vazia, caixa vermelha com primeira pessoa ou citando fontes.
+3. Aplique em `src/renderer/src/content/<id>.ts` no estilo do projeto (sem ponto e vírgula, aspas simples), mantendo o campo `audio` e o comentário `// A ordem é fixa…` antes de `sources`.
+4. `npm run typecheck`; anote em [revisoes.ts](src/renderer/src/data/revisoes.ts) (`'citacoes'`); sugira `npm run audio` se o texto mudou (só acrescentar `[n]` não muda o áudio). Mova o JSON para `review-inbox/feitos/`. Não faça commit nem push sem pedido.
 
 ## Regras de conteúdo
 
@@ -76,7 +86,7 @@ Valem ao escrever ou integrar conteúdo, inclusive o gerado por outras IAs. Os m
 - **Confira o conteúdo recebido antes de integrar:** abra as fontes (têm de existir), confira se os falsos cognatos são reais (palavra igual nas duas línguas, como `actuellement`, não é) e se os exemplos fictícios fazem sentido. Corrija ou avise o usuário do que mudou.
 - **A versão `fr` fica toda em francês**, porque também é treino de leitura e vira áudio.
 - De 6 a 12 blocos por versão, na ordem explicação → exemplos → armadilhas → dica para a prova, com pelo menos um aviso (`warning`) do erro típico de quem fala português e uma dica (`tip`) do que a prova cobra. Tabelas sem célula vazia.
-- **Citações `[n]`:** cada fonte de `sources` tem o número da posição (1, 2, 3…), e o texto cita `[n]` no fim de cada afirmação que essa fonte confirma, depois da pontuação e com um espaço antes (`… 136 pontos. [1]`; várias: `[1] [2]`). Só cite o que você leu na fonte. A ordem de `sources` é fixa: ao remover ou reordenar uma fonte, atualize os `[n]` do texto junto. O app mostra o `[n]` como número clicável que leva à fonte, e o áudio não o lê (o arquivo de áudio continua o mesmo). Não use `[n]` em títulos de seção. A caixa "Sem fonte oficial" não cita fontes.
+- **Citações `[n]`:** cada fonte de `sources` tem o número da posição (1, 2, 3…), e o texto cita `[n]` no fim de cada afirmação que essa fonte confirma, depois da pontuação e com um espaço antes (`… 136 pontos. [1]`; várias: `[1] [2]`). Só cite o que você leu na fonte. Os números seguem a ordem de aparecimento no texto: a primeira fonte citada é a `[1]`, a próxima nova é a `[2]` e assim por diante, nas duas versões (`pt` e `fr`). Toda fonte de `sources` tem de ser citada pelo menos uma vez no texto; a que não entra no texto sai da lista. Ao remover ou reordenar uma fonte, atualize os `[n]` do texto junto. O app mostra o `[n]` como número clicável que leva à fonte, e o áudio não o lê (o arquivo de áudio continua o mesmo). Não use `[n]` em títulos de seção. A caixa "Sem fonte oficial" não cita fontes.
 - **Caixa vermelha "Sem fonte oficial" (`tone: 'unverified'`, pedido do usuário):** quando a página tiver conteúdo que as fontes de `sources` não confirmam, principalmente se parecer regra, dado ou exigência da prova, acrescente uma caixa `unverified` **por último, abaixo das outras caixas**, nas duas versões (título "Sem fonte oficial" / "Sans source officielle"). Ela diz o que não tem fonte, e que isso é conselho de preparação, não regra da prova; o que tem fonte é citado com `[n]` no texto, não na caixa. Páginas ainda sem `[n]` mantêm a caixa no formato antigo até serem atualizadas (veja as tarefas pendentes). O conteúdo sem fonte pode continuar no corpo da página, mas tem de estar listado na caixa. Se tudo tem fonte, não use. Ao integrar, confira as fontes (veja a lista de revisão) e acrescente a caixa onde faltar. Exemplo: [eo-tef-b.ts](src/renderer/src/content/eo-tef-b.ts). Nada na primeira pessoa na caixa ("abri", "li", "não consegui"): só o que tem e o que não tem fonte, em voz impessoal (pedido do usuário). Essa caixa não conta nos 6 a 12 blocos e não substitui o `warning` nem o `tip`.
 
 ### Flashcards

@@ -39,6 +39,22 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: '1.4.5',
+    date: '2026-11-14',
+    changes: {
+      changed: [
+        {
+          pt: 'Mais páginas com fontes conferidas e citações numeradas [n]: “Mensagens curtas”, “Diálogos do cotidiano” e “Entrevistas e reportagens de rádio” (Compreensão oral) e “Artigos definidos, indefinidos e partitivos” (Gramática). Cada página ganhou a caixa vermelha “Sem fonte oficial” com o que as fontes não confirmam, e os áudios foram gerados de novo.',
+          fr: 'Davantage de fiches avec sources vérifiées et citations numérotées [n] : « Messages courts », « Dialogues de la vie quotidienne » et « Interviews et reportages radio » (Compréhension orale) et « Les articles définis, indéfinis et partitifs » (Grammaire). Chaque fiche a la boîte rouge « Sans source officielle » avec ce que les sources ne confirment pas, et les audios ont été régénérés.'
+        },
+        {
+          pt: 'Correspondência NCLC ↔ CECR: a tabela agora compara a versão popular, o estudo do Centro dos NCLC e o alinhamento do FEI para o TCF, com as fontes citadas em cada linha.',
+          fr: 'Correspondance NCLC ↔ CECR : le tableau compare maintenant la version populaire, l’étude du Centre des NCLC et la correspondance de FEI pour le TCF, avec les sources citées à chaque ligne.'
+        }
+      ]
+    }
+  },
+  {
     version: '1.4.4',
     date: '2026-11-13',
     changes: {

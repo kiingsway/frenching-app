@@ -58,7 +58,7 @@ import { getTopicContent } from '@/content'
 import type { AudioPart, Block, Lang } from '@/content/types'
 import { useCompletedTopics } from '@/lib/completed'
 import { hasCloudAccess, isAdmin, useAccess } from '@/lib/access'
-import { studyPagePrompt } from '@/lib/ai-prompt'
+import { reviewPagePrompt, studyPagePrompt } from '@/lib/ai-prompt'
 import { inboxToolsAvailable } from '@/lib/platform'
 import ContentInboxDialog from '@/components/ContentInboxDialog'
 import { shortcutTip } from '@/components/ShortcutTip'
@@ -725,13 +725,18 @@ export default function TopicPage({
   const canPasteJson = canCopyPrompt && inboxAvailable
   const [inboxOpen, setInboxOpen] = useState(false)
   const [inboxSaved, setInboxSaved] = useState<string | null>(null)
-  const copyPrompt = (): void => {
-    const text = studyPagePrompt(topic?.title ?? topicId, section?.title ?? '')
+  const copyText = (text: string): void => {
     navigator.clipboard.writeText(text).then(
       () => setPromptCopied('ok'),
       () => setPromptCopied('error')
     )
   }
+  const copyPrompt = (): void =>
+    copyText(studyPagePrompt(topic?.title ?? topicId, section?.title ?? ''))
+  // Administrador, em página com conteúdo: copia o pedido para outra IA revisar fontes e citações
+  const canCopyReview = isAdmin(access) && !!content
+  const copyReviewPrompt = (): void =>
+    copyText(reviewPagePrompt(content?.pt.title ?? topic?.title ?? topicId, content))
 
   // Barra responsiva: mede a largura disponível e escolhe o que fica nela e o que vai
   // para o menu "⋯" (veja barConfigFor)
@@ -871,7 +876,7 @@ export default function TopicPage({
   const zoomInMenu = hasContent && bar.zoom
   const styleInMenu = hasContent && bar.style
   const langInMenu = bar.lang
-  const hasMenu = reportInMenu || zoomInMenu || styleInMenu || langInMenu
+  const hasMenu = reportInMenu || zoomInMenu || styleInMenu || langInMenu || canCopyReview
   const closeMenu = (): void => setMenuAnchor(null)
 
   // Idioma da página: BR | FR (com o ícone de áudio no FR). O mesmo seletor vai na barra
@@ -1172,6 +1177,22 @@ export default function TopicPage({
                   <FiFlag size={16} />
                 </ListItemIcon>
                 <ListItemText>{t.report}</ListItemText>
+              </MenuItem>
+            )}
+            {canCopyReview && (reportInMenu || styleInMenu || zoomInMenu || langInMenu) && (
+              <Divider />
+            )}
+            {canCopyReview && (
+              <MenuItem
+                onClick={() => {
+                  closeMenu()
+                  copyReviewPrompt()
+                }}
+              >
+                <ListItemIcon>
+                  <FiCopy size={16} />
+                </ListItemIcon>
+                <ListItemText>Copiar pedido de revisão</ListItemText>
               </MenuItem>
             )}
           </Menu>

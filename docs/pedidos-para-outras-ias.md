@@ -169,7 +169,7 @@ Cada versão tem:
 
 "sources": as fontes usadas, no fim (título e endereço real, de uma página que abre). Prefira as que você de fato consultou.
 
-Citações: cada fonte tem o número da sua posição em "sources" (1, 2, 3…). No texto, cite [n] no fim de cada afirmação que a fonte confirma, depois da pontuação e com um espaço antes ("… até 136 pontos. [1]"; várias: "[1] [2]"). Cite só o que está de fato na fonte. Não cite em títulos de seção nem na caixa "unverified".
+Citações: os números seguem a ordem em que as fontes aparecem no texto (a primeira citada é a [1], a próxima nova é a [2]…), e cada fonte de "sources" tem de ser citada pelo menos uma vez; a que não entra no texto fica de fora da lista. No texto, cite [n] no fim de cada afirmação que a fonte confirma, depois da pontuação e com um espaço antes ("… até 136 pontos. [1]"; várias: "[1] [2]"). Cite só o que está de fato na fonte. Não cite em títulos de seção nem na caixa "unverified".
 
 Formato:
 {
@@ -193,3 +193,39 @@ Ao integrar a página, o Claude confere se todo francês da versão "pt" está m
 - **Conferir o francês:** "Revise estas frases em francês. Para cada uma, diga se está correta e natural; se não estiver, dê a versão corrigida e explique em português: [cole as frases]".
 - **Conferir questões:** "Para cada questão, confirme que só a primeira opção está certa e que a explicação está correta. Liste só as que têm problema: [cole o JSON]".
 - **Conferir fatos da prova:** "Confira estes dados sobre o TEF Canada / TCF Canada (duração, número de questões, notas NCLC) com as páginas oficiais e diga o que mudou, com o endereço da fonte: [cole o trecho]".
+
+---
+
+## Revisar uma página de estudo que já existe (fontes e citações `[n]`)
+
+Serve para as páginas ainda sem `[n]` (veja "Tarefas pendentes" no [CLAUDE.md](../CLAUDE.md)). A outra IA **precisa conseguir abrir links**: sem isso ela cita de memória, e é isso que o pedido quer evitar. **No app,** o administrador vê "Copiar pedido de revisão" no menu "⋯" de cada página com conteúdo: ele copia o contexto geral e este modelo, já com o nome do tópico e o conteúdo da página em JSON (o botão lê este arquivo: o modelo continua sendo o primeiro bloco de código desta seção, e os trechos `[nome do tópico]` e `[cole aqui o conteúdo do arquivo]` são os que o app troca). À mão, copie o **contexto geral** (acima), troque o que está entre `[colchetes]` e cole o conteúdo do arquivo `src/renderer/src/content/<id>.ts`. Depois, cole a resposta para o Claude ("aplica esta revisão em <id>"): ele confere por amostragem, ajusta e roda o `typecheck`.
+
+```
+Você vai REVISAR (não reescrever) a página de estudo "[nome do tópico]" do app, conferindo cada afirmação nas fontes da lista "sources" e acrescentando citações numeradas [n]. A página tem duas versões equivalentes, "pt" (português) e "fr" (francês), com blocos dos tipos heading, paragraph, list, table e callout (tone: tip, warning ou unverified).
+
+Passo a passo:
+1. Abra cada fonte de "sources" e leia. Fonte que não abre, que bloqueia você ou que é só um índice não vale como confirmação: diga isso na entrega e não a cite.
+2. Para cada afirmação da página, decida: (a) a fonte confirma, (b) a fonte contradiz ou diz algo um pouco diferente, (c) nenhuma fonte trata do assunto.
+   - (a) ponha [n] no fim da afirmação, nas versões "pt" e "fr". n é a posição da fonte em "sources" (a primeira é [1]). Depois da pontuação, com um espaço antes ("… 136 pontos. [1]"; várias: "[1] [2]"). Em tabela, o [n] vai no fim da célula. Não cite em títulos de seção (heading) nem dentro da caixa "unverified".
+   - (b) corrija o texto para dizer o que a fonte diz (por exemplo, "sempre" vira "normalmente" se a fonte diz "usually"), nas duas versões, e conte isso na entrega.
+   - (c) deixe sem [n]. Se parecer regra, dado ou exigência da prova, entra na caixa vermelha; dados da prova (número de questões, tempo, ordem, notas) que nenhuma fonte confirma devem ser tirados.
+3. Ordem dos números: numere as fontes pela ordem em que aparecem no texto (a primeira citada é [1], a próxima nova é [2]…), e reordene "sources" para bater. Fonte que ninguém cita sai da lista.
+4. Caixa vermelha (tone "unverified"; título "Sem fonte oficial" em "pt" e "Sans source officielle" em "fr"): a última caixa, depois das outras, nas duas versões. Ela diz só o que NÃO tem fonte, em voz impessoal ("Não aparecem nas fontes desta página: …" / "N’apparaissent pas dans les sources de cette fiche : …"), e que dicas e exemplos de treino são conselho de preparação, não regra da prova. Nada na primeira pessoa ("abri", "li", "não consegui"). Não cite fontes nela e não ponha o que tem fonte. Se a página já tem a caixa, reescreva a lista para bater com o texto. Se tudo tem fonte, a caixa sai.
+5. Formato que você não pode quebrar:
+   - Versão "pt": todo francês marcado como [[francês|tradução]] (nada de parênteses para traduzir); só nomes próprios ficam sem marcação. Texto com duas ou mais frases em francês: uma marcação por frase. Dentro da marcação, não use | nem ] além dos da própria marcação. Se acrescentar francês, marque.
+   - Versão "fr": toda em francês, sem marcações.
+   - Apóstrofo tipográfico ’ (nunca '), espaço antes de : ; ? ! no francês.
+   - Só texto simples: sem Markdown, sem quebras de linha dentro do texto, sem numeração nos itens de lista. Tabelas sem célula vazia.
+   - Francês do Canadá (Québec) como forma principal, com a da França ao lado quando diferir.
+   - Não mude a estrutura, a ordem dos blocos, os campos "id" e "audio", nem o que já está correto e sem relação com as fontes.
+6. Não invente fontes nem endereços. Só acrescente uma fonte nova se você a abriu, ela trata do assunto e o endereço completo funciona.
+
+Entrega (nesta ordem):
+A) A página inteira corrigida, no mesmo formato recebido (JSON, com os mesmos campos), num bloco de código.
+B) Uma lista curta com: o que você corrigiu e por quê (item b); o que foi para a caixa vermelha (item c); as fontes que não abriu ou não confirmaram nada e saíram da lista. Sem outros comentários.
+
+Página:
+[cole aqui o conteúdo do arquivo]
+```
+
+O que o Claude confere depois: abre uma ou duas fontes e vê se a frase citada está lá; confere se cada `[n]` aponta para a fonte certa, se a ordem bate nas duas versões e se a caixa vermelha ficou só com o que não tem fonte; roda o `typecheck`; sugere o `npm run audio` (texto reescrito precisa de áudio novo; só acrescentar `[n]` não muda o áudio).

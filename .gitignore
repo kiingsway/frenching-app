@@ -34,3 +34,6 @@ desktop.ini
 # Caixa de entrada de conteúdo (JSONs ainda não integrados)
 content-inbox/*.json
 content-inbox/feitos/
+
+review-inbox/*.json
+review-inbox/feitos/
